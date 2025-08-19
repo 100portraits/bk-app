@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { IconMenu2, IconUser, IconSearch, IconLogout } from '@tabler/icons-react';
+import { IconMenu2, IconUser, IconSearch, IconLogout, IconCrown, IconShieldCheck, IconTool } from '@tabler/icons-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -24,8 +24,21 @@ const TopNavigationBar = ({
 }: TopNavigationBarProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut, isMember, role } = useAuth();
   const router = useRouter();
+  
+  const getRoleIcon = () => {
+    switch (role) {
+      case 'admin':
+        return <IconShieldCheck size={16} className="text-purple-600" />;
+      case 'mechanic':
+        return <IconTool size={16} className="text-blue-600" />;
+      case 'host':
+        return <IconCrown size={16} className="text-yellow-600" />;
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -98,11 +111,60 @@ const TopNavigationBar = ({
             </button>
             
             {showDropdown && user && (
-              <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+              <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                 <div className="p-4 border-b border-gray-100">
                   <p className="text-sm text-gray-500">Signed in as</p>
                   <p className="text-sm font-medium text-gray-900 truncate">{user.email}</p>
+                  
+                  <div className="mt-3 flex items-center gap-3">
+                    <div className="flex items-center gap-1.5">
+                      <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
+                        isMember ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        {isMember ? 'Member' : 'Non-member'}
+                      </span>
+                    </div>
+                    
+                    {role && (
+                      <div className="flex items-center gap-1.5">
+                        {getRoleIcon()}
+                        <span className="text-xs font-medium text-gray-700 capitalize">
+                          {role}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
+                
+                {role && (
+                  <div className="p-2 border-b border-gray-100">
+                    {role === 'admin' && (
+                      <button
+                        onClick={() => router.push('/admin/dashboard')}
+                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                      >
+                        Admin Dashboard
+                      </button>
+                    )}
+                    {(role === 'host' || role === 'admin') && (
+                      <button
+                        onClick={() => router.push('/host/dashboard')}
+                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                      >
+                        Host Dashboard
+                      </button>
+                    )}
+                    {(role === 'mechanic' || role === 'admin') && (
+                      <button
+                        onClick={() => router.push('/mechanic/dashboard')}
+                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                      >
+                        Mechanic Dashboard
+                      </button>
+                    )}
+                  </div>
+                )}
+                
                 <div className="p-2">
                   <button
                     onClick={handleSignOut}
