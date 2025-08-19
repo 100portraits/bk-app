@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { useMenu } from '@/contexts/MenuContext';
 import TopNavigationBar from '../ui/TopNavigationBar';
-import SlideOutMenu from '../ui/SlideOutMenu';
 import RoleBadge from '../ui/RoleBadge';
 
 interface AppLayoutProps {
@@ -23,21 +22,15 @@ const AppLayout = ({
   showBackButton = false,
   showSearchIcon = false
 }: AppLayoutProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { openMenu } = useMenu();
   const pathname = usePathname();
 
   return (
     <div className="min-h-screen bg-gray-50">
       <TopNavigationBar
         title={title}
-        onMenuClick={() => setIsMenuOpen(true)}
+        onMenuClick={openMenu}
         showSearchIcon={showSearchIcon}
-      />
-      
-      <SlideOutMenu 
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        currentPath={pathname}
       />
       
       <main className="pb-20">

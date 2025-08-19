@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { MantineProvider, createTheme } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
+import { MenuProvider } from '@/contexts/MenuContext';
+import GlobalMenu from '@/components/layout/GlobalMenu';
 import "./globals.css";
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
@@ -45,12 +47,15 @@ export default function RootLayout({
         className={`${inter.variable} antialiased font-inter`}
         style={{ '--mantine-font-family': 'var(--font-inter), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif' } as React.CSSProperties}
       >
-        <MantineProvider theme={theme}>
-          <ModalsProvider>
-            <Notifications />
-            {children}
-          </ModalsProvider>
-        </MantineProvider>
+        <MenuProvider>
+          <MantineProvider theme={theme}>
+            <ModalsProvider>
+              <Notifications />
+              <GlobalMenu />
+              {children}
+            </ModalsProvider>
+          </MantineProvider>
+        </MenuProvider>
       </body>
     </html>
   );

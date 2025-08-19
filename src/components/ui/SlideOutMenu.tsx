@@ -1,5 +1,6 @@
 import { IconX, IconMenu2 } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
+import { useMenu } from '@/contexts/MenuContext';
 
 interface SlideOutMenuProps {
   isOpen: boolean;
@@ -18,19 +19,32 @@ const menuItems = [
 
 const SlideOutMenu = ({ isOpen, onClose, currentPath }: SlideOutMenuProps) => {
   const router = useRouter();
+  const { closeMenu } = useMenu();
 
   const handleNavigation = (path: string) => {
+    // Navigate immediately for snappy UX
     router.push(path);
-    onClose();
+    // Close menu immediately - context will persist the transition
+    closeMenu();
   };
-
-  if (!isOpen) return null;
 
   return (
     <>
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 z-40"
-        onClick={onClose}
+        className={`
+          fixed 
+          inset-0 
+          bg-black 
+          transition-all
+          duration-300 
+          ease-in-out
+          ${isOpen 
+            ? 'opacity-50 pointer-events-auto visible' 
+            : 'opacity-0 pointer-events-none invisible'
+          } 
+          z-40
+        `}
+        onClick={closeMenu}
       />
       
       <div 
@@ -43,10 +57,10 @@ const SlideOutMenu = ({ isOpen, onClose, currentPath }: SlideOutMenuProps) => {
           bg-purple-100 
           z-50 
           transform 
-          transition-transform 
+          transition-all
           duration-300 
           ease-in-out
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          ${isOpen ? 'translate-x-0 ' : '-translate-x-full '}
         `}
       >
         <div className="p-4">
@@ -54,14 +68,12 @@ const SlideOutMenu = ({ isOpen, onClose, currentPath }: SlideOutMenuProps) => {
             <h2 className="text-4xl font-semibold text-gray-900">Menu</h2>
             <div className="flex items-center gap-2">
               <button 
-                onClick={onClose}
+                onClick={closeMenu}
                 className="p-2 rounded-lg hover:bg-purple-200 transition-colors"
               >
                 <IconX size={24} className="text-gray-700" />
               </button>
-              <button className="p-2 rounded-lg hover:bg-purple-200 transition-colors">
-                <IconMenu2 size={24} className="text-gray-700" />
-              </button>
+
             </div>
           </div>
           
