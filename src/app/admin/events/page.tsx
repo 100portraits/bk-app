@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import EventCard from '@/components/ui/EventCard';
 import HelpButton from '@/components/ui/HelpButton';
@@ -8,35 +8,77 @@ import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import TextInput from '@/components/ui/TextInput';
-import { IconPaperclip, IconEdit, IconTrash } from '@tabler/icons-react';
-import { mockEvents } from '@/lib/placeholderData';
+import { IconPaperclip, IconEdit, IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff } from '@tabler/icons-react';
+import { useRequireRole } from '@/hooks/useAuthorization';
+import { EventsAPI } from '@/lib/events/api';
+import { Event, CreateEventInput } from '@/types/events';
+import { format, parseISO } from 'date-fns';
 
 export default function ManageEventsPage() {
+  const { authorized, loading: authLoading } = useRequireRole(['admin']);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showEventDetails, setShowEventDetails] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<typeof mockEvents[0] | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   
-  const [eventForm, setEventForm] = useState({
+  const [eventForm, setEventForm] = useState<CreateEventInput>({
     title: '',
-    subtitle: '',
-    date: '',
-    whatsappLink: ''
+    description: '',
+    event_date: '',
+    start_time: '',
+    end_time: '',
+    location: '',
+    whatsapp_link: '',
+    poster_url: '',
+    max_capacity: undefined,
+    is_published: false
   });
 
-  const handleEventClick = (event: typeof mockEvents[0]) => {
+  const eventsAPI = new EventsAPI();
+
+  // Load events on mount
+  useEffect(() => {
+    if (authorized) {
+      loadEvents();
+    }
+  }, [authorized]);
+
+  const loadEvents = async () => {
+    setLoading(true);
+    try {
+      // Admin can see all events (published and unpublished)
+      const data = await eventsAPI.getEvents(false);
+      setEvents(data);
+    } catch (error) {
+      console.error('Error loading events:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEventClick = (event: Event) => {
     setSelectedEvent(event);
     setShowEventDetails(true);
   };
 
-  const handleEditClick = (event: typeof mockEvents[0]) => {
+  const handleEditClick = (event: Event) => {
     setSelectedEvent(event);
     setEventForm({
       title: event.title,
-      subtitle: event.subtitle,
-      date: `${event.date} ${event.month}`,
-      whatsappLink: event.whatsappGroup || ''
+      description: event.description || '',
+      event_date: event.event_date,
+      start_time: event.start_time.slice(0, 5), // Convert HH:MM:SS to HH:MM
+      end_time: event.end_time?.slice(0, 5) || '',
+      location: event.location || '',
+      whatsapp_link: event.whatsapp_link || '',
+      poster_url: event.poster_url || '',
+      max_capacity: event.max_capacity,
+      is_published: event.is_published
     });
     setShowEditDialog(true);
   };
@@ -44,22 +86,114 @@ export default function ManageEventsPage() {
   const resetForm = () => {
     setEventForm({
       title: '',
-      subtitle: '',
-      date: '',
-      whatsappLink: ''
+      description: '',
+      event_date: '',
+      start_time: '',
+      end_time: '',
+      location: '',
+      whatsapp_link: '',
+      poster_url: '',
+      max_capacity: undefined,
+      is_published: false
     });
   };
 
-  const handleCreateSubmit = () => {
-    setShowCreateDialog(false);
-    resetForm();
+  const handleCreateSubmit = async () => {
+    setSaving(true);
+    try {
+      // Convert HH:MM to HH:MM:SS for database
+      const formData = {
+        ...eventForm,
+        start_time: eventForm.start_time ? `${eventForm.start_time}:00` : '',
+        end_time: eventForm.end_time ? `${eventForm.end_time}:00` : undefined
+      };
+      
+      await eventsAPI.createEvent(formData);
+      await loadEvents();
+      setShowCreateDialog(false);
+      resetForm();
+    } catch (error) {
+      console.error('Error creating event:', error);
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleEditSubmit = () => {
-    setShowEditDialog(false);
-    resetForm();
-    setSelectedEvent(null);
+  const handleEditSubmit = async () => {
+    if (!selectedEvent) return;
+    
+    setSaving(true);
+    try {
+      // Convert HH:MM to HH:MM:SS for database
+      const formData = {
+        ...eventForm,
+        id: selectedEvent.id,
+        start_time: eventForm.start_time ? `${eventForm.start_time}:00` : '',
+        end_time: eventForm.end_time ? `${eventForm.end_time}:00` : undefined
+      };
+      
+      await eventsAPI.updateEvent(formData);
+      await loadEvents();
+      setShowEditDialog(false);
+      resetForm();
+      setSelectedEvent(null);
+    } catch (error) {
+      console.error('Error updating event:', error);
+    } finally {
+      setSaving(false);
+    }
   };
+
+  const handleDeleteEvent = async () => {
+    if (!selectedEvent) return;
+    
+    setSaving(true);
+    try {
+      await eventsAPI.deleteEvent(selectedEvent.id);
+      await loadEvents();
+      setShowDeleteConfirm(false);
+      setShowEditDialog(false);
+      setSelectedEvent(null);
+      resetForm();
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const togglePublishStatus = async (event: Event) => {
+    try {
+      await eventsAPI.togglePublishStatus(event.id);
+      await loadEvents();
+    } catch (error) {
+      console.error('Error toggling publish status:', error);
+    }
+  };
+
+  if (authLoading) {
+    return (
+      <AppLayout title="Admin Panel">
+        <div className="flex items-center justify-center h-64">
+          <IconLoader2 className="animate-spin" size={32} />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  if (!authorized) {
+    return null;
+  }
+
+  // Group events by month
+  const eventsByMonth = events.reduce((acc, event) => {
+    const monthKey = format(parseISO(event.event_date), 'MMMM yyyy');
+    if (!acc[monthKey]) {
+      acc[monthKey] = [];
+    }
+    acc[monthKey].push(event);
+    return acc;
+  }, {} as Record<string, Event[]>);
 
   return (
     <AppLayout title="Admin Panel">
@@ -76,24 +210,49 @@ export default function ManageEventsPage() {
           </div>
         </section>
 
-        <section>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Upcoming events</h3>
-          <p className="text-gray-600 text-2xl mb-2">August</p>
-          
-          <div className="space-y-6">
-            {mockEvents.map((event) => (
-              <EventCard
-                key={event.id}
-                title={`${event.title} - ${event.subtitle}`}
-                date={event.date}
-                dayOfWeek={event.dayOfWeek}
-                onClick={() => handleEventClick(event)}
-                onEdit={() => handleEditClick(event)}
-                showEditIcon={true}
-              />
-            ))}
+        {loading ? (
+          <div className="flex items-center justify-center h-32">
+            <IconLoader2 className="animate-spin" size={24} />
           </div>
-        </section>
+        ) : events.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            <p>No events created yet.</p>
+            <p className="text-sm mt-2">Click "Create new event" to add your first event.</p>
+          </div>
+        ) : (
+          Object.entries(eventsByMonth).map(([month, monthEvents]) => (
+            <section key={month}>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{month}</h3>
+              
+              <div className="space-y-4">
+                {monthEvents.map((event) => (
+                  <div key={event.id} className="relative">
+                    <EventCard
+                      title={event.title}
+                      subtitle={event.description}
+                      date={format(parseISO(event.event_date), 'd')}
+                      dayOfWeek={format(parseISO(event.event_date), 'EEE')}
+                      onClick={() => handleEventClick(event)}
+                      onEdit={() => handleEditClick(event)}
+                      showEditIcon={true}
+                    />
+                    <button
+                      onClick={() => togglePublishStatus(event)}
+                      className={`absolute top-2 right-2 p-2 rounded-lg transition-colors ${
+                        event.is_published 
+                          ? 'bg-green-100 hover:bg-green-200 text-green-700' 
+                          : 'bg-gray-100 hover:bg-gray-200 text-gray-500'
+                      }`}
+                      title={event.is_published ? 'Published' : 'Draft'}
+                    >
+                      {event.is_published ? <IconEye size={18} /> : <IconEyeOff size={18} />}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))
+        )}
 
         <HelpButton
           text="Help with event management"
@@ -104,14 +263,19 @@ export default function ManageEventsPage() {
       <BottomSheetDialog
         isOpen={showCreateDialog}
         onClose={() => setShowCreateDialog(false)}
-        title="Create event"
+        title="Create Event"
+        scrollable={true}
+        maxHeight="85vh"
       >
         <div className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <IconCalendarEvent size={16} className="inline mr-1" />
+                Event Title *
+              </label>
               <TextInput
-                placeholder="Value"
+                placeholder="e.g. Weekly Ride Out"
                 value={eventForm.title}
                 onChange={(value) => setEventForm(prev => ({ ...prev, title: value }))}
                 fullWidth
@@ -119,49 +283,139 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Subtitle</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea
+                className="w-full p-3 border border-gray-200 rounded-lg resize-none"
+                rows={3}
+                placeholder="Event details..."
+                value={eventForm.description}
+                onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <IconCalendarEvent size={16} className="inline mr-1" />
+                  Date *
+                </label>
+                <input
+                  type="date"
+                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  value={eventForm.event_date}
+                  onChange={(e) => setEventForm(prev => ({ ...prev, event_date: e.target.value }))}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <IconClock size={16} className="inline mr-1" />
+                  Start Time *
+                </label>
+                <input
+                  type="time"
+                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  value={eventForm.start_time}
+                  onChange={(e) => setEventForm(prev => ({ ...prev, start_time: e.target.value }))}
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <IconClock size={16} className="inline mr-1" />
+                  End Time
+                </label>
+                <input
+                  type="time"
+                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  value={eventForm.end_time}
+                  onChange={(e) => setEventForm(prev => ({ ...prev, end_time: e.target.value }))}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <IconUsers size={16} className="inline mr-1" />
+                  Max Capacity
+                </label>
+                <input
+                  type="number"
+                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  placeholder="No limit"
+                  value={eventForm.max_capacity || ''}
+                  onChange={(e) => setEventForm(prev => ({ ...prev, max_capacity: e.target.value ? parseInt(e.target.value) : undefined }))}
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <IconMapPin size={16} className="inline mr-1" />
+                Location
+              </label>
               <TextInput
-                placeholder="Value"
-                value={eventForm.subtitle}
-                onChange={(value) => setEventForm(prev => ({ ...prev, subtitle: value }))}
+                placeholder="e.g. Bike Kitchen, Science Park"
+                value={eventForm.location}
+                onChange={(value) => setEventForm(prev => ({ ...prev, location: value }))}
                 fullWidth
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <IconBrandWhatsapp size={16} className="inline mr-1" />
+                WhatsApp Group Link
+              </label>
               <TextInput
-                placeholder="Value"
-                value={eventForm.date}
-                onChange={(value) => setEventForm(prev => ({ ...prev, date: value }))}
+                placeholder="https://chat.whatsapp.com/..."
+                value={eventForm.whatsapp_link}
+                onChange={(value) => setEventForm(prev => ({ ...prev, whatsapp_link: value }))}
                 fullWidth
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">WhatsApp link (optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <IconPhoto size={16} className="inline mr-1" />
+                Poster Image URL
+              </label>
               <TextInput
-                placeholder="Value"
-                value={eventForm.whatsappLink}
-                onChange={(value) => setEventForm(prev => ({ ...prev, whatsappLink: value }))}
+                placeholder="https://..."
+                value={eventForm.poster_url}
+                onChange={(value) => setEventForm(prev => ({ ...prev, poster_url: value }))}
                 fullWidth
               />
             </div>
 
-            <PrimaryButton
-              icon={<IconPaperclip size={18} />}
-              fullWidth
-              className="justify-start"
-            >
-              📎 Attach Poster
-            </PrimaryButton>
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="publish"
+                checked={eventForm.is_published}
+                onChange={(e) => setEventForm(prev => ({ ...prev, is_published: e.target.checked }))}
+                className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+              />
+              <label htmlFor="publish" className="text-sm font-medium text-gray-700">
+                Publish immediately (visible to members)
+              </label>
+            </div>
           </div>
 
           <PrimaryButton
             onClick={handleCreateSubmit}
             fullWidth
+            disabled={saving || !eventForm.title || !eventForm.event_date || !eventForm.start_time}
           >
-            Post Event
+            {saving ? (
+              <span className="flex items-center justify-center gap-2">
+                <IconLoader2 className="animate-spin" size={20} />
+                Creating...
+              </span>
+            ) : (
+              'Create Event'
+            )}
           </PrimaryButton>
         </div>
       </BottomSheetDialog>
@@ -169,14 +423,19 @@ export default function ManageEventsPage() {
       <BottomSheetDialog
         isOpen={showEditDialog}
         onClose={() => setShowEditDialog(false)}
-        title="Edit event"
+        title="Edit Event"
+        scrollable={true}
+        maxHeight="85vh"
       >
         <div className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <IconCalendarEvent size={16} className="inline mr-1" />
+                Event Title *
+              </label>
               <TextInput
-                placeholder="Value"
+                placeholder="e.g. Weekly Ride Out"
                 value={eventForm.title}
                 onChange={(value) => setEventForm(prev => ({ ...prev, title: value }))}
                 fullWidth
@@ -184,50 +443,149 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Subtitle</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea
+                className="w-full p-3 border border-gray-200 rounded-lg resize-none"
+                rows={3}
+                placeholder="Event details..."
+                value={eventForm.description}
+                onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <IconCalendarEvent size={16} className="inline mr-1" />
+                  Date *
+                </label>
+                <input
+                  type="date"
+                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  value={eventForm.event_date}
+                  onChange={(e) => setEventForm(prev => ({ ...prev, event_date: e.target.value }))}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <IconClock size={16} className="inline mr-1" />
+                  Start Time *
+                </label>
+                <input
+                  type="time"
+                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  value={eventForm.start_time}
+                  onChange={(e) => setEventForm(prev => ({ ...prev, start_time: e.target.value }))}
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <IconClock size={16} className="inline mr-1" />
+                  End Time
+                </label>
+                <input
+                  type="time"
+                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  value={eventForm.end_time}
+                  onChange={(e) => setEventForm(prev => ({ ...prev, end_time: e.target.value }))}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <IconUsers size={16} className="inline mr-1" />
+                  Max Capacity
+                </label>
+                <input
+                  type="number"
+                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  placeholder="No limit"
+                  value={eventForm.max_capacity || ''}
+                  onChange={(e) => setEventForm(prev => ({ ...prev, max_capacity: e.target.value ? parseInt(e.target.value) : undefined }))}
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <IconMapPin size={16} className="inline mr-1" />
+                Location
+              </label>
               <TextInput
-                placeholder="Value"
-                value={eventForm.subtitle}
-                onChange={(value) => setEventForm(prev => ({ ...prev, subtitle: value }))}
+                placeholder="e.g. Bike Kitchen, Science Park"
+                value={eventForm.location}
+                onChange={(value) => setEventForm(prev => ({ ...prev, location: value }))}
                 fullWidth
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <IconBrandWhatsapp size={16} className="inline mr-1" />
+                WhatsApp Group Link
+              </label>
               <TextInput
-                placeholder="Value"
-                value={eventForm.date}
-                onChange={(value) => setEventForm(prev => ({ ...prev, date: value }))}
+                placeholder="https://chat.whatsapp.com/..."
+                value={eventForm.whatsapp_link}
+                onChange={(value) => setEventForm(prev => ({ ...prev, whatsapp_link: value }))}
                 fullWidth
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">WhatsApp link (optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <IconPhoto size={16} className="inline mr-1" />
+                Poster Image URL
+              </label>
               <TextInput
-                placeholder="Value"
-                value={eventForm.whatsappLink}
-                onChange={(value) => setEventForm(prev => ({ ...prev, whatsappLink: value }))}
+                placeholder="https://..."
+                value={eventForm.poster_url}
+                onChange={(value) => setEventForm(prev => ({ ...prev, poster_url: value }))}
                 fullWidth
               />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="publish-edit"
+                checked={eventForm.is_published}
+                onChange={(e) => setEventForm(prev => ({ ...prev, is_published: e.target.checked }))}
+                className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+              />
+              <label htmlFor="publish-edit" className="text-sm font-medium text-gray-700">
+                Published (visible to members)
+              </label>
             </div>
           </div>
 
           <div className="flex gap-3">
             <PrimaryButton
-              icon={<IconEdit size={18} />}
               onClick={handleEditSubmit}
               fullWidth
+              disabled={saving || !eventForm.title || !eventForm.event_date || !eventForm.start_time}
             >
-              ✏ Save
+              {saving ? (
+                <span className="flex items-center justify-center gap-2">
+                  <IconLoader2 className="animate-spin" size={20} />
+                  Saving...
+                </span>
+              ) : (
+                'Save Changes'
+              )}
             </PrimaryButton>
             <SecondaryButton
-              icon={<IconTrash size={18} />}
+              onClick={() => setShowDeleteConfirm(true)}
               fullWidth
+              disabled={saving}
               className="text-red-600 border-red-200 hover:bg-red-50"
             >
-              🗑 Delete
+              <IconTrash size={18} />
+              Delete
             </SecondaryButton>
           </div>
         </div>
@@ -241,38 +599,121 @@ export default function ManageEventsPage() {
         {selectedEvent && (
           <div className="space-y-6">
             <div className="">
-              <h3 className="text-4xl font-bold text-gray-900 mb-2">
-                {selectedEvent.title} - {selectedEvent.subtitle}
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                {selectedEvent.title}
               </h3>
-              <p className="text-gray-600">
-                {selectedEvent.dayOfWeek}, {selectedEvent.date} {selectedEvent.month}
-              </p>
-            </div>
-
-            <div className="bg-purple-50 p-6 rounded-lg ">
-              <div className="w-full h-48 bg-purple-100 rounded-lg mb-4 flex items-center justify-center">
-                <div className="">
-                  <h4 className="font-bold text-purple-900 text-xl mb-2">
-                    {selectedEvent.title} Waterland
-                  </h4>
-                  <p className="text-purple-700 text-sm mb-2">w/ bike kitchen uva</p>
-                  <p className="text-purple-800 text-sm">
-                    {selectedEvent.time} @ {selectedEvent.location}
+              {selectedEvent.description && (
+                <p className="text-gray-600 mb-2">{selectedEvent.description}</p>
+              )}
+              <div className="space-y-1 text-sm">
+                <p className="text-gray-600">
+                  <IconCalendarEvent size={16} className="inline mr-1" />
+                  {format(parseISO(selectedEvent.event_date), 'EEEE, MMMM d, yyyy')}
+                </p>
+                <p className="text-gray-600">
+                  <IconClock size={16} className="inline mr-1" />
+                  {selectedEvent.start_time.slice(0, 5)}
+                  {selectedEvent.end_time && ` - ${selectedEvent.end_time.slice(0, 5)}`}
+                </p>
+                {selectedEvent.location && (
+                  <p className="text-gray-600">
+                    <IconMapPin size={16} className="inline mr-1" />
+                    {selectedEvent.location}
                   </p>
-                  <div className="mt-4 w-16 h-16 bg-white rounded mx-auto flex items-center justify-center">
-                    <div className="text-xs text-purple-900">QR</div>
-                  </div>
-                </div>
+                )}
+                {selectedEvent.max_capacity && (
+                  <p className="text-gray-600">
+                    <IconUsers size={16} className="inline mr-1" />
+                    Max capacity: {selectedEvent.max_capacity}
+                  </p>
+                )}
+              </div>
+              <div className="mt-2">
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  selectedEvent.is_published 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {selectedEvent.is_published ? 'Published' : 'Draft'}
+                </span>
               </div>
             </div>
 
-            {selectedEvent.whatsappGroup && (
-              <PrimaryButton fullWidth>
-                Join WhatsApp group
-              </PrimaryButton>
+            {selectedEvent.poster_url && (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-2">Event Poster:</p>
+                <img 
+                  src={selectedEvent.poster_url} 
+                  alt={selectedEvent.title}
+                  className="w-full rounded-lg"
+                  onError={(e) => {
+                    e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="200"%3E%3Crect fill="%23f3f4f6" width="400" height="200"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%239ca3af"%3EPoster not available%3C/text%3E%3C/svg%3E';
+                  }}
+                />
+              </div>
+            )}
+
+            {selectedEvent.whatsapp_link && (
+              <a 
+                href={selectedEvent.whatsapp_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <PrimaryButton fullWidth>
+                  <IconBrandWhatsapp size={20} className="mr-2" />
+                  Join WhatsApp Group
+                </PrimaryButton>
+              </a>
             )}
           </div>
         )}
+      </BottomSheetDialog>
+
+      <BottomSheetDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        title="Delete Event"
+      >
+        <div className="space-y-6">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-red-800">
+              Are you sure you want to delete this event? This action cannot be undone.
+            </p>
+            {selectedEvent && (
+              <p className="text-red-700 mt-2 font-medium">
+                Event: {selectedEvent.title}
+              </p>
+            )}
+          </div>
+          
+          <div className="flex gap-3">
+            <SecondaryButton
+              onClick={() => setShowDeleteConfirm(false)}
+              fullWidth
+            >
+              Cancel
+            </SecondaryButton>
+            <PrimaryButton
+              onClick={handleDeleteEvent}
+              fullWidth
+              disabled={saving}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              {saving ? (
+                <span className="flex items-center justify-center gap-2">
+                  <IconLoader2 className="animate-spin" size={20} />
+                  Deleting...
+                </span>
+              ) : (
+                <>
+                  <IconTrash size={18} className="mr-2" />
+                  Delete Event
+                </>
+              )}
+            </PrimaryButton>
+          </div>
+        </div>
       </BottomSheetDialog>
 
       <BottomSheetDialog

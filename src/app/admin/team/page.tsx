@@ -181,6 +181,8 @@ export default function ManageTeamPage() {
         isOpen={showUserRoleDialog}
         onClose={() => setShowUserRoleDialog(false)}
         title="User Role Management"
+        scrollable={true}
+        maxHeight="60vh"
       >
         {selectedUser && (
           <div className="space-y-6">

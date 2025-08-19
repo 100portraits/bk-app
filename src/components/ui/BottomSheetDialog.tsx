@@ -8,6 +8,8 @@ interface BottomSheetDialogProps {
   title?: string;
   children: ReactNode;
   className?: string;
+  scrollable?: boolean;
+  maxHeight?: string;
 }
 
 const BottomSheetDialog = ({
@@ -15,7 +17,9 @@ const BottomSheetDialog = ({
   onClose,
   title,
   children,
-  className = ''
+  className = '',
+  scrollable = false,
+  maxHeight = '80vh'
 }: BottomSheetDialogProps) => {
   return (
     <Drawer.Root open={isOpen} onOpenChange={onClose}>
@@ -35,21 +39,25 @@ const BottomSheetDialog = ({
                    right-0 
                    z-50
                    outline-none
+                   ${scrollable ? '' : ''}
                    ${className}
                  `}
+          style={scrollable ? { maxHeight } : {}}
         >
           <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4 mt-4" />
 
-          <div className="px-6 pb-12 pt-6 flex-1 overflow-auto">
-            {title && (
-              <div className="flex items-center justify-between py-2  mb-4">
-                <Drawer.Title className="text-4xl font-semibold text-gray-900">
-                  {title}
-                </Drawer.Title>
+          {title && (
+            <div className="px-6 pb-2">
+              <Drawer.Title className="text-4xl font-semibold text-gray-900">
+                {title}
+              </Drawer.Title>
+            </div>
+          )}
 
-              </div>
-            )}
-
+          <div className={`
+            px-6 pb-12 pt-2 flex-1
+            ${scrollable ? 'overflow-y-auto overflow-x-hidden' : 'overflow-auto'}
+          `}>
             <div>
               {children}
             </div>
