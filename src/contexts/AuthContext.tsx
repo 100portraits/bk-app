@@ -12,7 +12,7 @@ interface AuthContextType {
   isMember: boolean;
   role: UserRole;
   hasRole: (roles: UserRole[]) => boolean;
-  canAccess: (requireMember?: boolean, allowedRoles?: UserRole[]) => boolean;
+  canAccess: (requireMember?: boolean, allowedRoles?: UserRole[], requireNonMember?: boolean) => boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -117,8 +117,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return roles.includes(profile.role);
   };
 
-  const canAccess = (requireMember = false, allowedRoles: UserRole[] = []) => {
+  const canAccess = (requireMember = false, allowedRoles: UserRole[] = [], requireNonMember = false) => {
     if (!profile) return false;
+    
+    // Check non-member requirement
+    if (requireNonMember && profile.member) return false;
     
     // Check membership requirement
     if (requireMember && !profile.member) return false;

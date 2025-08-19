@@ -6,6 +6,7 @@ import { UserRole } from '@/types/auth';
 interface UseAuthorizationOptions {
   requireAuth?: boolean;
   requireMember?: boolean;
+  requireNonMember?: boolean;
   allowedRoles?: UserRole[];
   redirectTo?: string;
 }
@@ -13,10 +14,11 @@ interface UseAuthorizationOptions {
 export function useAuthorization({
   requireAuth = true,
   requireMember = false,
+  requireNonMember = false,
   allowedRoles = [],
   redirectTo = '/'
 }: UseAuthorizationOptions = {}) {
-  const { user, profile, loading, canAccess } = useAuth();
+  const { user, profile, loading, isMember, canAccess } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,15 +30,23 @@ export function useAuthorization({
       return;
     }
 
-    // Check authorization
-    if (user && !canAccess(requireMember, allowedRoles)) {
-      router.push('/unauthorized');
-      return;
+    if (user) {
+      // Check non-member requirement
+      if (requireNonMember && isMember) {
+        router.push('/home');
+        return;
+      }
+
+      // Check authorization
+      if (!canAccess(requireMember, allowedRoles)) {
+        router.push('/unauthorized');
+        return;
+      }
     }
-  }, [user, profile, loading, requireAuth, requireMember, allowedRoles, redirectTo, router, canAccess]);
+  }, [user, profile, loading, requireAuth, requireMember, requireNonMember, isMember, allowedRoles, redirectTo, router, canAccess]);
 
   return {
-    authorized: user ? canAccess(requireMember, allowedRoles) : false,
+    authorized: user ? (requireNonMember ? !isMember : canAccess(requireMember, allowedRoles)) : false,
     loading
   };
 }
@@ -61,6 +71,14 @@ export function useRequireAdmin(redirectTo = '/unauthorized') {
   return useAuthorization({
     requireAuth: true,
     allowedRoles: ['admin'],
+    redirectTo
+  });
+}
+
+export function useRequireNonMember(redirectTo = '/home') {
+  return useAuthorization({
+    requireAuth: true,
+    requireNonMember: true,
     redirectTo
   });
 }

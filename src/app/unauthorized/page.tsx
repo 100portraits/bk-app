@@ -1,14 +1,17 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import { IconHome, IconLock } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
 
 export default function UnauthorizedPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, isMember, role } = useAuth();
+  const attemptedPath = searchParams.get('from') || '';
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
@@ -26,6 +29,14 @@ export default function UnauthorizedPage() {
         <p className="text-gray-600 mb-8">
           {!user ? (
             "You need to be logged in to access this page."
+          ) : attemptedPath.includes('become-member') && isMember ? (
+            "The 'Become a Member' section is only for non-members. You're already a member!"
+          ) : attemptedPath.includes('membership') && !isMember ? (
+            "This page is only accessible to members. Check out the 'Become a Member' section!"
+          ) : attemptedPath.includes('admin') ? (
+            "Admin access required. You need admin privileges to view this page."
+          ) : attemptedPath.includes('host') ? (
+            "This page requires host, mechanic, or admin privileges."
           ) : !isMember ? (
             "This page is only accessible to members. Please contact an admin to upgrade your account."
           ) : (

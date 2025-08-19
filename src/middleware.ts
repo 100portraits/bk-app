@@ -87,7 +87,9 @@ export async function middleware(request: NextRequest) {
     if (routeConfig.requireNonMember === true) {
       if (profile && profile.member) {
         console.log('🚫 Route is for non-members only but user is a member');
-        return NextResponse.redirect(new URL('/home', request.url));
+        const url = new URL('/unauthorized', request.url);
+        url.searchParams.set('from', path);
+        return NextResponse.redirect(url);
       }
     }
     
@@ -96,7 +98,9 @@ export async function middleware(request: NextRequest) {
       // If no profile or not a member, redirect to unauthorized
       if (!profile || !profile.member) {
         console.log('🚫 Membership required but user is not a member');
-        return NextResponse.redirect(new URL('/unauthorized', request.url));
+        const url = new URL('/unauthorized', request.url);
+        url.searchParams.set('from', path);
+        return NextResponse.redirect(url);
       }
     }
 
@@ -108,7 +112,9 @@ export async function middleware(request: NextRequest) {
           requiredRoles: routeConfig.allowedRoles,
           userRole: profile?.role
         });
-        return NextResponse.redirect(new URL('/unauthorized', request.url));
+        const url = new URL('/unauthorized', request.url);
+        url.searchParams.set('from', path);
+        return NextResponse.redirect(url);
       }
     }
   }
