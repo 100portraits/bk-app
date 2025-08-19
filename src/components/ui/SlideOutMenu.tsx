@@ -100,6 +100,7 @@ const SlideOutMenu = ({ isOpen, onClose, currentPath }: SlideOutMenuProps) => {
           h-full 
           w-80 
           bg-purple-100 
+          rounded-r-2xl
           z-50 
           transform 
           transition-all
@@ -108,13 +109,13 @@ const SlideOutMenu = ({ isOpen, onClose, currentPath }: SlideOutMenuProps) => {
           ${isOpen ? 'translate-x-0 ' : '-translate-x-full '}
         `}
       >
-        <div className="p-4 h-full overflow-y-auto">
+        <div className="p-4 pr-8 h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-4xl font-semibold text-gray-900">Menu</h2>
             <div className="flex items-center gap-2">
               <button 
                 onClick={closeMenu}
-                className="p-2 rounded-lg hover:bg-purple-200 transition-colors"
+                className="p-2 -mr-4 rounded-lg hover:bg-purple-200 transition-colors"
               >
                 <IconX size={24} className="text-gray-700" />
               </button>
@@ -123,7 +124,7 @@ const SlideOutMenu = ({ isOpen, onClose, currentPath }: SlideOutMenuProps) => {
           
           {/* Accessible items */}
           {accessibleItems.length > 0 && (
-            <div className="space-y-3 mb-6">
+            <div className="space-y-3 mb-6 border-t border-purple-200 pt-4">
               {accessibleItems.map((item) => {
                 // Check if current path matches exactly or starts with the item path
                 const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');

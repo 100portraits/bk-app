@@ -136,34 +136,7 @@ const TopNavigationBar = ({
                   </div>
                 </div>
                 
-                {role && (
-                  <div className="p-2 border-b border-gray-100">
-                    {role === 'admin' && (
-                      <button
-                        onClick={() => router.push('/admin/dashboard')}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                      >
-                        Admin Dashboard
-                      </button>
-                    )}
-                    {(role === 'host' || role === 'admin') && (
-                      <button
-                        onClick={() => router.push('/host/dashboard')}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                      >
-                        Host Dashboard
-                      </button>
-                    )}
-                    {(role === 'mechanic' || role === 'admin') && (
-                      <button
-                        onClick={() => router.push('/mechanic/dashboard')}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                      >
-                        Mechanic Dashboard
-                      </button>
-                    )}
-                  </div>
-                )}
+                
                 
                 <div className="p-2">
                   <button
