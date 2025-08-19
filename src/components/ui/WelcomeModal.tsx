@@ -14,15 +14,15 @@ const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
       size="lg"
       centered
       withCloseButton={false}
-      classNames={{
-        modal: 'bg-purple-500 text-white',
-        body: 'p-6'
+      styles={{
+        body: { padding: 0 },
+        content: { backgroundColor: 'transparent' }
       }}
     >
-      <div className="relative">
+      <div className="bg-purple-500 text-white rounded-lg p-6 relative">
         <button 
           onClick={onClose}
-          className="absolute top-0 right-0 p-2 text-white hover:bg-purple-600 rounded-lg transition-colors"
+          className="absolute top-4 right-4 p-2 text-white hover:bg-purple-600 rounded-lg transition-colors"
         >
           <IconX size={24} />
         </button>

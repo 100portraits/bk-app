@@ -11,7 +11,7 @@ import { IconPlus } from '@tabler/icons-react';
 import { mockUser, quickLinksOptions, widgetOptions } from '@/lib/placeholderData';
 
 export default function HomePage() {
-  const [showWelcome, setShowWelcome] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const [showQuickLinksDialog, setShowQuickLinksDialog] = useState(false);
   const [showWidgetsDialog, setShowWidgetsDialog] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
