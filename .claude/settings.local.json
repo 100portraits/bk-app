@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__figma-dev-mode-mcp-server__get_image",
+      "Bash(pnpm add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
