@@ -132,13 +132,7 @@ export const mockShifts = [
 
 export const mockTeam = {
   admins: ['Sahir', 'Chain'],
-  mechanics: {
-    'Tire/Tube': ['Woy-tek', 'Sarah'],
-    'Chain': ['Chain', 'Tom'],
-    'Brakes': ['David', 'Lisa'],
-    'Gears': ['Sahir', 'Alex'],
-    'Other': ['Woy-tek', 'Chain']
-  },
+  mechanics: ['Woy-tek', 'Sarah', 'Chain', 'Tom'],
   hosts: ['David', 'Maud', 'Sarah', 'Tom', 'Lisa', 'Alex']
 };
 

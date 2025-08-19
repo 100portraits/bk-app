@@ -79,7 +79,8 @@ const SlideOutMenu = ({ isOpen, onClose, currentPath }: SlideOutMenuProps) => {
           
           <div className="space-y-3">
             {menuItems.map((item) => {
-              const isActive = currentPath === item.path;
+              // Check if current path matches exactly or starts with the item path
+              const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
               
               return (
                 <button

@@ -47,21 +47,14 @@ export default function ManageTeamPage() {
 
             <div>
               <h3 className="font-semibold text-gray-900 mb-3">Mechanics:</h3>
-              <div className="space-y-3">
-                {Object.entries(mockTeam.mechanics).map(([repairType, mechanics]) => (
-                  <div key={repairType}>
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">{repairType}:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {mechanics.map((mechanic) => (
-                        <button
-                          key={`${repairType}-${mechanic}`}
-                          onClick={() => handleUserClick(mechanic)}
-                        >
-                          <PillButton>{mechanic}</PillButton>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+              <div className="flex flex-wrap gap-2">
+                {mockTeam.mechanics.map((mechanic) => (
+                  <button
+                    key={mechanic}
+                    onClick={() => handleUserClick(mechanic)}
+                  >
+                    <PillButton>{mechanic}</PillButton>
+                  </button>
                 ))}
               </div>
             </div>
