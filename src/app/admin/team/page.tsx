@@ -28,7 +28,7 @@ export default function ManageTeamPage() {
     <AppLayout title="Admin Panel">
       <div className="space-y-6">
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Manage Team</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">Manage Team</h2>
           
           <div className="space-y-6">
             <div>
@@ -95,7 +95,7 @@ export default function ManageTeamPage() {
       >
         <div className="space-y-6">
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-900">{selectedUser}</h3>
+            <h3 className="text-xl font-semibold text-gray-900">{selectedUser}</h3>
             <p className="text-gray-600">Role: Admin</p>
           </div>
 

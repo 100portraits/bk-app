@@ -31,7 +31,7 @@ export default function ManageBookingsPage() {
     >
       <div className="space-y-6">
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Upcoming:</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Upcoming:</h2>
           {upcomingBookings.length > 0 ? (
             <div className="space-y-3">
               {upcomingBookings.map((booking) => (
@@ -53,7 +53,7 @@ export default function ManageBookingsPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Previous:</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Previous:</h2>
           {previousBookings.length > 0 ? (
             <div className="space-y-3">
               {previousBookings.map((booking) => (

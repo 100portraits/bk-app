@@ -43,7 +43,7 @@ export default function WalkInsPage() {
     <AppLayout title="Host App">
       <div className="space-y-6">
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Today's Walk-ins</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Today's Walk-ins</h2>
           <div className="space-y-3">
             {mockWalkIns.map((walkIn) => (
               <button

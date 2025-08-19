@@ -68,7 +68,7 @@ export default function BookingFormPage() {
     >
       <div className="space-y-8">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
             Make an appointment:
           </h1>
           <p className="text-gray-600">
@@ -78,7 +78,7 @@ export default function BookingFormPage() {
 
         {currentSection >= 1 && (
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">1. About the BK</h2>
+            <h2 className="text-xl font-semibold text-gray-900">1. About the BK</h2>
             <div className="space-y-3">
               <p className="text-gray-700 font-medium">
                 At the Bike Kitchen, you repair your own bike:
@@ -108,7 +108,7 @@ export default function BookingFormPage() {
 
         {currentSection >= 2 && (
           <section className="space-y-6">
-            <h2 className="text-lg font-semibold text-gray-900">2. The Details</h2>
+            <h2 className="text-xl font-semibold text-gray-900">2. The Details</h2>
             
             <div className="space-y-4">
               <div className="flex items-center gap-2">
@@ -145,7 +145,7 @@ export default function BookingFormPage() {
 
         {currentSection >= 3 && repairTypes.length > 0 && !isOtherSelected && (
           <section className="space-y-6">
-            <h2 className="text-lg font-semibold text-gray-900">2b. Follow-up</h2>
+            <h2 className="text-xl font-semibold text-gray-900">2b. Follow-up</h2>
             
             <div className="space-y-2">
               <span className="text-gray-700">You selected </span>
@@ -211,7 +211,7 @@ export default function BookingFormPage() {
 
         {currentSection >= 4 && (
           <section className="space-y-6">
-            <h2 className="text-lg font-semibold text-gray-900">3. The Calendar</h2>
+            <h2 className="text-xl font-semibold text-gray-900">3. The Calendar</h2>
             
             <div className="space-y-4">
               <h3 className="font-medium text-gray-800">What day?</h3>
@@ -251,7 +251,7 @@ export default function BookingFormPage() {
 
         {currentSection >= 5 && (
           <section className="space-y-6">
-            <h2 className="text-lg font-semibold text-gray-900">4. Confirmation</h2>
+            <h2 className="text-xl font-semibold text-gray-900">4. Confirmation</h2>
             
             <div className="p-4 bg-gray-50 rounded-lg">
               <p className="text-gray-700 mb-4">
@@ -290,7 +290,7 @@ export default function BookingFormPage() {
 
         {currentSection >= 6 && (
           <section className="space-y-6">
-            <h2 className="text-lg font-semibold text-gray-900">5. Add to Calendar</h2>
+            <h2 className="text-xl font-semibold text-gray-900">5. Add to Calendar</h2>
             
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
@@ -313,7 +313,7 @@ export default function BookingFormPage() {
               </div>
 
               <div className="text-center space-y-2">
-                <h3 className="text-xl font-bold text-gray-900">That's all</h3>
+                <h3 className="text-4xl font-bold text-gray-900">That's all</h3>
                 <p className="text-gray-600">See you soon!</p>
               </div>
             </div>

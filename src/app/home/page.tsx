@@ -23,7 +23,7 @@ export default function HomePage() {
     >
       <div className="space-y-6">
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">My Roles</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">My Roles</h2>
           <div className="flex flex-wrap gap-2">
             {mockUser.roles.map((role) => (
               <RoleBadge key={role} role={role} />
@@ -32,7 +32,7 @@ export default function HomePage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Links</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Quick Links</h2>
           <button
             onClick={() => setShowQuickLinksDialog(true)}
             className="w-full h-24 bg-purple-50 border-2 border-dashed border-purple-200 rounded-lg flex items-center justify-center hover:bg-purple-100 transition-colors"
@@ -42,7 +42,7 @@ export default function HomePage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Widgets</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Widgets</h2>
           <button
             onClick={() => setShowWidgetsDialog(true)}
             className="w-full h-24 bg-purple-50 border-2 border-dashed border-purple-200 rounded-lg flex items-center justify-center hover:bg-purple-100 transition-colors"

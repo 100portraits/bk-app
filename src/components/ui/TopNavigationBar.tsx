@@ -39,7 +39,7 @@ const TopNavigationBar = ({
         <IconMenu2 size={24} className="text-gray-700" />
       </button>
       
-      <h1 className="text-lg font-semibold text-gray-900 flex-1 text-center">
+      <h1 className="text-xl font-semibold text-gray-900 flex-1 text-center">
         {title}
       </h1>
       

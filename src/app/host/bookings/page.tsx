@@ -41,7 +41,7 @@ export default function TodaysBookingsPage() {
     <AppLayout title="Host App">
       <div className="space-y-6">
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Today's Bookings</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Today's Bookings</h2>
           <div className="space-y-3">
             {todaysBookings.map((booking) => (
               <BookingListItem
@@ -69,7 +69,7 @@ export default function TodaysBookingsPage() {
         {selectedBooking && (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-xl font-semibold text-gray-900">
                 {selectedBooking.customerName} - {selectedBooking.time}
               </h3>
               <RoleBadge role="Community Member" className="mt-2" />

@@ -22,7 +22,7 @@ export default function EventCalendarPage() {
     <AppLayout title="Member Info">
       <div className="space-y-6">
         <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Event Calendar</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-2">Event Calendar</h2>
           <p className="text-gray-600 mb-6">August</p>
           
           <div className="space-y-6">
@@ -53,7 +53,7 @@ export default function EventCalendarPage() {
         {selectedEvent && (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
+              <h3 className="text-4xl font-bold text-gray-900 mb-2">
                 {selectedEvent.title} - {selectedEvent.subtitle}
               </h3>
               <p className="text-gray-600">
@@ -64,7 +64,7 @@ export default function EventCalendarPage() {
             <div className="bg-purple-50 p-6 rounded-lg text-center">
               <div className="w-full h-48 bg-purple-100 rounded-lg mb-4 flex items-center justify-center">
                 <div className="text-center">
-                  <h4 className="font-bold text-purple-900 text-lg mb-2">
+                  <h4 className="font-bold text-purple-900 text-xl mb-2">
                     {selectedEvent.title} Waterland
                   </h4>
                   <p className="text-purple-700 text-sm mb-2">w/ bike kitchen uva</p>

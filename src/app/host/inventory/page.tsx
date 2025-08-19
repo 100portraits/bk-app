@@ -5,7 +5,7 @@ export default function InventoryPage() {
     <AppLayout title="Host App">
       <div className="space-y-6">
         <section className="text-center py-12">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Inventory</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Inventory</h2>
           <p className="text-gray-600">
             This section is still being built.
           </p>

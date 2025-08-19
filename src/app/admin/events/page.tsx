@@ -66,7 +66,7 @@ export default function ManageEventsPage() {
       <div className="space-y-6">
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Manage Events</h2>
+            <h2 className="text-4xl font-bold text-gray-900">Manage Events</h2>
             <PrimaryButton
               onClick={() => setShowCreateDialog(true)}
               size="sm"
@@ -77,7 +77,7 @@ export default function ManageEventsPage() {
         </section>
 
         <section>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Upcoming events</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Upcoming events</h3>
           <p className="text-gray-600 mb-4">August</p>
           
           <div className="space-y-6">
@@ -241,7 +241,7 @@ export default function ManageEventsPage() {
         {selectedEvent && (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
+              <h3 className="text-4xl font-bold text-gray-900 mb-2">
                 {selectedEvent.title} - {selectedEvent.subtitle}
               </h3>
               <p className="text-gray-600">
@@ -252,7 +252,7 @@ export default function ManageEventsPage() {
             <div className="bg-purple-50 p-6 rounded-lg text-center">
               <div className="w-full h-48 bg-purple-100 rounded-lg mb-4 flex items-center justify-center">
                 <div className="text-center">
-                  <h4 className="font-bold text-purple-900 text-lg mb-2">
+                  <h4 className="font-bold text-purple-900 text-xl mb-2">
                     {selectedEvent.title} Waterland
                   </h4>
                   <p className="text-purple-700 text-sm mb-2">w/ bike kitchen uva</p>

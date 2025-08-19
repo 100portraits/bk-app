@@ -66,7 +66,7 @@ export default function ShiftCalendarPage() {
       <div className="space-y-6">
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Shift Calendar</h2>
+            <h2 className="text-4xl font-bold text-gray-900">Shift Calendar</h2>
             <button
               onClick={() => setIsEditMode(!isEditMode)}
               className="text-purple-600 font-medium"
@@ -81,7 +81,7 @@ export default function ShiftCalendarPage() {
         </section>
 
         <section>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Your upcoming shifts:</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Your upcoming shifts:</h3>
           <div className="space-y-2">
             {mockShifts.map((shift) => (
               <button

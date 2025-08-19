@@ -18,10 +18,10 @@ export default function MemberNamePage() {
     <AppLayout title="Become a Member">
       <div className="space-y-8">
         <section className="text-center space-y-4">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold text-gray-900">
             Welcome, member!
           </h1>
-          <h2 className="text-lg text-gray-700">
+          <h2 className="text-xl text-gray-700">
             What's your name?
           </h2>
         </section>

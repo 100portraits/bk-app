@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Modal } from '@mantine/core';
+import { Drawer } from 'vaul'
 
 interface BottomSheetDialogProps {
   isOpen: boolean;
@@ -9,49 +10,53 @@ interface BottomSheetDialogProps {
   className?: string;
 }
 
-const BottomSheetDialog = ({ 
-  isOpen, 
-  onClose, 
-  title, 
-  children, 
-  className = '' 
+const BottomSheetDialog = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  className = ''
 }: BottomSheetDialogProps) => {
   return (
-    <Modal
-      opened={isOpen}
-      onClose={onClose}
-      title={title}
-      position="bottom"
-      size="lg"
-      radius="lg"
-      classNames={{
-        modal: `!mt-auto !mb-0 !max-h-[80vh] ${className}`,
-        header: 'border-b border-gray-200 pb-3',
-        title: 'font-semibold text-lg',
-        body: 'pt-4'
-      }}
-      withCloseButton={false}
-    >
-      <div className="relative">
-        <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
-        
-        {title && (
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-            <button 
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              ×
-            </button>
+    <Drawer.Root open={isOpen} onOpenChange={onClose}>
+      <Drawer.Portal>
+        <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
+        <Drawer.Content
+          className={`
+                   bg-white 
+                   flex 
+                   flex-col 
+                   rounded-t-[10px] 
+                   h-fit 
+                   mt-24 
+                   fixed 
+                   bottom-0 
+                   left-0 
+                   right-0 
+                   z-50
+                   outline-none
+                   ${className}
+                 `}
+        >
+          <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4 mt-4" />
+
+          <div className="px-4 pb-12 pt-6 flex-1 overflow-auto">
+            {title && (
+              <div className="flex items-center justify-between py-2  mb-4">
+                <Drawer.Title className="text-4xl font-semibold text-gray-900">
+                  {title}
+                </Drawer.Title>
+
+              </div>
+            )}
+
+            <div>
+              {children}
+            </div>
           </div>
-        )}
-        
-        <div>
-          {children}
-        </div>
-      </div>
-    </Modal>
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer.Root>
   );
 };
 

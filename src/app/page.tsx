@@ -44,7 +44,7 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Bike Kitchen UvA
           </h1>
-          <p className="text-lg text-gray-600 max-w-md">
+          <p className="text-xl text-gray-600 max-w-md">
             Your innovative, circular bike workshop at the Roeterseilandcampus.
           </p>
         </div>
@@ -64,7 +64,7 @@ export default function Home() {
       >
         <div className="space-y-6">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-4xl font-bold text-gray-900 mb-2">
               Bike Kitchen UvA
             </h2>
             <p className="text-gray-600">
@@ -131,7 +131,7 @@ export default function Home() {
       >
         <div className="space-y-6">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-4xl font-bold text-gray-900 mb-2">
               Bike Kitchen UvA
             </h2>
             <p className="text-gray-600">
