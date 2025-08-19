@@ -31,9 +31,9 @@ const EventCard = ({
         </div>
       )}
       
-      <button
+      <div
         onClick={onClick}
-        className="w-full p-4 bg-white border border-gray-200 rounded-lg text-left hover:bg-gray-50 transition-colors"
+        className="w-full p-4 bg-white border border-gray-200 rounded-lg text-left hover:bg-gray-50 transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-3">
           <Avatar variant="secondary" />
@@ -57,7 +57,7 @@ const EventCard = ({
             </button>
           )}
         </div>
-      </button>
+      </div>
     </div>
   );
 };
