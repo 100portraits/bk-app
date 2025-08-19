@@ -36,11 +36,11 @@ export default function ManageBookingsPage() {
             <div className="space-y-3">
               {upcomingBookings.map((booking) => (
                 <InfoCard
+                  showStatus={false}
                   key={booking.id}
-                  name={booking.customerName}
-                  time={`${booking.dayOfWeek}, ${booking.date} - ${booking.time}`}
+                  name={`${booking.date}`}
+                  // time={`${booking.date}`}
                   details={`${booking.repairType}, ${booking.bikeType}`}
-                  status={booking.status}
                   onClick={() => handleBookingClick(booking)}
                 />
               ))}
@@ -58,11 +58,12 @@ export default function ManageBookingsPage() {
             <div className="space-y-3">
               {previousBookings.map((booking) => (
                 <InfoCard
+
                   key={booking.id}
-                  name={booking.customerName}
-                  time={`${booking.dayOfWeek}, ${booking.date} - ${booking.time}`}
+                  name={`${booking.date}`}
+                  // time={`${booking.date}`}
                   details={`${booking.repairType}, ${booking.bikeType}`}
-                  status={booking.status}
+                  showStatus={false}
                   onClick={() => handleBookingClick(booking)}
                 />
               ))}

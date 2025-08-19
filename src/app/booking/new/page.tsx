@@ -16,7 +16,7 @@ import { mockAvailableDates, mockTimeSlots, mockUser } from '@/lib/placeholderDa
 
 export default function BookingFormPage() {
   const [currentSection, setCurrentSection] = useState(1);
-  const [experienceLevel, setExperienceLevel] = useState(0);
+  const [experienceLevel, setExperienceLevel] = useState(1);
   const [repairTypes, setRepairTypes] = useState<string[]>([]);
   const [bikeType, setBikeType] = useState('');
   const [component, setComponent] = useState('');
@@ -115,10 +115,12 @@ export default function BookingFormPage() {
                 <span className="text-gray-700">How much experience do you have fixing bikes?</span>
                 <IconInfoCircle size={16} className="text-gray-400" />
               </div>
+              <div className=''>
               <ExperienceSlider
                 value={experienceLevel}
                 onChange={setExperienceLevel}
               />
+              </div>
             </div>
 
             <div className="space-y-4">

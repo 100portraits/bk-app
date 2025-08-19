@@ -4,7 +4,7 @@ import StatusIndicator from './StatusIndicator';
 
 interface InfoCardProps {
   name: string;
-  time: string;
+  time?: string;
   details: string;
   status?: 'completed' | 'no-show' | 'pending' | 'active';
   onClick?: () => void;
