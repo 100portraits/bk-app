@@ -40,6 +40,24 @@ export default function HostPage() {
               onClick={() => router.push('/host/bookings')}
             />
             <NavigationCard
+              title="See Walk-ins"
+              subtitle="View and manage walk-in customers"
+              variant="secondary"
+              onClick={() => router.push('/host/walk-ins')}
+            />
+            <NavigationCard
+              title="Shift Calendar"
+              subtitle="View and edit your shifts"
+              variant="secondary"
+              onClick={() => router.push('/host/shifts')}
+            />
+            <NavigationCard
+              title="Inventory"
+              subtitle="Manage workshop inventory"
+              variant="secondary"
+              onClick={() => router.push('/host/inventory')}
+            />
+            <NavigationCard
               title="Record walk-in"
               subtitle=""
               variant="secondary"
