@@ -14,7 +14,7 @@ import { mockBookings } from '@/lib/placeholderData';
 export default function TodaysBookingsPage() {
   const [showBookingDetails, setShowBookingDetails] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState<typeof mockBookings[0] | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<typeof todaysBookings[0] | null>(null);
   const [bookingStatuses, setBookingStatuses] = useState<Record<string, 'pending' | 'completed' | 'no-show' | 'active'>>({
     '1': 'pending',
     '2': 'active'
@@ -25,7 +25,7 @@ export default function TodaysBookingsPage() {
     status: bookingStatuses[booking.id] || booking.status
   }));
 
-  const handleBookingClick = (booking: typeof mockBookings[0]) => {
+  const handleBookingClick = (booking: typeof todaysBookings[0]) => {
     setSelectedBooking(booking);
     setShowBookingDetails(true);
   };
