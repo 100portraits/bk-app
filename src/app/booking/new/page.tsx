@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
@@ -11,28 +11,116 @@ import ToggleSelector from '@/components/ui/ToggleSelector';
 import TextInput from '@/components/ui/TextInput';
 import PillButton from '@/components/ui/PillButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
-import { IconInfoCircle } from '@tabler/icons-react';
-import { mockAvailableDates, mockTimeSlots, mockUser } from '@/lib/placeholderData';
+import { IconInfoCircle, IconLoader2, IconCheck, IconPencil, IconBrandGoogle, IconBrandWindows, IconBrandApple } from '@tabler/icons-react';
+import { mockUser } from '@/lib/placeholderData';
+import { BookingsAPI } from '@/lib/bookings/api';
+import { TimeSlot, toDbRepairType, getRepairDuration, RepairDetails } from '@/types/bookings';
+import { format } from 'date-fns';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function BookingFormPage() {
+  const { user, profile } = useAuth();
+  const router = useRouter();
+  const bookingsAPI = new BookingsAPI();
+  
   const [currentSection, setCurrentSection] = useState(1);
   const [experienceLevel, setExperienceLevel] = useState(1);
   const [repairTypes, setRepairTypes] = useState<string[]>([]);
   const [bikeType, setBikeType] = useState('');
   const [component, setComponent] = useState('');
+  const [wheelPosition, setWheelPosition] = useState('');
+  const [brakeType, setBrakeType] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState('');
-  const [email, setEmail] = useState(mockUser.email);
-  const [calendarProvider, setCalendarProvider] = useState('Google Calendar');
+  const [selectedShiftId, setSelectedShiftId] = useState('');
+  const [email, setEmail] = useState('');
+  const [editingEmail, setEditingEmail] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [disclaimerText, setDisclaimerText] = useState('');
+  const [repairLocked, setRepairLocked] = useState(false);
+  
+  // API state
+  const [availableDates, setAvailableDates] = useState<Date[]>([]);
+  const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
+  const [loadingDates, setLoadingDates] = useState(false);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [creatingBooking, setCreatingBooking] = useState(false);
+  const [bookingCreated, setBookingCreated] = useState(false);
 
-  const isLoggedIn = true;
-  const isOtherSelected = repairTypes.includes('Other');
+  const isLoggedIn = !!user;
+  const selectedRepairType = repairTypes[0] || '';
+  const isOtherSelected = selectedRepairType === 'Other';
+  const isWheelSelected = selectedRepairType === 'Wheel';
+  
+  // Calculate repair duration based on selections
+  const repairDetails: RepairDetails = {
+    wheelPosition: wheelPosition as 'front' | 'rear',
+    bikeType: bikeType as 'city' | 'road',
+    brakeType: brakeType as 'rim' | 'coaster' | 'disc',
+    description: isOtherSelected ? disclaimerText : undefined
+  };
+  const repairDuration = getRepairDuration(selectedRepairType, repairDetails);
+
+  // Load available dates when component mounts
+  useEffect(() => {
+    loadAvailableDates();
+  }, []);
+
+  // Set user email when profile loads
+  useEffect(() => {
+    if (profile?.email) {
+      setEmail(profile.email);
+    }
+  }, [profile]);
+
+  const loadAvailableDates = async () => {
+    setLoadingDates(true);
+    try {
+      const dates = await bookingsAPI.getAvailableDates(4);
+      setAvailableDates(dates);
+    } catch (error) {
+      console.error('Error loading available dates:', error);
+    } finally {
+      setLoadingDates(false);
+    }
+  };
+
+  const loadAvailableSlots = async (date: Date) => {
+    setLoadingSlots(true);
+    setAvailableSlots([]);
+    setSelectedTime('');
+    
+    try {
+      const slots = await bookingsAPI.getAvailableSlots(date, repairDuration);
+      if (slots.length > 0) {
+        // Use the first shift's slots (typically only one shift per day)
+        setSelectedShiftId(slots[0].shift_id);
+        setAvailableSlots(slots[0].slots);
+      }
+    } catch (error) {
+      console.error('Error loading available slots:', error);
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
 
   const handleSectionComplete = (section: number) => {
-    if (section === 2 && isOtherSelected) {
-      setShowDisclaimer(true);
+    if (section === 2) {
+      // Lock the repair type selection
+      setRepairLocked(true);
+      
+      if (isOtherSelected) {
+        setDisclaimerText('');
+        setShowDisclaimer(true);
+      } else if (isWheelSelected) {
+        // Show wheel disclaimer
+        setDisclaimerText('Truing wheels can be tricky - if more than 4 spokes are broken we recommend just getting a new wheel. But if you\'re up for the challenge and have a few hours then come by!');
+        setShowDisclaimer(true);
+      } else {
+        // For repairs that need follow-up questions, go to section 3
+        setCurrentSection(3);
+      }
     } else {
       setCurrentSection(section + 1);
     }
@@ -40,25 +128,163 @@ export default function BookingFormPage() {
 
   const handleDisclaimerComplete = () => {
     setShowDisclaimer(false);
-    setCurrentSection(3);
+    // Always go to calendar (section 4) after disclaimer
+    // Section 3 is follow-up which happens before disclaimers
+    setCurrentSection(4);
   };
 
   const getEstimatedTime = () => {
-    if (repairTypes.includes('Tire/Tube')) return '45 minutes';
-    if (repairTypes.includes('Chain')) return '30 minutes';
-    if (repairTypes.includes('Brakes')) return '60 minutes';
-    if (repairTypes.includes('Gears')) return '75 minutes';
-    return '45 minutes';
+    switch(selectedRepairType) {
+      case 'Tire/Tube':
+        if (wheelPosition === 'front') return '30 minutes';
+        if (wheelPosition === 'rear' && bikeType === 'city') return '60 minutes';
+        if (wheelPosition === 'rear' && bikeType === 'road') return '40 minutes';
+        return '45 minutes';
+      case 'Chain':
+        if (bikeType === 'city') return '45 minutes';
+        if (bikeType === 'road') return '30 minutes';
+        return '35 minutes';
+      case 'Brakes':
+        if (brakeType === 'rim') return '30 minutes';
+        if (brakeType === 'coaster') return '40 minutes';
+        if (brakeType === 'disc') return '45 minutes';
+        return '35 minutes';
+      case 'Gears':
+        if (bikeType === 'city') return '60 minutes';
+        if (bikeType === 'road') return '40 minutes';
+        return '45 minutes';
+      case 'Wheel':
+        return '60 minutes';
+      case 'Other':
+        return '45 minutes';
+      default:
+        return '45 minutes';
+    }
   };
 
   const formatBookingSummary = () => {
-    const repairText = repairTypes.join(', ');
+    const repairText = selectedRepairType;
     const dateText = selectedDate?.toLocaleDateString('en-GB', { 
       weekday: 'long', 
       day: 'numeric', 
       month: 'long' 
     });
     return `Your appointment to repair your ${repairText} will be at ${selectedTime} on ${dateText}`;
+  };
+
+  const getEventDetails = () => {
+    if (!selectedDate || !selectedTime) return null;
+    
+    const startDateTime = new Date(selectedDate);
+    const [hours, minutes] = selectedTime.split(':').map(Number);
+    startDateTime.setHours(hours, minutes, 0, 0);
+    
+    const endDateTime = new Date(startDateTime);
+    endDateTime.setMinutes(endDateTime.getMinutes() + repairDuration);
+    
+    return {
+      title: `Bike Kitchen - ${selectedRepairType} Repair`,
+      startDateTime,
+      endDateTime,
+      location: 'Bike Kitchen UvA, Roeterseiland Campus, Roetersstraat 11, 1018 WB Amsterdam, Netherlands',
+      description: `Appointment for ${selectedRepairType} repair.\nEstimated duration: ${repairDuration} minutes.\n\nRemember to bring:\n- Your bike\n- Any replacement parts needed\n- Your enthusiasm to learn!\n\nSee you at the Bike Kitchen!`
+    };
+  };
+
+  const handleGoogleCalendar = () => {
+    const event = getEventDetails();
+    if (!event) return;
+    
+    const startStr = event.startDateTime.toISOString().replace(/-|:|\.\d\d\d/g, '');
+    const endStr = event.endDateTime.toISOString().replace(/-|:|\.\d\d\d/g, '');
+    
+    const googleCalendarUrl = new URL('https://calendar.google.com/calendar/render');
+    googleCalendarUrl.searchParams.append('action', 'TEMPLATE');
+    googleCalendarUrl.searchParams.append('text', event.title);
+    googleCalendarUrl.searchParams.append('dates', `${startStr}/${endStr}`);
+    googleCalendarUrl.searchParams.append('location', event.location);
+    googleCalendarUrl.searchParams.append('details', event.description);
+    
+    window.open(googleCalendarUrl.toString(), '_blank');
+  };
+
+  const handleOutlookCalendar = () => {
+    const event = getEventDetails();
+    if (!event) return;
+    
+    const startStr = event.startDateTime.toISOString();
+    const endStr = event.endDateTime.toISOString();
+    
+    const outlookUrl = new URL('https://outlook.live.com/calendar/0/deeplink/compose');
+    outlookUrl.searchParams.append('subject', event.title);
+    outlookUrl.searchParams.append('startdt', startStr);
+    outlookUrl.searchParams.append('enddt', endStr);
+    outlookUrl.searchParams.append('location', event.location);
+    outlookUrl.searchParams.append('body', event.description);
+    outlookUrl.searchParams.append('allday', 'false');
+    
+    window.open(outlookUrl.toString(), '_blank');
+  };
+
+  const handleAppleCalendar = () => {
+    const event = getEventDetails();
+    if (!event) return;
+    
+    // Create ICS file content
+    const formatDate = (date: Date) => {
+      return date.toISOString().replace(/-|:|\.\d\d\d/g, '').slice(0, -1);
+    };
+    
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Bike Kitchen//EN',
+      'BEGIN:VEVENT',
+      `UID:${Date.now()}@bikekitchen.com`,
+      `DTSTAMP:${formatDate(new Date())}Z`,
+      `DTSTART:${formatDate(event.startDateTime)}Z`,
+      `DTEND:${formatDate(event.endDateTime)}Z`,
+      `SUMMARY:${event.title}`,
+      `LOCATION:${event.location}`,
+      `DESCRIPTION:${event.description.replace(/\n/g, '\\n')}`,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    
+    // Create and download the ICS file
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `bike-kitchen-${selectedRepairType.toLowerCase()}-${selectedDate?.toISOString().split('T')[0]}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+
+  const handleCreateBooking = async () => {
+    if (!selectedShiftId || !selectedTime || !selectedDate) return;
+    
+    setCreatingBooking(true);
+    try {
+      await bookingsAPI.createBooking({
+        shift_id: selectedShiftId,
+        slot_time: selectedTime,
+        duration_minutes: repairDuration,
+        repair_type: toDbRepairType(selectedRepairType),
+        repair_details: repairDetails,
+        notes: disclaimerText || undefined
+      });
+      
+      setBookingCreated(true);
+      setCurrentSection(6);
+    } catch (error) {
+      console.error('Error creating booking:', error);
+      alert('Failed to create booking. Please try again.');
+    } finally {
+      setCreatingBooking(false);
+    }
   };
 
   return (
@@ -72,7 +298,7 @@ export default function BookingFormPage() {
             Make an appointment:
           </h1>
           <p className="text-gray-600">
-            {isLoggedIn ? `logged in as ${mockUser.name} - participant/member` : 'not logged in - Guest'}
+            {isLoggedIn ? `Logged in as ${email || 'Loading...'} - ${profile?.member ? 'Member' : 'Guest'}` : 'Not logged in - Guest'}
           </p>
         </div>
 
@@ -127,10 +353,22 @@ export default function BookingFormPage() {
               <div className="flex items-center gap-2">
                 <span className="text-gray-700">Which part of your bike needs repair?</span>
                 <IconInfoCircle size={16} className="text-gray-400" />
+                {repairLocked && (
+                  <span className="text-xs text-green-600 font-medium">(Confirmed)</span>
+                )}
               </div>
               <RepairTypeSelector
                 value={repairTypes}
-                onChange={setRepairTypes}
+                onChange={(value) => {
+                  setRepairTypes(value);
+                  // Reset follow-up states when changing repair type
+                  setBikeType('');
+                  setWheelPosition('');
+                  setBrakeType('');
+                  setComponent('');
+                }}
+                singleSelect={true}
+                disabled={repairLocked}
               />
             </div>
 
@@ -145,47 +383,107 @@ export default function BookingFormPage() {
           </section>
         )}
 
-        {currentSection >= 3 && repairTypes.length > 0 && !isOtherSelected && (
+        {currentSection >= 3 && repairTypes.length > 0 && !isOtherSelected && !isWheelSelected && (
           <section className="space-y-6">
             <h2 className="text-xl font-semibold text-gray-900">2b. Follow-up</h2>
             
             <div className="space-y-2">
               <span className="text-gray-700">You selected </span>
-              <PillButton selected>{repairTypes[0]}</PillButton>
+              <PillButton selected>{selectedRepairType}</PillButton>
               <p className="text-gray-600">
                 The duration of this repair can depend on some other information:
               </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
-                <IconInfoCircle size={16} className="text-gray-400" />
-              </div>
-              <ToggleSelector
-                options={[
-                  { label: 'city bike', value: 'city' },
-                  { label: 'road/mountain/touring bike', value: 'road' }
-                ]}
-                value={bikeType}
-                onChange={setBikeType}
-              />
-            </div>
+            {/* Tire/Tube specific questions */}
+            {selectedRepairType === 'Tire/Tube' && (
+              <>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-700">Is it the front or rear tire/tube?</span>
+                    <IconInfoCircle size={16} className="text-gray-400" />
+                  </div>
+                  <ToggleSelector
+                    options={[
+                      { label: 'Front', value: 'front' },
+                      { label: 'Rear', value: 'rear' }
+                    ]}
+                    value={wheelPosition}
+                    onChange={setWheelPosition}
+                  />
+                </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="text-gray-700">Is the repair for the front or the tire/tube?</span>
-                <IconInfoCircle size={16} className="text-gray-400" />
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
+                    <IconInfoCircle size={16} className="text-gray-400" />
+                  </div>
+                  <ToggleSelector
+                    options={[
+                      { label: 'City bike', value: 'city' },
+                      { label: 'Road/mountain/touring bike', value: 'road' }
+                    ]}
+                    value={bikeType}
+                    onChange={setBikeType}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Chain specific questions */}
+            {selectedRepairType === 'Chain' && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
+                  <IconInfoCircle size={16} className="text-gray-400" />
+                </div>
+                <ToggleSelector
+                  options={[
+                    { label: 'City bike', value: 'city' },
+                    { label: 'Road/mountain/touring bike', value: 'road' }
+                  ]}
+                  value={bikeType}
+                  onChange={setBikeType}
+                />
               </div>
-              <ToggleSelector
-                options={[
-                  { label: 'front', value: 'front' },
-                  { label: 'tire/tube', value: 'tire' }
-                ]}
-                value={component}
-                onChange={setComponent}
-              />
-            </div>
+            )}
+
+            {/* Brakes specific questions */}
+            {selectedRepairType === 'Brakes' && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-700">What type of brakes does your bike have?</span>
+                  <IconInfoCircle size={16} className="text-gray-400" />
+                </div>
+                <ToggleSelector
+                  options={[
+                    { label: 'Rim brakes', value: 'rim' },
+                    { label: 'Coaster/drum brakes', value: 'coaster' },
+                    { label: 'Disc brakes', value: 'disc' }
+                  ]}
+                  value={brakeType}
+                  onChange={setBrakeType}
+                />
+              </div>
+            )}
+
+            {/* Gears specific questions */}
+            {selectedRepairType === 'Gears' && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
+                  <IconInfoCircle size={16} className="text-gray-400" />
+                </div>
+                <ToggleSelector
+                  options={[
+                    { label: 'City bike', value: 'city' },
+                    { label: 'Road/mountain/touring bike', value: 'road' }
+                  ]}
+                  value={bikeType}
+                  onChange={setBikeType}
+                />
+              </div>
+            )}
 
             <div className="p-4 bg-blue-50 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
@@ -200,9 +498,22 @@ export default function BookingFormPage() {
               </p>
             </div>
 
-            {currentSection === 3 && bikeType && component && (
+            {currentSection === 3 && (
+              (selectedRepairType === 'Tire/Tube' && wheelPosition && bikeType) ||
+              (selectedRepairType === 'Chain' && bikeType) ||
+              (selectedRepairType === 'Brakes' && brakeType) ||
+              (selectedRepairType === 'Gears' && bikeType)
+            ) && (
               <PrimaryButton
-                onClick={() => setCurrentSection(4)}
+                onClick={() => {
+                  // Check if disc brakes need disclaimer
+                  if (selectedRepairType === 'Brakes' && brakeType === 'disc') {
+                    setDisclaimerText('Working on disc brakes is tricky - we suggest you come on Thursday as our mechanic working then knows more about them.');
+                    setShowDisclaimer(true);
+                  } else {
+                    setCurrentSection(4);
+                  }
+                }}
                 fullWidth
               >
                 Continue
@@ -217,27 +528,57 @@ export default function BookingFormPage() {
             
             <div className="space-y-4">
               <h3 className="font-medium text-gray-800">What day?</h3>
-              <CalendarWidget
-                selectedDate={selectedDate}
-                onDateSelect={setSelectedDate}
-                availableDates={mockAvailableDates}
-                highlightedDates={[new Date()]}
-              />
+              {loadingDates ? (
+                <div className="flex items-center justify-center h-64">
+                  <IconLoader2 className="animate-spin" size={24} />
+                </div>
+              ) : (
+                <CalendarWidget
+                  selectedDate={selectedDate}
+                  onDateSelect={(date) => {
+                    setSelectedDate(date);
+                    if (date) {
+                      loadAvailableSlots(date);
+                    }
+                  }}
+                  availableDates={availableDates}
+                  highlightedDates={[]}
+                />
+              )}
             </div>
 
             <div className="space-y-4">
               <h3 className="font-medium text-gray-800">What time?</h3>
-              <div className="grid grid-cols-2 gap-2">
-                {mockTimeSlots.map((time) => (
-                  <PillButton
-                    key={time}
-                    selected={selectedTime === time}
-                    onClick={() => setSelectedTime(time)}
-                  >
-                    {time}
-                  </PillButton>
-                ))}
-              </div>
+              {loadingSlots ? (
+                <div className="flex items-center justify-center h-32">
+                  <IconLoader2 className="animate-spin" size={24} />
+                </div>
+              ) : availableSlots.length === 0 && selectedDate ? (
+                <div className="text-center py-8 text-gray-500">
+                  <p>No available slots for this date.</p>
+                  <p className="text-sm mt-2">Please select another date.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  {availableSlots.map((slot) => (
+                    <PillButton
+                      key={slot.time}
+                      selected={selectedTime === slot.time}
+                      onClick={() => slot.available && setSelectedTime(slot.time)}
+                      disabled={!slot.available}
+                      className={!slot.available ? 'opacity-50 cursor-not-allowed' : ''}
+                    >
+                      {slot.time}
+                      {!slot.available && slot.reason === 'booked' && (
+                        <span className="text-xs ml-1">(Booked)</span>
+                      )}
+                      {!slot.available && slot.reason === 'insufficient_time' && (
+                        <span className="text-xs ml-1">(Too late)</span>
+                      )}
+                    </PillButton>
+                  ))}
+                </div>
+              )}
             </div>
 
             {currentSection === 4 && selectedDate && selectedTime && (
@@ -269,42 +610,107 @@ export default function BookingFormPage() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-medium text-gray-800">What is your email address?</h3>
-              <TextInput
-                type="email"
-                value={email}
-                onChange={setEmail}
-                fullWidth
-                className={isLoggedIn ? 'text-purple-600 border-purple-200' : ''}
-              />
+              <h3 className="font-medium text-gray-800">Confirmation email will be sent to:</h3>
+              {editingEmail ? (
+                <div className="flex gap-2">
+                  <TextInput
+                    type="email"
+                    value={email}
+                    onChange={setEmail}
+                    fullWidth
+                    placeholder="Enter email address"
+                    autoFocus
+                    onKeyDown={(e: React.KeyboardEvent) => {
+                      if (e.key === 'Enter') {
+                        setEditingEmail(false);
+                      }
+                    }}
+                  />
+                  <PrimaryButton
+                    onClick={() => setEditingEmail(false)}
+                    size="sm"
+                  >
+                    Save
+                  </PrimaryButton>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                  <span className="text-purple-900 font-medium">{email || 'Loading...'}</span>
+                  <button
+                    onClick={() => setEditingEmail(true)}
+                    className="p-2 hover:bg-purple-100 rounded-lg transition-colors"
+                    title="Edit email"
+                  >
+                    <IconPencil size={18} className="text-purple-600" />
+                  </button>
+                </div>
+              )}
+              {email !== profile?.email && email && (
+                <p className="text-sm text-gray-600">
+                  Note: Using a different email than your account ({profile?.email})
+                </p>
+              )}
             </div>
 
             {currentSection === 5 && email && (
               <PrimaryButton
-                onClick={() => setCurrentSection(6)}
+                onClick={handleCreateBooking}
                 fullWidth
+                disabled={creatingBooking}
               >
-                Looks good!
+                {creatingBooking ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <IconLoader2 className="animate-spin" size={20} />
+                    Creating booking...
+                  </span>
+                ) : (
+                  'Confirm Booking'
+                )}
               </PrimaryButton>
             )}
           </section>
         )}
 
-        {currentSection >= 6 && (
+        {currentSection >= 6 && bookingCreated && (
           <section className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900">5. Add to Calendar</h2>
+            <h2 className="text-xl font-semibold text-gray-900">5. Booking Confirmed!</h2>
             
             <div className="space-y-4">
-              <div className="flex flex-wrap gap-2">
-                {['Google Calendar', 'Outlook', 'Apple'].map((provider) => (
-                  <PillButton
-                    key={provider}
-                    selected={calendarProvider === provider}
-                    onClick={() => setCalendarProvider(provider)}
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <IconCheck className="text-green-600" size={24} />
+                  <span className="font-semibold text-green-900">Your booking is confirmed!</span>
+                </div>
+                <p className="text-sm text-gray-700">
+                  {formatBookingSummary()}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-800">Add to Calendar:</h3>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={handleGoogleCalendar}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                   >
-                    {provider}
-                  </PillButton>
-                ))}
+                    <IconBrandGoogle size={18} />
+                    <span>Google Calendar</span>
+                  </button>
+                  <button
+                    onClick={handleOutlookCalendar}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <IconBrandWindows size={18} />
+                    <span>Outlook</span>
+                  </button>
+                  <button
+                    onClick={handleAppleCalendar}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <IconBrandApple size={18} />
+                    <span>Apple Calendar</span>
+                  </button>
+                </div>
               </div>
 
               <div className="p-3 bg-purple-50 rounded-lg">
@@ -314,9 +720,24 @@ export default function BookingFormPage() {
                 </p>
               </div>
 
-              <div className=" space-y-2">
+              <div className="space-y-2">
                 <h3 className="text-4xl font-bold text-gray-900">That's all</h3>
-                <p className="text-gray-600">See you soon!</p>
+                <p className="text-gray-600">See you soon at the Bike Kitchen!</p>
+              </div>
+              
+              <div className="flex gap-3">
+                <PrimaryButton
+                  onClick={() => router.push('/booking')}
+                  fullWidth
+                >
+                  View My Bookings
+                </PrimaryButton>
+                <SecondaryButton
+                  onClick={() => router.push('/')}
+                  fullWidth
+                >
+                  Back to Home
+                </SecondaryButton>
               </div>
             </div>
           </section>
@@ -329,21 +750,31 @@ export default function BookingFormPage() {
         title="2a. A Disclaimer"
       >
         <div className="space-y-4">
-          <p className="text-gray-700">
-            You selected Other - tell us more about the repair, but be aware that for more tricky problems 
-            the first appointment may be a diagnosis only:
-          </p>
-          <textarea
-            value={disclaimerText}
-            onChange={(e) => setDisclaimerText(e.target.value)}
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="There's a clicking noise every time I turn the pedals and I'm not sure where it's coming from!!!"
-          />
+          {isOtherSelected ? (
+            <>
+              <p className="text-gray-700">
+                You selected Other - tell us more about the repair, but be aware that for more tricky problems 
+                the first appointment may be a diagnosis only:
+              </p>
+              <textarea
+                value={disclaimerText}
+                onChange={(e) => setDisclaimerText(e.target.value)}
+                className="w-full p-3 border border-gray-200 rounded-lg resize-none"
+                rows={4}
+                placeholder="There's a clicking noise every time I turn the pedals and I'm not sure where it's coming from!!!"
+              />
+            </>
+          ) : (
+            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+              <p className="text-gray-700">
+                {disclaimerText}
+              </p>
+            </div>
+          )}
           <PrimaryButton
             onClick={handleDisclaimerComplete}
             fullWidth
-            disabled={!disclaimerText.trim()}
+            disabled={isOtherSelected && !disclaimerText.trim()}
           >
             I understand
           </PrimaryButton>

@@ -10,6 +10,8 @@ interface TextInputProps {
   className?: string;
   name?: string;
   id?: string;
+  autoFocus?: boolean;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
@@ -21,7 +23,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
   fullWidth = false,
   className = '',
   name,
-  id
+  id,
+  autoFocus,
+  onKeyDown
 }, ref) => {
   return (
     <input
@@ -33,6 +37,8 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
       disabled={disabled}
       name={name}
       id={id}
+      autoFocus={autoFocus}
+      onKeyDown={onKeyDown}
       className={`
         px-4 
         py-3 

@@ -7,12 +7,30 @@ import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
-import { mockUser } from '@/lib/placeholderData';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRequireMember } from '@/hooks/useAuthorization';
+import { IconLoader2 } from '@tabler/icons-react';
 
 export default function MembershipPage() {
+  const { authorized, loading: authLoading } = useRequireMember();
+  const { profile } = useAuth();
   const [showManageMembership, setShowManageMembership] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const router = useRouter();
+
+  if (authLoading) {
+    return (
+      <AppLayout title="Member Info">
+        <div className="flex items-center justify-center h-64">
+          <IconLoader2 className="animate-spin" size={32} />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  if (!authorized) {
+    return null;
+  }
 
   return (
     <AppLayout 
@@ -48,12 +66,15 @@ export default function MembershipPage() {
       <BottomSheetDialog
         isOpen={showManageMembership}
         onClose={() => setShowManageMembership(false)}
-        title={`Hi, ${mockUser.name}`}
+        title="Manage Membership"
       >
         <div className="space-y-6">
           <div>
+            <p className="text-gray-700 mb-2">
+              Account: <span className="font-medium">{profile?.email || 'Loading...'}</span>
+            </p>
             <p className="text-gray-700 mb-6">
-              You have been a member since {mockUser.memberSince}.
+              Status: <span className="font-medium text-green-600">Active Member</span>
             </p>
           </div>
 

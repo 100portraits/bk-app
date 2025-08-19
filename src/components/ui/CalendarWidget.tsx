@@ -111,6 +111,7 @@ const CalendarWidget = ({
           const todayDate = isToday(day);
 
           return (
+            <div className='flex justify-center items-center'>
             <button
               key={index}
               onClick={() => isAvailable && inCurrentMonth && onDateSelect?.(day)}
@@ -138,6 +139,7 @@ const CalendarWidget = ({
             >
               {day.getDate()}
             </button>
+            </div>
           );
         })}
       </div>

@@ -40,6 +40,12 @@ export default function HostPage() {
               onClick={() => router.push('/host/bookings')}
             />
             <NavigationCard
+              title="Record walk-in"
+              subtitle=""
+              variant="secondary"
+              onClick={() => setShowWalkInDialog(true)}
+            />
+            <NavigationCard
               title="See Walk-ins"
               subtitle="View and manage walk-in customers"
               variant="secondary"
@@ -57,12 +63,7 @@ export default function HostPage() {
               variant="secondary"
               onClick={() => router.push('/host/inventory')}
             />
-            <NavigationCard
-              title="Record walk-in"
-              subtitle=""
-              variant="secondary"
-              onClick={() => setShowWalkInDialog(true)}
-            />
+            
           </div>
         </section>
 

@@ -40,6 +40,12 @@ export default function AdminPage() {
               variant="secondary"
               onClick={() => router.push('/admin/team')}
             />
+            <NavigationCard
+              title="Manage Appointments"
+              subtitle="View and edit bookings"
+              variant="secondary"
+              onClick={() => router.push('/admin/appointments')}
+            />
           </div>
         </section>
 
