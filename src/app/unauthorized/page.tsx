@@ -5,9 +5,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import { IconHome, IconLock } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { Suspense } from 'react';
 
-export default function UnauthorizedPage() {
+function UnauthorizedContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, isMember, role } = useAuth();
@@ -78,5 +78,26 @@ export default function UnauthorizedPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function UnauthorizedPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <div className="mb-6">
+            <div className="mx-auto w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
+              <IconLock size={40} className="text-red-600" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Loading...
+          </h1>
+        </div>
+      </div>
+    }>
+      <UnauthorizedContent />
+    </Suspense>
   );
 }
