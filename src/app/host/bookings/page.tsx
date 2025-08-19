@@ -68,7 +68,7 @@ export default function TodaysBookingsPage() {
       >
         {selectedBooking && (
           <div className="space-y-6">
-            <div className="text-center">
+            <div className="">
               <h3 className="text-xl font-semibold text-gray-900">
                 {selectedBooking.customerName} - {selectedBooking.time}
               </h3>

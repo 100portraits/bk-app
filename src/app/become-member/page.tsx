@@ -20,7 +20,7 @@ export default function BecomeMemberPage() {
   return (
     <AppLayout title="Become a Member">
       <div className="space-y-8">
-        <section className="text-center">
+        <section className="">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">
             Great that you want to join!
           </h1>

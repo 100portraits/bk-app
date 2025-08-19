@@ -35,7 +35,7 @@ const AppLayout = ({
       
       <main className="pb-20">
         {showUserRoles && userRoles.length > 0 && (
-          <div className="px-4 py-3 bg-white border-b border-gray-200">
+          <div className="px-6 py-3 bg-white border-b border-gray-200">
             <div className="text-sm text-gray-600 mb-2">Connected roles:</div>
             <div className="flex flex-wrap gap-2">
               {userRoles.map((role) => (
@@ -45,7 +45,7 @@ const AppLayout = ({
           </div>
         )}
         
-        <div className="p-4">
+        <div className="p-6">
           {children}
         </div>
       </main>

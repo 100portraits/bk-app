@@ -94,7 +94,7 @@ export default function ManageTeamPage() {
         title="User Role Management"
       >
         <div className="space-y-6">
-          <div className="text-center">
+          <div className="">
             <h3 className="text-xl font-semibold text-gray-900">{selectedUser}</h3>
             <p className="text-gray-600">Role: Admin</p>
           </div>

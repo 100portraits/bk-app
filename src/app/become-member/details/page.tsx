@@ -14,7 +14,7 @@ export default function MemberDetailsPage() {
   return (
     <AppLayout title="Become a Member">
       <div className="space-y-8">
-        <section className="text-center space-y-4">
+        <section className=" space-y-4">
           <h1 className="text-4xl font-bold text-gray-900">
             Welcome, <span className="text-purple-600">Sahir</span>!
           </h1>

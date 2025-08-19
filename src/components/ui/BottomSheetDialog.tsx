@@ -40,7 +40,7 @@ const BottomSheetDialog = ({
         >
           <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4 mt-4" />
 
-          <div className="px-4 pb-12 pt-6 flex-1 overflow-auto">
+          <div className="px-6 pb-12 pt-6 flex-1 overflow-auto">
             {title && (
               <div className="flex items-center justify-between py-2  mb-4">
                 <Drawer.Title className="text-4xl font-semibold text-gray-900">

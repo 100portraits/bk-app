@@ -67,7 +67,7 @@ export default function BookingFormPage() {
       showSearchIcon={true}
     >
       <div className="space-y-8">
-        <div className="text-center">
+        <div className="">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             Make an appointment:
           </h1>
@@ -96,7 +96,7 @@ export default function BookingFormPage() {
                   >
                     I understand!
                   </PrimaryButton>
-                  <p className="text-xs text-gray-500 text-center">
+                  <p className="text-xs text-gray-500 ">
                     By proceeding, you agree to the{' '}
                     <a href="#" className="text-purple-600 underline">UvA Privacy Policy</a>
                   </p>
@@ -312,7 +312,7 @@ export default function BookingFormPage() {
                 </p>
               </div>
 
-              <div className="text-center space-y-2">
+              <div className=" space-y-2">
                 <h3 className="text-4xl font-bold text-gray-900">That's all</h3>
                 <p className="text-gray-600">See you soon!</p>
               </div>

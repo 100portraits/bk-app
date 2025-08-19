@@ -46,7 +46,7 @@ export default function ManageBookingsPage() {
               ))}
             </div>
           ) : (
-            <div className="p-8 text-center text-gray-500 bg-white rounded-lg border border-gray-200">
+            <div className="p-8  text-gray-500 bg-white rounded-lg border border-gray-200">
               No upcoming bookings
             </div>
           )}
@@ -68,7 +68,7 @@ export default function ManageBookingsPage() {
               ))}
             </div>
           ) : (
-            <div className="p-8 text-center text-gray-500 bg-white rounded-lg border border-gray-200">
+            <div className="p-8  text-gray-500 bg-white rounded-lg border border-gray-200">
               No previous bookings
             </div>
           )}

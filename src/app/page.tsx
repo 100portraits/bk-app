@@ -40,7 +40,7 @@ export default function Home() {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-4 -mt-20">
-        <div className="text-center mb-12">
+        <div className="text-center mb-6">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Bike Kitchen UvA
           </h1>
