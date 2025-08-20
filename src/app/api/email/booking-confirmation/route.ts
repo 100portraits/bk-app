@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    return NextResponse.json({ success: true, data: result.data });
+    return NextResponse.json({ success: true, messageId: result.messageId });
   } catch (error) {
     console.error('API error sending booking confirmation:', error);
     return NextResponse.json(

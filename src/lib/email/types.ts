@@ -35,10 +35,5 @@ export interface RoleChangeEmailData {
 export interface EmailResponse {
   success: boolean;
   error?: string;
-  data?: {
-    id: string;
-    from: string;
-    to: string[];
-    created_at: string;
-  };
+  messageId?: string;
 }

@@ -43,7 +43,7 @@ export async function sendBookingConfirmationEmail(
 
     return {
       success: true,
-      data: result,
+      messageId: result.data?.id,
     };
   } catch (error) {
     console.error('Error sending booking confirmation email:', error);
@@ -74,7 +74,7 @@ export async function sendBookingCancellationEmail(
 
     return {
       success: true,
-      data: result,
+      messageId: result.data?.id,
     };
   } catch (error) {
     console.error('Error sending booking cancellation email:', error);
@@ -104,7 +104,7 @@ export async function sendAdminResponseEmail(
 
     return {
       success: true,
-      data: result,
+      messageId: result.data?.id,
     };
   } catch (error) {
     console.error('Error sending admin response email:', error);
@@ -137,7 +137,7 @@ export async function sendRoleChangeEmail(
 
     return {
       success: true,
-      data: result,
+      messageId: result.data?.id,
     };
   } catch (error) {
     console.error('Error sending role change email:', error);
