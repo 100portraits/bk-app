@@ -8,6 +8,7 @@ import HelpButton from '@/components/ui/HelpButton';
 import HelpDialog from '@/components/ui/HelpDialog';
 import DismissableCard from '@/components/ui/DismissableCard';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
+import VersionTracker from '@/components/ui/VersionTracker';
 import { IconPlus } from '@tabler/icons-react';
 import { quickLinksOptions, widgetOptions } from '@/lib/placeholderData';
 import { useAuth } from '@/contexts/AuthContext';
@@ -152,6 +153,8 @@ export default function HomePage() {
         onClose={() => setShowHelpDialog(false)}
         pageName="Homepage"
       />
+      
+      <VersionTracker />
     </AppLayout>
   );
 }

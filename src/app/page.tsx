@@ -6,6 +6,7 @@ import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import TextInput from '@/components/ui/TextInput';
+import VersionTracker from '@/components/ui/VersionTracker';
 import { IconUser, IconPlus, IconMail, IconCheck } from '@tabler/icons-react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -138,6 +139,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <VersionTracker />
       <div className="flex justify-end p-4">
         <SecondaryButton
           onClick={() => {
@@ -151,7 +153,7 @@ export default function Home() {
         </SecondaryButton>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-4">
+      <div className="flex-1 flex flex-col items-center justify-center px-6">
         <div className="text-center mb-6">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Bike Kitchen UvA
