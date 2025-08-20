@@ -108,13 +108,13 @@ export default function ManageBookingsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-4xl font-bold text-gray-900">My Bookings</h2>
+        </div>
           <PrimaryButton
             onClick={() => router.push('/booking/new')}
             size="sm"
           >
             New Booking
           </PrimaryButton>
-        </div>
 
         {/* Upcoming Bookings */}
         <section>
