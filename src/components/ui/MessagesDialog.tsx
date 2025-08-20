@@ -3,7 +3,6 @@
 import React from 'react';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { useHelpMessages } from '@/hooks/useHelpMessages';
-import { HelpMessage } from '@/types/help';
 import { format, parseISO } from 'date-fns';
 import { IconLoader2, IconMessage, IconCheck, IconClock } from '@tabler/icons-react';
 
