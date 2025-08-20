@@ -53,31 +53,13 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const routeConfig = getRouteConfig(path);
 
-  // Debug logging
-  console.log('🔐 Middleware Check:', {
-    path,
-    user: user?.email,
-    profile: profile ? {
-      member: profile.member,
-      role: profile.role
-    } : null,
-    routeConfig: routeConfig ? {
-      requireAuth: routeConfig.requireAuth,
-      requireMember: routeConfig.requireMember,
-      requireNonMember: routeConfig.requireNonMember,
-      allowedRoles: routeConfig.allowedRoles
-    } : null
-  });
-
   // If no specific route config, allow access
   if (!routeConfig) {
-    console.log('✅ No route config found, allowing access');
     return response;
   }
 
   // Check authentication requirement
   if (routeConfig.requireAuth && !user) {
-    console.log('🚫 Authentication required but user not logged in');
     return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -86,7 +68,6 @@ export async function middleware(request: NextRequest) {
     // Check if route is for non-members only (become-member routes)
     if (routeConfig.requireNonMember === true) {
       if (profile && profile.member) {
-        console.log('🚫 Route is for non-members only but user is a member');
         const url = new URL('/unauthorized', request.url);
         url.searchParams.set('from', path);
         return NextResponse.redirect(url);
@@ -97,7 +78,6 @@ export async function middleware(request: NextRequest) {
     if (routeConfig.requireMember === true) {
       // If no profile or not a member, redirect to unauthorized
       if (!profile || !profile.member) {
-        console.log('🚫 Membership required but user is not a member');
         const url = new URL('/unauthorized', request.url);
         url.searchParams.set('from', path);
         return NextResponse.redirect(url);
@@ -108,10 +88,7 @@ export async function middleware(request: NextRequest) {
     if (routeConfig.allowedRoles && routeConfig.allowedRoles.length > 0) {
       // If no profile or doesn't have required role, redirect to unauthorized
       if (!profile || !routeConfig.allowedRoles.includes(profile.role)) {
-        console.log('🚫 Role required but user lacks permission', {
-          requiredRoles: routeConfig.allowedRoles,
-          userRole: profile?.role
-        });
+        
         const url = new URL('/unauthorized', request.url);
         url.searchParams.set('from', path);
         return NextResponse.redirect(url);
@@ -119,7 +96,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  console.log('✅ Access granted');
 
   // Redirect authenticated users away from login page
   if (user && path === '/') {

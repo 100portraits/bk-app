@@ -14,7 +14,6 @@ export class MembershipAPI {
       throw new Error('User not authenticated');
     }
 
-    console.log('Updating membership for user:', user.id, 'to:', isMember);
 
     // First check if the profile exists
     const { data: existingProfile, error: fetchError } = await this.supabase
@@ -23,11 +22,9 @@ export class MembershipAPI {
       .eq('id', user.id)
       .maybeSingle(); // Use maybeSingle instead of single to avoid error if not found
 
-    console.log('Existing profile:', existingProfile, 'Error:', fetchError);
 
     if (!existingProfile) {
       // If profile doesn't exist, create it
-      console.log('Creating new profile for user:', user.id);
       const { data: newProfile, error: insertError } = await this.supabase
         .from('user_profiles')
         .insert({
@@ -44,12 +41,10 @@ export class MembershipAPI {
         throw insertError;
       }
 
-      console.log('Created new profile:', newProfile);
       return newProfile;
     }
 
     // Update existing profile - use a different approach
-    console.log('Updating existing profile for user:', user.id);
     
     // First do the update without select
     const { error: updateError } = await this.supabase
@@ -74,7 +69,6 @@ export class MembershipAPI {
       throw fetchUpdatedError;
     }
 
-    console.log('Updated profile:', updatedProfile);
     return updatedProfile;
   }
 
