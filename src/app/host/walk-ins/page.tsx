@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
+import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import ToggleSelector from '@/components/ui/ToggleSelector';
@@ -466,26 +467,11 @@ export default function WalkInsPage() {
         </div>
       </BottomSheetDialog>
 
-      {/* Help Dialog */}
-      <BottomSheetDialog
-        isOpen={showHelpDialog}
-        onClose={() => setShowHelpDialog(false)}
-        title="Help with recording/editing walk-ins"
-      >
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Need help with walk-ins? Describe any issues or questions you have:
-          </p>
-          <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="Write your message here..."
-          />
-          <PrimaryButton fullWidth>
-            Send Message
-          </PrimaryButton>
-        </div>
-      </BottomSheetDialog>
+      <HelpDialog 
+        isOpen={showHelpDialog} 
+        onClose={() => setShowHelpDialog(false)} 
+        pageName="Walk-ins" 
+      />
     </AppLayout>
   );
 }

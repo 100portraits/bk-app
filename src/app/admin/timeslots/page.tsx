@@ -5,6 +5,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import CalendarWidget from '@/components/ui/CalendarWidget';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
+import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import PillButton from '@/components/ui/PillButton';
 import { useRequireAdmin } from '@/hooks/useAuthorization';
@@ -280,28 +281,11 @@ export default function ManageTimeslotsPage() {
         />
       </div>
 
-      <BottomSheetDialog
-        isOpen={showHelpDialog}
-        onClose={() => setShowHelpDialog(false)}
-        title="Help with managing timeslots"
-      >
-        <div className="space-y-4">
-          <div className="text-sm text-gray-600 space-y-2">
-            <p><strong>Edit Mode:</strong> Click "Edit" to toggle workshop days open or closed.</p>
-            <p><strong>Schedule:</strong> Only Monday (14:00-18:00), Wednesday (12:00-16:00), and Thursday (16:00-20:00) can be scheduled.</p>
-            <p><strong>Date Range:</strong> You can schedule up to 4 weeks in advance.</p>
-            <p><strong>Colors:</strong> Green = Open, Gray = Closed, Yellow border = Pending changes</p>
-          </div>
-          <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="Additional questions or issues..."
-          />
-          <PrimaryButton fullWidth>
-            Send Message
-          </PrimaryButton>
-        </div>
-      </BottomSheetDialog>
+      <HelpDialog 
+        isOpen={showHelpDialog} 
+        onClose={() => setShowHelpDialog(false)} 
+        pageName="Timeslots" 
+      />
     </AppLayout>
   );
 }

@@ -5,6 +5,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import EventCard from '@/components/ui/EventCard';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
+import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import { useRequireMember } from '@/hooks/useAuthorization';
 import { EventsAPI } from '@/lib/events/api';
@@ -182,25 +183,11 @@ export default function EventCalendarPage() {
         )}
       </BottomSheetDialog>
 
-      <BottomSheetDialog
-        isOpen={showHelpDialog}
-        onClose={() => setShowHelpDialog(false)}
-        title="I have a question about an event"
-      >
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Have a question about an event? Describe any issues or questions you have:
-          </p>
-          <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="Write your message here..."
-          />
-          <PrimaryButton fullWidth>
-            Send Message
-          </PrimaryButton>
-        </div>
-      </BottomSheetDialog>
+      <HelpDialog 
+        isOpen={showHelpDialog} 
+        onClose={() => setShowHelpDialog(false)} 
+        pageName="Events" 
+      />
     </AppLayout>
   );
 }

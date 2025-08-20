@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
 import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
+import HelpDialog from '@/components/ui/HelpDialog';
 import DismissableCard from '@/components/ui/DismissableCard';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { IconPlus } from '@tabler/icons-react';
@@ -146,25 +147,11 @@ export default function HomePage() {
         </div>
       </BottomSheetDialog>
 
-      <BottomSheetDialog
+      <HelpDialog
         isOpen={showHelpDialog}
         onClose={() => setShowHelpDialog(false)}
-        title="Help with the homepage"
-      >
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Need help with the homepage? Describe any issues or questions you have:
-          </p>
-          <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="Write your message here..."
-          />
-          <button className="w-full bg-purple-500 text-white py-3 rounded-lg font-medium hover:bg-purple-600 transition-colors">
-            Send Message
-          </button>
-        </div>
-      </BottomSheetDialog>
+        pageName="Homepage"
+      />
     </AppLayout>
   );
 }

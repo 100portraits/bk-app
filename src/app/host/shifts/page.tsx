@@ -5,6 +5,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import CalendarWidget from '@/components/ui/CalendarWidget';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
+import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRequireRole } from '@/hooks/useAuthorization';
@@ -479,27 +480,11 @@ export default function ShiftCalendarPage() {
         )}
       </BottomSheetDialog>
 
-      <BottomSheetDialog
-        isOpen={showHelpDialog}
-        onClose={() => setShowHelpDialog(false)}
-        title="Help with the shift calendar"
-      >
-        <div className="space-y-4">
-          <div className="text-sm text-gray-600 space-y-2">
-            <p><strong>Signing up:</strong> Click "Edit" to sign up for shifts as a mechanic or host.</p>
-            <p><strong>Your shifts:</strong> Shifts you've signed up for are highlighted on the calendar.</p>
-            <p><strong>Roles:</strong> Mechanics can sign up as mechanics. Hosts can sign up as hosts. Admins can do both.</p>
-          </div>
-          <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="Additional questions or issues..."
-          />
-          <PrimaryButton fullWidth>
-            Send Message
-          </PrimaryButton>
-        </div>
-      </BottomSheetDialog>
+      <HelpDialog 
+        isOpen={showHelpDialog} 
+        onClose={() => setShowHelpDialog(false)} 
+        pageName="Shift Calendar" 
+      />
     </AppLayout>
   );
 }

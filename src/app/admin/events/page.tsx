@@ -5,6 +5,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import EventCard from '@/components/ui/EventCard';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
+import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import TextInput from '@/components/ui/TextInput';
@@ -716,25 +717,11 @@ export default function ManageEventsPage() {
         </div>
       </BottomSheetDialog>
 
-      <BottomSheetDialog
-        isOpen={showHelpDialog}
-        onClose={() => setShowHelpDialog(false)}
-        title="Help with event management"
-      >
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Need help with event management? Describe any issues or questions you have:
-          </p>
-          <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="Write your message here..."
-          />
-          <PrimaryButton fullWidth>
-            Send Message
-          </PrimaryButton>
-        </div>
-      </BottomSheetDialog>
+      <HelpDialog 
+        isOpen={showHelpDialog} 
+        onClose={() => setShowHelpDialog(false)} 
+        pageName="Events Management" 
+      />
     </AppLayout>
   );
 }

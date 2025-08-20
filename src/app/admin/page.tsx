@@ -6,6 +6,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
+import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 
 export default function AdminPage() {
@@ -55,25 +56,11 @@ export default function AdminPage() {
         />
       </div>
 
-      <BottomSheetDialog
-        isOpen={showHelpDialog}
-        onClose={() => setShowHelpDialog(false)}
-        title="Help with the admin panel"
-      >
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Need help with admin functions? Describe any issues or questions you have:
-          </p>
-          <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="Write your message here..."
-          />
-          <PrimaryButton fullWidth>
-            Send Message
-          </PrimaryButton>
-        </div>
-      </BottomSheetDialog>
+      <HelpDialog 
+        isOpen={showHelpDialog} 
+        onClose={() => setShowHelpDialog(false)} 
+        pageName="Admin Dashboard" 
+      />
     </AppLayout>
   );
 }

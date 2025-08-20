@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { IconMenu2, IconUser, IconSearch, IconLogout, IconCrown, IconShieldCheck, IconTool } from '@tabler/icons-react';
+import { IconMenu2, IconUser, IconSearch, IconLogout, IconCrown, IconShieldCheck, IconTool, IconMessage } from '@tabler/icons-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import MessagesDialog from '@/components/ui/MessagesDialog';
 
 interface TopNavigationBarProps {
   title: string;
@@ -23,6 +24,7 @@ const TopNavigationBar = ({
   className = ''
 }: TopNavigationBarProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showMessagesDialog, setShowMessagesDialog] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { user, profile, signOut, isMember, role } = useAuth();
   const router = useRouter();
@@ -140,9 +142,18 @@ const TopNavigationBar = ({
                   </div>
                 </div>
                 
-                
-                
-                <div className="p-2">
+                <div className="p-2 space-y-1">
+                  <button
+                    onClick={() => {
+                      setShowDropdown(false);
+                      setShowMessagesDialog(true);
+                    }}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                  >
+                    <IconMessage size={18} />
+                    <span>Messages</span>
+                  </button>
+                  
                   <button
                     onClick={handleSignOut}
                     className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
@@ -156,6 +167,11 @@ const TopNavigationBar = ({
           </div>
         )}
       </div>
+      
+      <MessagesDialog
+        isOpen={showMessagesDialog}
+        onClose={() => setShowMessagesDialog(false)}
+      />
     </header>
   );
 };

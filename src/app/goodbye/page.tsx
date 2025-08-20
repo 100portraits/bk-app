@@ -1,14 +1,14 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import { MembershipAPI } from '@/lib/membership/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { IconLoader2 } from '@tabler/icons-react';
 
-export default function GoodbyePage() {
+function GoodbyeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { refreshProfile } = useAuth();
@@ -73,5 +73,20 @@ export default function GoodbyePage() {
         </PrimaryButton>
       </div>
     </AppLayout>
+  );
+}
+
+export default function GoodbyePage() {
+  return (
+    <Suspense fallback={
+      <AppLayout title="Membership">
+        <div className="flex flex-col items-center justify-center min-h-[60vh]">
+          <IconLoader2 className="animate-spin mb-4" size={32} />
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </AppLayout>
+    }>
+      <GoodbyeContent />
+    </Suspense>
   );
 }

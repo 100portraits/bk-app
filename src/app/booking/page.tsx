@@ -6,6 +6,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
+import HelpDialog from '@/components/ui/HelpDialog';
 import { mockUser } from '@/lib/placeholderData';
 
 export default function BookingPage() {
@@ -43,25 +44,11 @@ export default function BookingPage() {
         />
       </div>
 
-      <BottomSheetDialog
-        isOpen={showHelpDialog}
-        onClose={() => setShowHelpDialog(false)}
-        title="Help with bookings"
-      >
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Need help with bookings? Describe any issues or questions you have:
-          </p>
-          <textarea
-            className="w-full p-3 border border-gray-200 rounded-lg resize-none"
-            rows={4}
-            placeholder="Write your message here..."
-          />
-          <button className="w-full bg-purple-500 text-white py-3 rounded-lg font-medium hover:bg-purple-600 transition-colors">
-            Send Message
-          </button>
-        </div>
-      </BottomSheetDialog>
+      <HelpDialog 
+        isOpen={showHelpDialog} 
+        onClose={() => setShowHelpDialog(false)} 
+        pageName="Booking" 
+      />
     </AppLayout>
   );
 }
