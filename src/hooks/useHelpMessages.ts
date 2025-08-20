@@ -122,7 +122,14 @@ export function useHelpMessages() {
       .delete()
       .eq('id', id);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Delete error:', error);
+      // Check if it's a permission error
+      if (error.code === '42501' || error.message?.includes('policy')) {
+        throw new Error('You do not have permission to delete this message. Please ensure you have admin privileges.');
+      }
+      throw error;
+    }
     
     setMessages(prev => prev.filter(m => m.id !== id));
   };
