@@ -47,6 +47,12 @@ export default function AdminPage() {
               variant="secondary"
               onClick={() => router.push('/admin/appointments')}
             />
+            <NavigationCard
+              title="Messages"
+              subtitle="Respond to user help requests"
+              variant="secondary"
+              onClick={() => router.push('/admin/messages')}
+            />
           </div>
         </section>
 
