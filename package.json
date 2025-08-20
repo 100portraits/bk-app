@@ -1,6 +1,6 @@
 {
   "name": "bk-app",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -13,6 +13,7 @@
     "@mantine/hooks": "^8.2.5",
     "@mantine/modals": "^8.2.5",
     "@mantine/notifications": "^8.2.5",
+    "@react-email/render": "^1.2.1",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.55.0",
     "@tabler/icons-react": "^3.34.1",

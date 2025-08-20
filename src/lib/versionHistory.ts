@@ -7,6 +7,19 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.7.0',
+    date: '2025-01-21',
+    changes: [
+      'Complete email system integration with Resend',
+      'Automated emails for booking confirmations and cancellations',
+      'Email notifications for admin responses to help messages',
+      'Role change email notifications for team management',
+      'Professional HTML email templates with branding',
+      'Development/production email routing configuration'
+    ],
+    type: 'minor'
+  },
+  {
     version: '0.6.0',
     date: '2025-01-21',
     changes: [
