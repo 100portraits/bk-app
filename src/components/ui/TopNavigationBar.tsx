@@ -78,7 +78,11 @@ const TopNavigationBar = ({
         items-center 
         justify-between
         min-h-[60px]
-        relative
+        
+        sticky
+        top-0
+        z-30 
+        shadow-sm
         ${className}
       `}
     >

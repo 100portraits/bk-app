@@ -1,17 +1,19 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
-import RoleBadge from '@/components/ui/RoleBadge';
 import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
-import WelcomeModal from '@/components/ui/WelcomeModal';
+import DismissableCard from '@/components/ui/DismissableCard';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { IconPlus } from '@tabler/icons-react';
-import { mockUser, quickLinksOptions, widgetOptions } from '@/lib/placeholderData';
+import { quickLinksOptions, widgetOptions } from '@/lib/placeholderData';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function HomePage() {
-  const [showWelcome, setShowWelcome] = useState(true);
+  const { profile } = useAuth();
+  const router = useRouter();
   const [showQuickLinksDialog, setShowQuickLinksDialog] = useState(false);
   const [showWidgetsDialog, setShowWidgetsDialog] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
@@ -22,12 +24,64 @@ export default function HomePage() {
       showUserRoles={false}
     >
       <div className="space-y-6">
+        <DismissableCard
+          id="welcome-message"
+          title="Welcome to the new Bike Kitchen app!"
+          color="purple"
+        >
+          <div className="space-y-2">
+            <p>There may be bugs! Sorry, I'm a team of one :)</p>
+            
+            <p>
+              At the bottom of each page you'll find a 'Help' button, please write to me here I'll try and fix them ASAP. Thanks!
+            </p>
+            
+            <p className="font-medium">- sahir</p>
+          </div>
+        </DismissableCard>
+
+        {!profile?.member && (
+          <DismissableCard
+            id="membership-prompt"
+            title="Are you a Bike Kitchen member?"
+            color="green"
+          >
+            <div>
+              <p className="mb-3 inline">
+                <button
+                onClick={() => router.push('/become-member')}
+                className="text-green-700 underline hover:text-green-800 font-medium inline"
+              >
+                Indicate your membership here
+              </button> <br></br>and access your previous bookings and an event calendar!
+              </p>
+              
+            </div>
+          </DismissableCard>
+        )}
+
         <section>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">My Roles</h2>
           <div className="flex flex-wrap gap-2">
-            {mockUser.roles.map((role) => (
-              <RoleBadge key={role} role={role} />
-            ))}
+            {profile?.member ? (
+              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                Member
+              </span>
+            ) : (
+              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                Non-Member
+              </span>
+            )}
+            {profile?.role && (
+              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium capitalize">
+                {profile.role}
+              </span>
+            )}
+            {!profile?.role && (
+              <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
+                No roles assigned
+              </span>
+            )}
           </div>
         </section>
 
@@ -56,11 +110,6 @@ export default function HomePage() {
           onClick={() => setShowHelpDialog(true)}
         />
       </div>
-
-      <WelcomeModal
-        isOpen={showWelcome}
-        onClose={() => setShowWelcome(false)}
-      />
 
       <BottomSheetDialog
         isOpen={showQuickLinksDialog}
