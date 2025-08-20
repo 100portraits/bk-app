@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase/singleton-client';
-import { Shift } from '@/types/shifts';
+import { Shift, DayOfWeek } from '@/types/shifts';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function useShifts() {
@@ -147,7 +147,7 @@ export function useShifts() {
     }
   };
 
-  const toggleShift = async (date: Date, dayOfWeek: string, startTime: string) => {
+  const toggleShift = async (date: Date, dayOfWeek: DayOfWeek, startTime: string) => {
     const dateStr = date.toISOString().split('T')[0];
     
     // Check if shift already exists
@@ -160,7 +160,7 @@ export function useShifts() {
       // Create new shift
       await createShift({
         date: dateStr,
-        day_of_week: dayOfWeek as any,
+        day_of_week: dayOfWeek,
         start_time: startTime,
         is_open: true
       });
