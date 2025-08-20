@@ -1,6 +1,7 @@
 export interface HelpMessage {
   id: string;
-  user_id: string;
+  user_id?: string;
+  user_name?: string;
   page_name: string;
   message: string;
   created_at: string;

@@ -60,12 +60,25 @@ export function useHelpMessages() {
     message: string;
     context_page?: string;
   }) => {
+    // Get user's name from profile if logged in
+    let userName = null;
+    if (user?.id) {
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('name')
+        .eq('id', user.id)
+        .single();
+      
+      userName = profile?.name;
+    }
+
     const { data, error } = await supabase
       .from('help_messages')
       .insert({
         page_name: message.context_page || 'Unknown',
         message: message.message,
-        user_id: user?.id
+        user_id: user?.id,
+        user_name: userName
       })
       .select()
       .single();

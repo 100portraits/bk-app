@@ -198,7 +198,7 @@ export default function AdminMessagesPage() {
                     <div className="flex items-center gap-2">
                       <IconUser size={16} className="text-gray-600" />
                       <span className="text-sm font-medium text-gray-900">
-                        {message.user_id ? 'Registered User' : 'Anonymous'}
+                        {message.user_name || (message.user_id ? 'Registered User' : 'Anonymous')}
                       </span>
                       {!message.responded_at && (
                         <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
@@ -242,7 +242,14 @@ export default function AdminMessagesPage() {
         {selectedMessage && (
           <div className="space-y-4">
             <div>
-              <span className="text-sm text-gray-600">From:</span>
+              <span className="text-sm text-gray-600">User:</span>
+              <p className="font-medium">
+                {selectedMessage.user_name || (selectedMessage.user_id ? 'Registered User' : 'Anonymous')}
+              </p>
+            </div>
+            
+            <div>
+              <span className="text-sm text-gray-600">Page:</span>
               <p className="font-medium">{selectedMessage.page_name}</p>
             </div>
             
