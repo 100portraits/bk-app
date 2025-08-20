@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase/singleton-client';
-import { HelpMessage } from '@/types/help';
+import { HelpMessage } from '@/types/help-messages';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function useHelpMessages() {
