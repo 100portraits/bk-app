@@ -4,7 +4,8 @@
       "mcp__figma-dev-mode-mcp-server__get_image",
       "Bash(pnpm add:*)",
       "Bash(rm:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

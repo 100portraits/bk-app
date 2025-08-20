@@ -24,7 +24,7 @@ export function useEvents() {
         const { data: eventsData, error: eventsError } = await supabase
           .from('events')
           .select('*')
-          .order('date', { ascending: true })
+          .order('event_date', { ascending: true })
           .order('start_time', { ascending: true });
 
         if (isCancelled) return;
@@ -119,7 +119,7 @@ export function useEvents() {
     if (error) throw error;
     
     setEvents(prev => [...prev, data].sort((a, b) => 
-      a.date.localeCompare(b.date) || a.start_time.localeCompare(b.start_time)
+      a.event_date.localeCompare(b.event_date) || a.start_time.localeCompare(b.start_time)
     ));
     
     return data;
@@ -154,7 +154,7 @@ export function useEvents() {
     const { data, error: fetchError } = await supabase
       .from('events')
       .select('*')
-      .order('date', { ascending: true })
+      .order('event_date', { ascending: true })
       .order('start_time', { ascending: true });
 
     if (fetchError) throw fetchError;
