@@ -24,7 +24,7 @@ export interface QuickLinkAction {
   path?: string; // For navigation actions
   dialogId?: string; // For dialog actions
   icon?: React.ComponentType<{ size?: number; className?: string }>;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'border';
   permissions: {
     requireAuth?: boolean;
     requireMember?: boolean;
@@ -43,7 +43,7 @@ export const quickLinksRegistry: QuickLinkAction[] = [
     type: 'navigation',
     path: '/booking/new',
     icon: IconCalendarEvent,
-    variant: 'primary',
+    variant: 'border',
     permissions: {
       requireAuth: true
     },
@@ -71,7 +71,7 @@ export const quickLinksRegistry: QuickLinkAction[] = [
     type: 'navigation',
     path: '/host/bookings',
     icon: IconCalendarEvent,
-    variant: 'primary',
+    variant: 'border',
     permissions: {
       requireAuth: true,
       allowedRoles: ['host', 'mechanic', 'admin']
@@ -143,7 +143,7 @@ export const quickLinksRegistry: QuickLinkAction[] = [
     type: 'navigation',
     path: '/admin/timeslots',
     icon: IconClock,
-    variant: 'primary',
+    variant: 'border',
     permissions: {
       requireAuth: true,
       allowedRoles: ['admin']
@@ -215,7 +215,7 @@ export const quickLinksRegistry: QuickLinkAction[] = [
     type: 'navigation',
     path: '/membership/events',
     icon: IconCalendarEvent,
-    variant: 'primary',
+    variant: 'border',
     permissions: {
       requireAuth: true,
       requireMember: true

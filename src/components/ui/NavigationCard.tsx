@@ -1,12 +1,11 @@
 import { ReactNode } from 'react';
-import { IconChevronRight } from '@tabler/icons-react';
-import Avatar from './Avatar';
+import { IconChevronRight, IconSquare } from '@tabler/icons-react';
 
 interface NavigationCardProps {
   title: string;
   subtitle: string;
   onClick?: () => void;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'border';
   icon?: ReactNode;
   showChevron?: boolean;
   className?: string;
@@ -23,10 +22,11 @@ const NavigationCard = ({
 }: NavigationCardProps) => {
   const variantClasses = {
     primary: 'bg-purple-500 text-white',
-    secondary: 'bg-white text-gray-700 border border-gray-200'
+    secondary: 'bg-white text-gray-700 border border-gray-200',
+    border: 'bg-purple-50 text-gray-700 border-2 border-purple-500'
   };
 
-  const avatarVariant = variant === 'primary' ? 'primary' : 'secondary';
+  const iconColor = variant === 'primary' ? 'text-purple-200' : 'text-gray-400';
 
   return (
     <button
@@ -46,7 +46,9 @@ const NavigationCard = ({
         ${className}
       `}
     >
-      {icon || <Avatar variant={avatarVariant === 'primary' ? 'secondary' : 'primary'} />}
+      <div className={iconColor}>
+        {icon || <IconSquare size={24} />}
+      </div>
       
       <div className="flex-1">
         <div className="font-medium text-base">{title}</div>
@@ -57,7 +59,7 @@ const NavigationCard = ({
       
       {showChevron && (
         <IconChevronRight 
-          size={20} 
+          size={24} 
           className={variant === 'primary' ? 'text-purple-200' : 'text-gray-400'} 
         />
       )}

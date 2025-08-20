@@ -26,7 +26,7 @@ const BottomSheetDialog = ({
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
         <Drawer.Content
           className={`
-                   bg-white 
+                   ${scrollable ? 'bg-gray-50' : 'bg-white'}
                    flex 
                    flex-col 
                    rounded-t-[10px] 
@@ -46,7 +46,7 @@ const BottomSheetDialog = ({
           <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4 mt-4" />
 
           {title && (
-            <div className="px-6 pb-2">
+            <div className={`px-6  ${scrollable ? 'pb-6 border-b border-gray-200 bg-gray-50' : 'pb-2'}`}>
               <Drawer.Title className="text-4xl font-semibold text-gray-900">
                 {title}
               </Drawer.Title>
@@ -54,7 +54,7 @@ const BottomSheetDialog = ({
           )}
 
           <div className={`
-            px-6 pb-12 pt-2 flex-1
+            px-6 pb-12 flex-1 bg-white ${scrollable ? 'pt-6' : 'pt-2'}
             ${scrollable ? 'overflow-y-auto overflow-x-hidden' : 'overflow-auto'}
           `}>
             <div>

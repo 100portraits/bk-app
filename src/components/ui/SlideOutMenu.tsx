@@ -99,7 +99,7 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
           left-0 
           h-full 
           w-80 
-          bg-purple-100 
+          bg-gray-50
           rounded-r-2xl
           z-50 
           transform 
@@ -124,7 +124,7 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
           
           {/* Accessible items */}
           {accessibleItems.length > 0 && (
-            <div className="space-y-3 mb-6 border-t border-purple-200 pt-4">
+            <div className="space-y-3 mb-6 border-t border-gray-200 pt-4">
               {accessibleItems.map((item) => {
                 // Check if current path matches exactly or starts with the item path
                 const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
@@ -142,8 +142,8 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
                       transition-colors
                       min-h-[56px]
                       ${isActive 
-                        ? 'bg-purple-500 text-white' 
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                        ? 'bg-purple-500 text-white border border-purple-600 hover:bg-purple-600' 
+                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                       }
                     `}
                   >
@@ -157,7 +157,7 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
           {/* Inaccessible items */}
           {inaccessibleItems.length > 0 && (
             <>
-              <div className="border-t border-purple-200 pt-4 mb-3">
+              <div className="border-t border-gray-200 pt-4 mb-3">
                 <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold flex items-center gap-1">
                   <IconLock size={14} />
                   Restricted Access
@@ -197,7 +197,7 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
                         relative
                         ${isActive 
                           ? 'bg-purple-300 text-purple-900 opacity-75' 
-                          : 'bg-white text-gray-900 hover:bg-gray-200 opacity-70'
+                          : 'bg-white text-gray-900 hover:bg-gray-100 opacity-60 border border-gray-200'
                         }
                       `}
                     >

@@ -131,7 +131,7 @@ export default function HomePage() {
                 <QuickLinkCard
                   key={action.id}
                   action={action}
-                  showRemoveButton={editMode}
+                  editMode={editMode}
                   onRemove={() => removeQuickLink(action.id)}
                 />
               ))}
@@ -182,8 +182,8 @@ export default function HomePage() {
                       key={action.id}
                       title={action.title}
                       subtitle={action.subtitle}
-                      variant="secondary"
-                      icon={Icon ? <Icon size={20} /> : undefined}
+                      variant={action.variant || 'secondary'}
+                      icon={Icon ? <Icon size={24} /> : undefined}
                       onClick={() => {
                         if (!isQuickLink(action.id)) {
                           addQuickLink(action.id);
@@ -209,8 +209,8 @@ export default function HomePage() {
                       key={action.id}
                       title={action.title}
                       subtitle={action.subtitle}
-                      variant="secondary"
-                      icon={Icon ? <Icon size={20} /> : undefined}
+                      variant={action.variant || 'secondary'}
+                      icon={Icon ? <Icon size={24} /> : undefined}
                       onClick={() => {
                         if (!isQuickLink(action.id)) {
                           addQuickLink(action.id);
@@ -236,8 +236,8 @@ export default function HomePage() {
                       key={action.id}
                       title={action.title}
                       subtitle={action.subtitle}
-                      variant="secondary"
-                      icon={Icon ? <Icon size={20} /> : undefined}
+                      variant={action.variant || 'secondary'}
+                      icon={Icon ? <Icon size={24} /> : undefined}
                       onClick={() => {
                         if (!isQuickLink(action.id)) {
                           addQuickLink(action.id);
@@ -263,8 +263,8 @@ export default function HomePage() {
                       key={action.id}
                       title={action.title}
                       subtitle={action.subtitle}
-                      variant="secondary"
-                      icon={Icon ? <Icon size={20} /> : undefined}
+                      variant={action.variant || 'secondary'}
+                      icon={Icon ? <Icon size={24} /> : undefined}
                       onClick={() => {
                         if (!isQuickLink(action.id)) {
                           addQuickLink(action.id);

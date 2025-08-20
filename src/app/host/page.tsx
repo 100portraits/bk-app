@@ -7,6 +7,7 @@ import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
 import HelpDialog from '@/components/ui/HelpDialog';
 import { useDialog } from '@/contexts/DialogContext';
+import { IconCalendarEvent, IconUserPlus, IconEye, IconCalendar, IconPackage } from '@tabler/icons-react';
 
 export default function HostPage() {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
@@ -26,31 +27,36 @@ export default function HostPage() {
             <NavigationCard
               title="Today's Bookings"
               subtitle="Manage appointments"
-              variant="primary"
+              variant="border"
+              icon={<IconCalendarEvent size={24} />}
               onClick={() => router.push('/host/bookings')}
             />
             <NavigationCard
               title="Record walk-in"
               subtitle=""
               variant="secondary"
+              icon={<IconUserPlus size={24} />}
               onClick={() => openDialog('record-walkin-dialog')}
             />
             <NavigationCard
               title="See Walk-ins"
               subtitle="View and manage walk-in customers"
               variant="secondary"
+              icon={<IconEye size={24} />}
               onClick={() => router.push('/host/walk-ins')}
             />
             <NavigationCard
               title="Shift Calendar"
               subtitle="View and edit your shifts"
               variant="secondary"
+              icon={<IconCalendar size={24} />}
               onClick={() => router.push('/host/shifts')}
             />
             <NavigationCard
               title="Inventory"
               subtitle="Manage workshop inventory"
               variant="secondary"
+              icon={<IconPackage size={24} />}
               onClick={() => router.push('/host/inventory')}
             />
             

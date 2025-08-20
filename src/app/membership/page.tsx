@@ -8,7 +8,7 @@ import HelpButton from '@/components/ui/HelpButton';
 import HelpDialog from '@/components/ui/HelpDialog';
 import { useRequireMember } from '@/hooks/useAuthorization';
 import { useDialog } from '@/contexts/DialogContext';
-import { IconLoader2 } from '@tabler/icons-react';
+import { IconLoader2, IconCalendarEvent, IconIdBadge2 } from '@tabler/icons-react';
 
 export default function MembershipPage() {
   const { authorized, loading: authLoading } = useRequireMember();
@@ -43,13 +43,15 @@ export default function MembershipPage() {
             <NavigationCard
               title="Event Calendar"
               subtitle="See this month's plan"
-              variant="primary"
+              variant="border"
+              icon={<IconCalendarEvent size={24} />}
               onClick={() => router.push('/membership/events')}
             />
             <NavigationCard
               title="Manage Membership"
               subtitle=""
               variant="secondary"
+              icon={<IconIdBadge2 size={24} />}
               onClick={() => openDialog('manage-membership-dialog')}
             />
           </div>

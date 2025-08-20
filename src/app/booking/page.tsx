@@ -6,6 +6,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
 import HelpDialog from '@/components/ui/HelpDialog';
+import { IconCalendarEvent, IconClipboardList } from '@tabler/icons-react';
 
 export default function BookingPage() {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
@@ -24,13 +25,15 @@ export default function BookingPage() {
             <NavigationCard
               title="Booking form"
               subtitle="Make an appointment"
-              variant="primary"
+              variant="border"
+              icon={<IconCalendarEvent size={24} />}
               onClick={() => router.push('/booking/new')}
             />
             <NavigationCard
               title="Manage bookings"
               subtitle="See upcoming and previous appointments"
               variant="secondary"
+              icon={<IconClipboardList size={24} />}
               onClick={() => router.push('/booking/manage')}
             />
           </div>
