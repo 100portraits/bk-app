@@ -391,4 +391,68 @@ export class BookingsAPI {
     
     return data || [];
   }
+
+  /**
+   * Get a guest booking by ID and email (for guest cancellation)
+   */
+  async getGuestBooking(bookingId: string, email: string): Promise<Booking | null> {
+    const { data, error } = await this.supabase
+      .from('bookings')
+      .select(`
+        *,
+        shift:shifts (
+          date,
+          day_of_week,
+          start_time,
+          end_time
+        )
+      `)
+      .eq('id', bookingId)
+      .eq('email', email)
+      .is('user_id', null)
+      .single();
+    
+    if (error) {
+      console.error('Error fetching guest booking:', error);
+      return null;
+    }
+    
+    return data;
+  }
+
+  /**
+   * Cancel a guest booking (validates email match)
+   */
+  async cancelGuestBooking(bookingId: string, email: string): Promise<void> {
+    // First verify the booking exists and email matches
+    const booking = await this.getGuestBooking(bookingId, email);
+    
+    if (!booking) {
+      throw new Error('Booking not found or email does not match');
+    }
+    
+    if (booking.status === 'cancelled') {
+      throw new Error('Booking is already cancelled');
+    }
+    
+    // Update the booking status
+    const { error } = await this.supabase
+      .from('bookings')
+      .update({ status: 'cancelled' })
+      .eq('id', bookingId)
+      .eq('email', email)
+      .is('user_id', null);
+    
+    if (error) {
+      console.error('Error cancelling guest booking:', error);
+      throw error;
+    }
+    
+    // Send cancellation email (non-blocking)
+    if (booking.shift) {
+      this.sendBookingCancellationEmail(booking as any, email, 'user', 'Cancelled by guest').catch(err => {
+        console.error('Failed to send guest cancellation email:', err);
+      });
+    }
+  }
 }

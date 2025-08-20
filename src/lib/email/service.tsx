@@ -38,6 +38,8 @@ export async function sendBookingConfirmationEmail(
         repairType={data.repairType}
         duration={data.duration}
         isGuest={data.isGuest}
+        bookingId={data.bookingId}
+        email={data.email}
       />,
     });
 

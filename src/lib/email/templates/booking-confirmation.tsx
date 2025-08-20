@@ -6,6 +6,8 @@ interface BookingConfirmationEmailProps {
   repairType: string;
   duration: string;
   isGuest?: boolean;
+  bookingId?: string;
+  email?: string;
 }
 
 export const BookingConfirmationEmail: React.FC<BookingConfirmationEmailProps> = ({
@@ -14,6 +16,8 @@ export const BookingConfirmationEmail: React.FC<BookingConfirmationEmailProps> =
   repairType,
   duration,
   isGuest = false,
+  bookingId,
+  email,
 }) => {
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: '0 auto' }}>
@@ -68,7 +72,7 @@ export const BookingConfirmationEmail: React.FC<BookingConfirmationEmailProps> =
           </div>
         )}
         
-        {!isGuest && (
+        {!isGuest ? (
           <>
             <div style={{ textAlign: 'center', marginTop: '30px' }}>
               <a
@@ -93,6 +97,23 @@ export const BookingConfirmationEmail: React.FC<BookingConfirmationEmailProps> =
               </p>
             </div>
           </>
+        ) : (
+          <div style={{ textAlign: 'center', marginTop: '30px' }}>
+            <a
+              href={`https://bikekitchen.nl/booking/cancel?id=${bookingId}&email=${encodeURIComponent(email || '')}`}
+              style={{
+                backgroundColor: '#ef4444',
+                color: 'white',
+                padding: '12px 30px',
+                borderRadius: '6px',
+                textDecoration: 'none',
+                display: 'inline-block',
+                fontWeight: 'bold'
+              }}
+            >
+              Cancel Your Booking
+            </a>
+          </div>
         )}
       </div>
     </div>
