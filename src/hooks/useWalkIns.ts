@@ -198,7 +198,7 @@ export function useWalkIns() {
     
     setLoading(true);
     try {
-      let query = supabase
+      const query = supabase
         .from('walk_ins')
         .select(`
           *,
