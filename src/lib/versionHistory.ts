@@ -7,6 +7,19 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.6.0',
+    date: '2025-01-21',
+    changes: [
+      'Event poster upload system with Supabase Storage',
+      'Fixed timezone issues with shift scheduling',
+      'Admin messages delete functionality with RLS policies',
+      'Fixed membership cancellation dialog flow',
+      'Improved admin appointments page with accurate shift status',
+      'Enhanced navigation with new icons and UI improvements'
+    ],
+    type: 'minor'
+  },
+  {
     version: '0.5.0',
     date: '2025-01-20',
     changes: [
