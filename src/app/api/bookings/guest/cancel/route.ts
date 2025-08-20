@@ -86,16 +86,34 @@ export async function POST(request: NextRequest) {
       const repairTypeDisplay = getRepairTypeDisplay(booking.repair_type);
       const dateStr = format(parseISO(booking.shift.date), 'EEEE, MMMM d, yyyy');
       
-      sendBookingCancellationEmail({
+      console.log('Sending cancellation email to:', booking.email);
+      console.log('Email data:', {
         email: booking.email,
         date: dateStr,
         time: booking.slot_time.substring(0, 5),
         repairType: repairTypeDisplay,
         cancelledBy: 'user',
         reason: 'Cancelled by guest'
-      }).catch(err => {
-        console.error('Failed to send cancellation email:', err);
       });
+      
+      const emailResult = await sendBookingCancellationEmail({
+        email: booking.email,
+        date: dateStr,
+        time: booking.slot_time.substring(0, 5),  
+        repairType: repairTypeDisplay,
+        cancelledBy: 'user',
+        reason: 'Cancelled by guest'
+      });
+      
+      console.log('Cancellation email result:', emailResult);
+      
+      if (!emailResult.success) {
+        console.error('Failed to send cancellation email:', emailResult.error);
+        // Note: We don't throw here because the booking is already cancelled
+        // Email failure shouldn't prevent the cancellation from succeeding
+      }
+    } else {
+      console.log('No shift data found for booking, skipping email');
     }
     
     return NextResponse.json({ 
