@@ -56,16 +56,16 @@ export function useHelpMessages() {
   }, [user?.id]);
 
   const createMessage = async (message: {
-    category: string;
+    category?: string;
     message: string;
     context_page?: string;
   }) => {
     const { data, error } = await supabase
       .from('help_messages')
       .insert({
-        ...message,
-        user_id: user?.id,
-        status: 'pending'
+        page_name: message.context_page || 'Unknown',
+        message: message.message,
+        user_id: user?.id
       })
       .select()
       .single();
@@ -90,11 +90,16 @@ export function useHelpMessages() {
     return data;
   };
 
-  const resolveMessage = async (id: string, resolution?: string) => {
+  const respondToMessage = async (id: string, response: string) => {
     return updateMessage(id, {
-      status: 'resolved',
-      resolution,
-      resolved_at: new Date().toISOString()
+      response,
+      responded_at: new Date().toISOString()
+    });
+  };
+  
+  const markAsRead = async (id: string) => {
+    return updateMessage(id, {
+      read_at: new Date().toISOString()
     });
   };
 
@@ -140,7 +145,8 @@ export function useHelpMessages() {
     error,
     createMessage,
     updateMessage,
-    resolveMessage,
+    respondToMessage,
+    markAsRead,
     deleteMessage,
     refresh
   };
