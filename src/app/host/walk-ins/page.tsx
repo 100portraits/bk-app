@@ -22,16 +22,12 @@ export default function WalkInsPage() {
   const { authorized, loading: authLoading } = useRequireRole(['host', 'mechanic', 'admin']);
   const { profile } = useAuth();
   const { 
-    loading: walkInsLoading, 
-    error: walkInsError, 
     updateWalkIn, 
     deleteWalkIn, 
     getWalkInsByDate, 
     getWalkInStats 
   } = useWalkIns();
   const { 
-    loading: shiftsLoading, 
-    error: shiftsError, 
     getShifts 
   } = useShifts();
   

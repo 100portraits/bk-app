@@ -13,9 +13,6 @@ import { useShifts } from '@/hooks/useShifts';
 import { Shift } from '@/types/shifts';
 import { 
   format, 
-  eachDayOfInterval,
-  getDay,
-  isSameDay,
   startOfToday,
   addWeeks
 } from 'date-fns';
@@ -25,9 +22,7 @@ export default function ShiftCalendarPage() {
   const { authorized, loading: authLoading } = useRequireRole(['host', 'mechanic', 'admin']);
   const { user, profile, role } = useAuth();
   const { 
-    shifts, 
     loading, 
-    error, 
     getShifts, 
     toggleShiftSignup: toggleShiftSignupAPI, 
     refresh 

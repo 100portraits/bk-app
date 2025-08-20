@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import Avatar from './Avatar';
 import StatusIndicator from './StatusIndicator';
 

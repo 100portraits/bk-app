@@ -12,6 +12,7 @@ import { useEvents } from '@/hooks/useEvents';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
 import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp } from '@tabler/icons-react';
+import Image from 'next/image';
 
 export default function EventCalendarPage() {
   const { authorized, loading: authLoading } = useRequireMember();
@@ -21,7 +22,6 @@ export default function EventCalendarPage() {
   const { 
     events, 
     loading, 
-    error: eventsError 
   } = useEvents();
 
   // Events are loaded automatically by the hook
@@ -140,7 +140,7 @@ export default function EventCalendarPage() {
 
             {selectedEvent.poster_url && (
               <div className="bg-purple-50 p-4 rounded-lg">
-                <img 
+                <Image 
                   src={selectedEvent.poster_url} 
                   alt={selectedEvent.title}
                   className="w-full rounded-lg"

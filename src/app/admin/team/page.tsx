@@ -25,10 +25,8 @@ export default function ManageTeamPage() {
   const { 
     teamMembers, 
     loading, 
-    error: teamError, 
     updateMemberRole, 
     removeMember, 
-    refresh 
   } = useTeam();
 
   // Team members are loaded automatically by the hook

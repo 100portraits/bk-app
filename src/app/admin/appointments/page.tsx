@@ -11,20 +11,17 @@ import { useBookings } from '@/hooks/useBookings';
 import { useShifts } from '@/hooks/useShifts';
 import { Booking } from '@/types/bookings';
 import { Shift } from '@/types/shifts';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 
 export default function ManageAppointmentsPage() {
   const { authorized, loading: authLoading } = useRequireRole(['admin']);
   const { 
-    loading: bookingsLoading, 
-    error: bookingsError, 
+
     updateBookingStatus, 
     cancelBooking, 
     getShiftBookings 
   } = useBookings();
   const { 
-    loading: shiftsLoading, 
-    error: shiftsError, 
     getShifts 
   } = useShifts();
   

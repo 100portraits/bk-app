@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { IconEdit } from '@tabler/icons-react';
 import Avatar from './Avatar';
 

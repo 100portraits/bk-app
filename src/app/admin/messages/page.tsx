@@ -5,7 +5,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
-import { IconLoader2, IconMessage, IconCheck, IconClock, IconUser, IconReply, IconTrash, IconAlertCircle } from '@tabler/icons-react';
+import { IconLoader2, IconMessage, IconCheck, IconUser, IconTrash, IconAlertCircle, IconCornerUpLeft } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useHelpMessages } from '@/hooks/useHelpMessages';
 import { HelpMessage } from '@/types/help-messages';
@@ -16,7 +16,6 @@ export default function AdminMessagesPage() {
   const { 
     messages, 
     loading, 
-    error,
     respondToMessage,
     markAsRead,
     deleteMessage,
@@ -275,7 +274,7 @@ export default function AdminMessagesPage() {
             
             <div className="flex gap-3">
               <PrimaryButton
-                icon={<IconReply size={18} />}
+                icon={<IconCornerUpLeft size={18} />}
                 onClick={handleRespond}
                 fullWidth
               >

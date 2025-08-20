@@ -15,7 +15,6 @@ export default function MessagesDialog({ isOpen, onClose }: MessagesDialogProps)
   const { 
     messages, 
     loading, 
-    error: messagesError 
   } = useHelpMessages();
 
   // Messages are loaded automatically by the hook

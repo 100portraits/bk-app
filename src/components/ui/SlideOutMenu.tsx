@@ -29,10 +29,10 @@ const menuItems: MenuItem[] = [
   { label: 'Become a member', path: '/become-member', requireNonMember: true }
 ];
 
-const SlideOutMenu = ({ isOpen, onClose, currentPath }: SlideOutMenuProps) => {
+const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
   const router = useRouter();
   const { closeMenu } = useMenu();
-  const { user, isMember, role, canAccess } = useAuth();
+  const { user, isMember, role } = useAuth();
 
   const handleNavigation = (path: string) => {
     // Navigate immediately for snappy UX

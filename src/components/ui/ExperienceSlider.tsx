@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { IconGripVertical } from '@tabler/icons-react';
 import { clamp, useMove } from '@mantine/hooks';
 

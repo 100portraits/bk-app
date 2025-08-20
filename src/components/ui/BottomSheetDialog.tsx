@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { Modal } from '@mantine/core';
 import { Drawer } from 'vaul'
 
 interface BottomSheetDialogProps {

@@ -26,7 +26,7 @@ const TopNavigationBar = ({
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMessagesDialog, setShowMessagesDialog] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { user, profile, signOut, isMember, role } = useAuth();
+  const { user, signOut, isMember, role } = useAuth();
   const router = useRouter();
   
   const getRoleIcon = () => {

@@ -9,22 +9,21 @@ import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import TextInput from '@/components/ui/TextInput';
-import { IconPaperclip, IconEdit, IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff } from '@tabler/icons-react';
+import { IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useEvents } from '@/hooks/useEvents';
 import { Event, CreateEventInput } from '@/types/events';
 import { format, parseISO } from 'date-fns';
+import Image from 'next/image';
 
 export default function ManageEventsPage() {
   const { authorized, loading: authLoading } = useRequireRole(['admin']);
   const { 
     events, 
     loading, 
-    error, 
     createEvent, 
     updateEvent, 
     deleteEvent, 
-    refresh 
   } = useEvents();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -627,7 +626,7 @@ export default function ManageEventsPage() {
             {selectedEvent.poster_url && (
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-600 mb-2">Event Poster:</p>
-                <img 
+                <Image 
                   src={selectedEvent.poster_url} 
                   alt={selectedEvent.title}
                   className="w-full rounded-lg"

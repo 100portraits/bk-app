@@ -16,7 +16,7 @@ export class MembershipAPI {
 
 
     // First check if the profile exists
-    const { data: existingProfile, error: fetchError } = await this.supabase
+    const { data: existingProfile } = await this.supabase
       .from('user_profiles')
       .select('*')
       .eq('id', user.id)

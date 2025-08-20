@@ -6,14 +6,12 @@ import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
-import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconAlertCircle, IconX, IconCheck, IconBike } from '@tabler/icons-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconAlertCircle, IconX, IconBike } from '@tabler/icons-react';
 import { useBookings } from '@/hooks/useBookings';
 import { Booking } from '@/types/bookings';
 import { format, parseISO, isPast, isFuture } from 'date-fns';
 
 export default function ManageBookingsPage() {
-  const { user, profile } = useAuth();
   const router = useRouter();
   const { bookings, loading, error, cancelBooking, refresh } = useBookings();
   

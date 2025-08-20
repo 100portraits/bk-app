@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client';
 import { WalkIn, CreateWalkInInput, UpdateWalkInInput } from '@/types/walk-ins';
-import { format, startOfDay, endOfDay } from 'date-fns';
+import { startOfDay, endOfDay } from 'date-fns';
 
 export class WalkInsAPI {
   private supabase = createClient();

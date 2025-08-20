@@ -23,7 +23,6 @@ export function useMembership() {
         .from('user_profiles')
         .update({
           member: true,
-          member_since: new Date().toISOString(),
           ...additionalInfo
         })
         .eq('id', user.id);
@@ -53,8 +52,7 @@ export function useMembership() {
       const { error: updateError } = await supabase
         .from('user_profiles')
         .update({
-          member: false,
-          member_since: null
+          member: false
         })
         .eq('id', user.id);
 
@@ -79,15 +77,14 @@ export function useMembership() {
     try {
       const { data, error } = await supabase
         .from('user_profiles')
-        .select('member, member_since')
+        .select('member')
         .eq('id', user.id)
         .single();
 
       if (error) throw error;
 
       return {
-        isMember: data.member,
-        memberSince: data.member_since
+        isMember: data.member
       };
     } catch (err) {
       console.error('Error checking membership:', err);
@@ -97,7 +94,6 @@ export function useMembership() {
 
   return {
     isMember: profile?.member || false,
-    memberSince: profile?.member_since,
     loading,
     error,
     becomeMember,

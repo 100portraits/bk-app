@@ -9,26 +9,20 @@ import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import { IconCheck, IconX, IconLoader2, IconUser, IconClock, IconTools, IconChevronLeft, IconChevronRight, IconCalendarEvent, IconEdit } from '@tabler/icons-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useBookings } from '@/hooks/useBookings';
 import { useShifts } from '@/hooks/useShifts';
 import { Booking } from '@/types/bookings';
 import { Shift } from '@/types/shifts';
-import { format, parseISO, isToday } from 'date-fns';
+import { format, isToday } from 'date-fns';
 
 export default function UpcomingBookingsPage() {
-  const { user } = useAuth();
   const { authorized, loading: authLoading } = useRequireRole(['mechanic', 'host', 'admin']);
   const { 
-    loading: bookingsLoading, 
-    error: bookingsError, 
     updateBookingStatus, 
     getShiftBookings 
   } = useBookings();
   const { 
-    loading: shiftsLoading, 
-    error: shiftsError, 
     getShifts 
   } = useShifts();
   

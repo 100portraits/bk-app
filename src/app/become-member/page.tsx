@@ -5,16 +5,13 @@ import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
-import Avatar from '@/components/ui/Avatar';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { IconExternalLink, IconAlertCircle, IconLoader2 } from '@tabler/icons-react';
 import { useMembership } from '@/hooks/useMembership';
-import { useAuth } from '@/contexts/AuthContext';
 
 export default function BecomeMemberPage() {
   const router = useRouter();
-  const { refreshProfile } = useAuth();
-  const { becomeMember, loading } = useMembership();
+  const { becomeMember } = useMembership();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 

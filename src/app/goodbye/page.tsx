@@ -5,13 +5,11 @@ import { useEffect, useState, Suspense } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import { useMembership } from '@/hooks/useMembership';
-import { useAuth } from '@/contexts/AuthContext';
 import { IconLoader2 } from '@tabler/icons-react';
 
 function GoodbyeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { refreshProfile } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const { cancelMembership } = useMembership();

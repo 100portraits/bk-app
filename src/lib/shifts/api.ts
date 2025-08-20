@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client';
-import { Shift, DayOfWeek, ShiftUser } from '@/types/shifts';
-import { startOfWeek, endOfWeek, format, addWeeks } from 'date-fns';
+import { Shift, DayOfWeek } from '@/types/shifts';
+import { startOfWeek, endOfWeek, format } from 'date-fns';
 
 export class ShiftsAPI {
   private supabase = createClient();

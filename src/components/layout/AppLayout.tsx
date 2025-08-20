@@ -1,6 +1,5 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import { useMenu } from '@/contexts/MenuContext';
 import TopNavigationBar from '../ui/TopNavigationBar';
 import RoleBadge from '../ui/RoleBadge';
@@ -19,11 +18,9 @@ const AppLayout = ({
   title, 
   showUserRoles = false,
   userRoles = [],
-  showBackButton = false,
   showSearchIcon = false
 }: AppLayoutProps) => {
   const { openMenu } = useMenu();
-  const pathname = usePathname();
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -119,17 +119,21 @@ export function useWalkIns(shiftId?: string) {
     setWalkIns(prev => prev.filter(w => w.id !== id));
   };
 
+  // Note: status tracking is not available in the current schema
+  // These functions are kept for potential future use
   const startService = async (id: string) => {
+    // Status field doesn't exist in walk_ins table
+    // Could potentially use notes field to track status
     return updateWalkIn(id, {
-      status: 'in_progress',
-      start_time: new Date().toISOString()
+      notes: 'Service in progress'
     });
   };
 
   const completeService = async (id: string) => {
+    // Status field doesn't exist in walk_ins table
+    // Could potentially use notes field to track status
     return updateWalkIn(id, {
-      status: 'completed',
-      end_time: new Date().toISOString()
+      notes: 'Service completed'
     });
   };
 

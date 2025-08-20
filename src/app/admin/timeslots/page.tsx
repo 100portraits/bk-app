@@ -4,10 +4,8 @@ import { useState, useEffect } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import CalendarWidget from '@/components/ui/CalendarWidget';
 import HelpButton from '@/components/ui/HelpButton';
-import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
-import PillButton from '@/components/ui/PillButton';
 import { useRequireAdmin } from '@/hooks/useAuthorization';
 import { useShifts } from '@/hooks/useShifts';
 import { Shift, DayOfWeek, DEFAULT_SHIFTS } from '@/types/shifts';
@@ -18,8 +16,7 @@ import {
   isSameDay,
   startOfToday,
   addWeeks,
-  isAfter,
-  isBefore
+
 } from 'date-fns';
 import { IconLoader2 } from '@tabler/icons-react';
 
@@ -28,9 +25,6 @@ export default function ManageTimeslotsPage() {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const { 
-    shifts, 
-    loading: shiftsLoading, 
-    error: shiftsError, 
     getShifts, 
     toggleShift 
   } = useShifts();

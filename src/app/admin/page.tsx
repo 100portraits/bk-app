@@ -5,9 +5,7 @@ import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
 import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
-import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import HelpDialog from '@/components/ui/HelpDialog';
-import PrimaryButton from '@/components/ui/PrimaryButton';
 
 export default function AdminPage() {
   const [showHelpDialog, setShowHelpDialog] = useState(false);

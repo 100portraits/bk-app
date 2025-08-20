@@ -16,13 +16,12 @@ import { useMembership } from '@/hooks/useMembership';
 
 export default function MembershipPage() {
   const { authorized, loading: authLoading } = useRequireMember();
-  const { profile, refreshProfile } = useAuth();
+  const { profile } = useAuth();
   const [showManageMembership, setShowManageMembership] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const router = useRouter();
-  const { cancelMembership } = useMembership();
 
   if (authLoading) {
     return (
@@ -39,8 +38,10 @@ export default function MembershipPage() {
   }
 
   const handleCancelMembership = () => {
+    setIsCancelling(true);
     // Navigate to goodbye page with a query parameter to indicate cancellation
     router.push('/goodbye?cancel=true');
+    
   };
 
   return (

@@ -5,9 +5,7 @@ import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
 import NavigationCard from '@/components/ui/NavigationCard';
 import HelpButton from '@/components/ui/HelpButton';
-import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import HelpDialog from '@/components/ui/HelpDialog';
-import { mockUser } from '@/lib/placeholderData';
 
 export default function BookingPage() {
   const [showHelpDialog, setShowHelpDialog] = useState(false);

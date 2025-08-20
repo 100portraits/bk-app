@@ -16,18 +16,16 @@ import { IconInfoCircle, IconLoader2, IconCheck, IconPencil, IconBrandGoogle, Ic
 import { useAuth } from '@/contexts/AuthContext';
 import { useAvailableSlots } from '@/hooks/useAvailableSlots';
 import { TimeSlot, toDbRepairType, getRepairDuration, RepairDetails } from '@/types/bookings';
-import { format } from 'date-fns';
 
 export default function BookingFormPage() {
   const { user, profile } = useAuth();
   const router = useRouter();
-  const { loading, error, getAvailableSlots, getAvailableDates, createBooking } = useAvailableSlots();
+  const { getAvailableSlots, getAvailableDates, createBooking } = useAvailableSlots();
   
   const [currentSection, setCurrentSection] = useState(1);
   const [experienceLevel, setExperienceLevel] = useState(1);
   const [repairTypes, setRepairTypes] = useState<string[]>([]);
   const [bikeType, setBikeType] = useState('');
-  const [component, setComponent] = useState('');
   const [wheelPosition, setWheelPosition] = useState('');
   const [brakeType, setBrakeType] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -369,7 +367,6 @@ export default function BookingFormPage() {
                   setBikeType('');
                   setWheelPosition('');
                   setBrakeType('');
-                  setComponent('');
                 }}
                 singleSelect={true}
                 disabled={repairLocked}

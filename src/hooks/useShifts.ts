@@ -157,11 +157,17 @@ export function useShifts() {
       // Toggle is_open status
       await updateShift(existingShift.id, { is_open: !existingShift.is_open });
     } else {
+      // Calculate end time (4 hours after start time)
+      const [hours, minutes] = startTime.split(':').map(Number);
+      const endHours = hours + 4;
+      const endTime = `${endHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      
       // Create new shift
       await createShift({
         date: dateStr,
         day_of_week: dayOfWeek,
         start_time: startTime,
+        end_time: endTime,
         is_open: true
       });
     }
