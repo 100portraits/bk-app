@@ -88,7 +88,11 @@ export class WalkInsAPI {
    * Update a walk-in record
    */
   async updateWalkIn(id: string, input: UpdateWalkInInput): Promise<WalkIn> {
-    const updateData: any = {};
+    const updateData: Partial<{
+      is_community_member: boolean;
+      amount_paid: number | null;
+      notes: string | null;
+    }> = {};
     
     if (input.is_community_member !== undefined) {
       updateData.is_community_member = input.is_community_member;
