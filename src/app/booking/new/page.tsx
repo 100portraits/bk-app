@@ -12,7 +12,7 @@ import ToggleSelector from '@/components/ui/ToggleSelector';
 import TextInput from '@/components/ui/TextInput';
 import PillButton from '@/components/ui/PillButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
-import { IconInfoCircle, IconLoader2, IconCheck, IconPencil, IconBrandGoogle, IconBrandWindows, IconBrandApple } from '@tabler/icons-react';
+import { IconInfoCircle, IconLoader2, IconCheck, IconPencil, IconBrandGoogle, IconBrandWindows, IconBrandApple, IconClock } from '@tabler/icons-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAvailableSlots } from '@/hooks/useAvailableSlots';
 import { TimeSlot, toDbRepairType, getRepairDuration, RepairDetails } from '@/types/bookings';
@@ -338,7 +338,7 @@ export default function BookingFormPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <span className="text-gray-700">How much experience do you have fixing bikes?</span>
-                <IconInfoCircle size={16} className="text-gray-400" />
+                
                 {repairLocked && (
                   <span className="text-xs text-green-600 font-medium">(Confirmed)</span>
                 )}
@@ -355,7 +355,7 @@ export default function BookingFormPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <span className="text-gray-700">Which part of your bike needs repair?</span>
-                <IconInfoCircle size={16} className="text-gray-400" />
+                
                 {repairLocked && (
                   <span className="text-xs text-green-600 font-medium">(Confirmed)</span>
                 )}
@@ -403,7 +403,7 @@ export default function BookingFormPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <span className="text-gray-700">Is it the front or rear tire/tube?</span>
-                    <IconInfoCircle size={16} className="text-gray-400" />
+                    
                   </div>
                   <ToggleSelector
                     options={[
@@ -418,7 +418,7 @@ export default function BookingFormPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
-                    <IconInfoCircle size={16} className="text-gray-400" />
+                    
                   </div>
                   <ToggleSelector
                     options={[
@@ -437,7 +437,7 @@ export default function BookingFormPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
-                  <IconInfoCircle size={16} className="text-gray-400" />
+                  
                 </div>
                 <ToggleSelector
                   options={[
@@ -455,7 +455,7 @@ export default function BookingFormPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <span className="text-gray-700">What type of brakes does your bike have?</span>
-                  <IconInfoCircle size={16} className="text-gray-400" />
+                  
                 </div>
                 <ToggleSelector
                   options={[
@@ -474,7 +474,7 @@ export default function BookingFormPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
-                  <IconInfoCircle size={16} className="text-gray-400" />
+                  
                 </div>
                 <ToggleSelector
                   options={[
@@ -488,17 +488,22 @@ export default function BookingFormPage() {
             )}
 
             <div className="p-4 bg-blue-50 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <IconInfoCircle size={16} className="text-blue-500" />
-                <span className="text-sm text-blue-700">about these questions</span>
+                <div className="flex items-center gap-2 mb-2">
+                  <IconClock size={16} className="text-blue-500" />
+                  <span className="text-sm text-blue-700">Your repair will take around {getEstimatedTime()}.</span>
+                </div>
               </div>
-              <p className="text-sm text-gray-700 mb-2">
-                Your repair will take around {getEstimatedTime()}.
-              </p>
-              <p className="text-xs text-gray-600">
-                Keep in mind that this is an estimate - we don't like to rush at the Bike Kitchen!
-              </p>
-            </div>
+
+              <div className="p-4 bg-orange-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <IconInfoCircle size={16} className="text-orange-500" />
+                  <span className="text-sm text-orange-700">Why these questions?</span>
+                </div>
+                <p className="text-sm text-gray-700 mb-2">
+                  Repairing city bikes often takes longer, especially when dealing with the rear wheel. Taking apart brakes, shifters and chain guards can take most of the time.
+                </p>
+
+              </div>
 
             {currentSection === 3 && (
               (selectedRepairType === 'Tire/Tube' && wheelPosition && bikeType) ||
