@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
     }
     
     const result = await sendBookingConfirmationEmail(data);
+    console.log('API - Booking confirmation email result:', result);
     
     if (!result.success) {
       return NextResponse.json(
