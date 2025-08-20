@@ -37,6 +37,7 @@ export default function ManageAppointmentsPage() {
   const [deleting, setDeleting] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [editStatus, setEditStatus] = useState<Booking['status']>('confirmed');
+  const [cancellationReason, setCancellationReason] = useState('');
 
   useEffect(() => {
     if (authorized) {
@@ -96,12 +97,14 @@ export default function ManageAppointmentsPage() {
     
     setDeleting(true);
     try {
-      await cancelBooking(selectedBooking.id, 'admin', 'Cancelled by administrator');
+      const reason = cancellationReason.trim() || 'Cancelled by administrator';
+      await cancelBooking(selectedBooking.id, 'admin', reason);
       if (currentShift) {
         await loadBookingsForShift(currentShift);
       }
       setShowDeleteDialog(false);
       setSelectedBooking(null);
+      setCancellationReason('');
     } catch (error) {
       console.error('Error deleting booking:', error);
       alert('Failed to delete booking. Please try again.');
@@ -269,7 +272,12 @@ export default function ManageAppointmentsPage() {
                       <div className="space-y-1 text-sm text-gray-600">
                         <div className="flex items-center gap-2">
                           <IconUser size={16} />
-                          <span>{booking.user?.email || 'Unknown user'}</span>
+                          <div className="flex flex-col">
+                            {booking.name && (
+                              <span className="font-medium text-gray-900">{booking.name}</span>
+                            )}
+                            <span>{booking.user?.email || booking.email || 'Unknown user'}</span>
+                          </div>
                           {booking.is_member && (
                             <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
                               Member
@@ -331,14 +339,17 @@ export default function ManageAppointmentsPage() {
                 <p className="font-medium text-gray-900">
                   {getRepairTypeDisplay(selectedBooking.repair_type)} - {selectedBooking.slot_time.slice(0, 5)}
                 </p>
-                <p className="text-gray-600 mt-1">
-                  {selectedBooking.user?.email}
+                <div className="text-gray-600 mt-1">
+                  {selectedBooking.name && (
+                    <p className="font-medium text-gray-900">{selectedBooking.name}</p>
+                  )}
+                  <p>{selectedBooking.user?.email || selectedBooking.email}</p>
                   {selectedBooking.is_member && (
-                    <span className="ml-2 px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
+                    <span className="ml-0 mt-1 inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
                       Member
                     </span>
                   )}
-                </p>
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -408,9 +419,25 @@ export default function ManageAppointmentsPage() {
                 {getRepairTypeDisplay(selectedBooking.repair_type)} Repair
               </p>
               <p>Time: {selectedBooking.slot_time.slice(0, 5)}</p>
-              <p>Customer: {selectedBooking.user?.email}</p>
+              <p>Customer: {selectedBooking.name ? `${selectedBooking.name} (${selectedBooking.user?.email || selectedBooking.email})` : (selectedBooking.user?.email || selectedBooking.email)}</p>
             </div>
           )}
+
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Reason for cancellation (optional):
+            </label>
+            <textarea
+              value={cancellationReason}
+              onChange={(e) => setCancellationReason(e.target.value)}
+              className="w-full p-3 border border-gray-200 rounded-lg resize-none"
+              rows={3}
+              placeholder="e.g., Equipment maintenance, Customer request, Emergency closure..."
+            />
+            <p className="text-xs text-gray-500">
+              This reason will be included in the cancellation email sent to the customer.
+            </p>
+          </div>
 
           <div className="flex gap-3">
             <SecondaryButton

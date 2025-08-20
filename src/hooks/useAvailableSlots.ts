@@ -170,11 +170,13 @@ export function useAvailableSlots() {
     try {
       let userId = null;
       
-      // If user is logged in, get their profile
+      // If user is logged in, get their profile and use their name if available
+      let userName = input.name; // Use provided name as default
+      
       if (user) {
         const { data: userProfile } = await supabase
           .from('user_profiles')
-          .select('id')
+          .select('id, name')
           .eq('id', user.id)
           .single();
         
@@ -182,6 +184,10 @@ export function useAvailableSlots() {
           throw new Error('User profile not found');
         }
         userId = userProfile.id;
+        // For authenticated users, use their profile name if they don't have a name set
+        if (!userName && userProfile.name) {
+          userName = userProfile.name;
+        }
       }
       
       const { data, error } = await supabase
@@ -189,6 +195,7 @@ export function useAvailableSlots() {
         .insert({
           user_id: userId, // null for guest bookings
           email: input.email, // always save the email
+          name: userName, // save name if provided
           shift_id: input.shift_id,
           slot_time: `${input.slot_time}:00`, // Convert HH:MM to HH:MM:SS
           duration_minutes: input.duration_minutes,

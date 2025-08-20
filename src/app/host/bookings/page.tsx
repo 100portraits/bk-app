@@ -215,7 +215,7 @@ export default function UpcomingBookingsPage() {
               {bookings.map((booking) => (
                 <BookingListItem
                   key={booking.id}
-                  customerName={booking.user?.email || 'Unknown'}
+                  customerName={booking.name || booking.user?.name || booking.user?.email || 'Unknown'}
                   time={booking.slot_time.slice(0, 5)}
                   repairDetails={`${getRepairTypeDisplay(booking.repair_type)} (${booking.duration_minutes} min)`}
                   status={getStatusColor(booking.status)}
@@ -253,7 +253,12 @@ export default function UpcomingBookingsPage() {
               </h3>
               <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
                 <IconUser size={16} />
-                <span>{selectedBooking.user?.email}</span>
+                <div className="flex flex-col">
+                  {selectedBooking.name && (
+                    <span className="font-medium text-gray-900">{selectedBooking.name}</span>
+                  )}
+                  <span>{selectedBooking.user?.email || selectedBooking.email}</span>
+                </div>
                 {selectedBooking.is_member && (
                   <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
                     Member

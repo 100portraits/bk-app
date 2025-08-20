@@ -157,7 +157,7 @@ export class BookingsAPI {
   async createBooking(input: CreateBookingInput): Promise<Booking> {
     const { data: userProfile } = await this.supabase
       .from('user_profiles')
-      .select('id, email')
+      .select('id, email, name')
       .single();
     
     if (!userProfile) {
@@ -176,7 +176,8 @@ export class BookingsAPI {
         notes: input.notes,
         status: 'confirmed',
         is_member: input.is_member || false,
-        email: userProfile.email // Store email for reference
+        email: userProfile.email, // Store email for reference
+        name: userProfile.name // Store name from profile if available
       })
       .select(`
         *,

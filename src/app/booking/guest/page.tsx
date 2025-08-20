@@ -30,6 +30,7 @@ export default function GuestBookingPage() {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedShiftId, setSelectedShiftId] = useState('');
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [disclaimerText, setDisclaimerText] = useState('');
   const [repairLocked, setRepairLocked] = useState(false);
@@ -262,7 +263,8 @@ export default function GuestBookingPage() {
         repair_details: repairDetails,
         notes: disclaimerText || undefined,
         is_member: false,
-        email: email // Pass the guest's email
+        email: email, // Pass the guest's email
+        name: name.trim() || undefined // Pass the guest's name if provided
       });
 
       // Send confirmation email for guest booking
@@ -634,7 +636,22 @@ export default function GuestBookingPage() {
               </div>
 
               <div className="space-y-4">
-                <h3 className="font-medium text-gray-800">Enter your email address:</h3>
+                <h3 className="font-medium text-gray-800">Enter your details:</h3>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Your name (optional)
+                  </label>
+                  <TextInput
+                    type="text"
+                    value={name}
+                    onChange={setName}
+                    fullWidth
+                    placeholder="Your name"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    This helps us identify you when you arrive.
+                  </p>
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Email address
@@ -745,6 +762,7 @@ export default function GuestBookingPage() {
                       setSelectedDate(undefined);
                       setSelectedTime('');
                       setEmail('');
+                      setName('');
                       setBookingCreated(false);
                       setRepairLocked(false);
                     }}
