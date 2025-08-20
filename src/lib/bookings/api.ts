@@ -205,7 +205,11 @@ export class BookingsAPI {
   /**
    * Helper method to send booking confirmation email
    */
-  private async sendBookingConfirmationEmail(booking: any, email: string, isGuest: boolean) {
+  private async sendBookingConfirmationEmail(
+    booking: Booking & { shift: { date: string; day_of_week: string; start_time: string; end_time: string } },
+    email: string, 
+    isGuest: boolean
+  ) {
     try {
       const repairTypeDisplay = this.getRepairTypeDisplay(booking.repair_type);
       const date = format(parseISO(booking.shift.date), 'EEEE, MMMM d, yyyy');
@@ -318,7 +322,7 @@ export class BookingsAPI {
    * Helper method to send booking cancellation email
    */
   private async sendBookingCancellationEmail(
-    booking: any, 
+    booking: Booking & { shift: { date: string; day_of_week: string; start_time: string; end_time: string } },
     email: string, 
     cancelledBy: 'user' | 'admin',
     reason?: string
