@@ -450,7 +450,10 @@ export class BookingsAPI {
     
     // Send cancellation email (non-blocking)
     if (booking.shift) {
-      this.sendBookingCancellationEmail(booking as any, email, 'user', 'Cancelled by guest').catch(err => {
+      const bookingWithShift = booking as Booking & { 
+        shift: { date: string; day_of_week: string; start_time: string; end_time: string } 
+      };
+      this.sendBookingCancellationEmail(bookingWithShift, email, 'user', 'Cancelled by guest').catch(err => {
         console.error('Failed to send guest cancellation email:', err);
       });
     }
