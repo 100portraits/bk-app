@@ -15,7 +15,8 @@ export interface RepairDetails {
 
 export interface Booking {
   id: string;
-  user_id: string;
+  user_id: string | null; // null for guest bookings
+  email: string; // email for all bookings (required)
   shift_id: string;
   slot_time: string; // HH:MM:SS format
   duration_minutes: number;
@@ -48,6 +49,7 @@ export interface CreateBookingInput {
   repair_details: RepairDetails;
   notes?: string;
   is_member?: boolean;
+  email: string; // Email for all bookings (required)
 }
 
 export interface TimeSlot {

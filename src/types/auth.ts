@@ -3,6 +3,7 @@ export type UserRole = 'host' | 'mechanic' | 'admin' | null;
 export interface UserProfile {
   id: string;
   email: string;
+  name: string;
   member: boolean;
   role: UserRole;
   created_at?: string;

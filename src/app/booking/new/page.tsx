@@ -272,7 +272,8 @@ export default function BookingFormPage() {
         repair_type: toDbRepairType(selectedRepairType),
         repair_details: repairDetails,
         notes: disclaimerText || undefined,
-        is_member: profile?.member || false
+        is_member: profile?.member || false,
+        email: email // Pass the email (either profile email or edited email)
       });
       
       setBookingCreated(true);
@@ -296,7 +297,7 @@ export default function BookingFormPage() {
             Make an appointment:
           </h1>
           <p className="text-gray-600">
-            {isLoggedIn ? `Logged in as ${email || 'Loading...'} - ${profile?.member ? 'Member' : 'Guest'}` : 'Not logged in - Guest'}
+            {isLoggedIn ? `Logged in as ${profile?.name || 'Loading...'} - ${profile?.member ? 'Member' : 'Guest'}` : 'Not logged in - Guest'}
           </p>
         </div>
 

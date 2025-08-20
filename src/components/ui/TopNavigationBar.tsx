@@ -26,7 +26,7 @@ const TopNavigationBar = ({
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMessagesDialog, setShowMessagesDialog] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { user, signOut, isMember, role } = useAuth();
+  const { user, profile, signOut, isMember, role } = useAuth();
   const router = useRouter();
   
   const getRoleIcon = () => {
@@ -120,7 +120,10 @@ const TopNavigationBar = ({
               <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                 <div className="p-4 border-b border-gray-100">
                   <p className="text-sm text-gray-500">Signed in as</p>
-                  <p className="text-sm font-medium text-gray-900 truncate">{user.email}</p>
+                  <p className="text-sm font-medium text-gray-900 truncate">
+                    {profile?.name || user.email}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate mt-0.5">{user.email}</p>
                   
                   <div className="mt-3 flex items-center gap-3">
                     <div className="flex items-center gap-1.5">

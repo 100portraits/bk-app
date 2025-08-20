@@ -4,6 +4,7 @@
 CREATE TABLE public.bookings (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   user_id uuid,
+  email text NOT NULL,
   shift_id uuid,
   slot_time time without time zone NOT NULL,
   duration_minutes integer NOT NULL CHECK (duration_minutes = ANY (ARRAY[30, 40, 45, 60])),
@@ -69,6 +70,7 @@ CREATE TABLE public.shifts (
 CREATE TABLE public.user_profiles (
   id uuid NOT NULL,
   email text NOT NULL,
+  name text NOT NULL,
   member boolean NOT NULL DEFAULT false,
   role text CHECK ((role = ANY (ARRAY['host'::text, 'mechanic'::text, 'admin'::text])) OR role IS NULL),
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()),

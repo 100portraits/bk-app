@@ -159,26 +159,36 @@ export function useAvailableSlots() {
   }, []);
 
   const createBooking = useCallback(async (input: CreateBookingInput): Promise<Booking> => {
-    if (!user) throw new Error('Must be logged in to create booking');
+    // Email is required for all bookings
+    if (!input.email) {
+      throw new Error('Email is required to create booking');
+    }
 
     setLoading(true);
     setError(null);
 
     try {
-      const { data: userProfile } = await supabase
-        .from('user_profiles')
-        .select('id')
-        .eq('id', user.id)
-        .single();
+      let userId = null;
       
-      if (!userProfile) {
-        throw new Error('User profile not found');
+      // If user is logged in, get their profile
+      if (user) {
+        const { data: userProfile } = await supabase
+          .from('user_profiles')
+          .select('id')
+          .eq('id', user.id)
+          .single();
+        
+        if (!userProfile) {
+          throw new Error('User profile not found');
+        }
+        userId = userProfile.id;
       }
       
       const { data, error } = await supabase
         .from('bookings')
         .insert({
-          user_id: userProfile.id,
+          user_id: userId, // null for guest bookings
+          email: input.email, // always save the email
           shift_id: input.shift_id,
           slot_time: `${input.slot_time}:00`, // Convert HH:MM to HH:MM:SS
           duration_minutes: input.duration_minutes,
