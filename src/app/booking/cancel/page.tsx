@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
@@ -10,7 +10,7 @@ import { IconLoader2, IconCalendarEvent, IconClock, IconAlertCircle, IconCheck, 
 import { Booking } from '@/types/bookings';
 import { format, parseISO } from 'date-fns';
 
-export default function GuestCancelBookingPage() {
+function GuestCancelBookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -311,5 +311,19 @@ export default function GuestCancelBookingPage() {
         </div>
       </BottomSheetDialog>
     </AppLayout>
+  );
+}
+
+export default function GuestCancelBookingPage() {
+  return (
+    <Suspense fallback={
+      <AppLayout title="Cancel Booking">
+        <div className="flex items-center justify-center h-64">
+          <IconLoader2 className="animate-spin" size={32} />
+        </div>
+      </AppLayout>
+    }>
+      <GuestCancelBookingContent />
+    </Suspense>
   );
 }
