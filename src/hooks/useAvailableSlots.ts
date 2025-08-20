@@ -7,6 +7,19 @@ import { Shift } from '@/types/shifts';
 import { format, parse, addMinutes, isAfter, isBefore, parseISO } from 'date-fns';
 import { useAuth } from '@/contexts/AuthContext';
 
+// Helper function to get display name for repair types
+function getRepairTypeDisplay(repairType: string): string {
+  const mapping: Record<string, string> = {
+    'tire_tube': 'Tire/Tube',
+    'chain': 'Chain',
+    'brakes': 'Brakes',
+    'gears': 'Gears',
+    'wheel': 'Wheel',
+    'other': 'Other'
+  };
+  return mapping[repairType] || repairType;
+}
+
 export function useAvailableSlots() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -205,10 +218,40 @@ export function useAvailableSlots() {
           status: 'confirmed',
           is_member: input.is_member || false
         })
-        .select()
+        .select(`
+          *,
+          shift:shifts (
+            date,
+            day_of_week,
+            start_time,
+            end_time
+          )
+        `)
         .single();
       
       if (error) throw error;
+      
+      // Send confirmation email for authenticated users (non-blocking)
+      if (user && data.shift) {
+        const repairTypeDisplay = getRepairTypeDisplay(input.repair_type);
+        const dateStr = format(parseISO(data.shift.date), 'EEEE, MMMM d, yyyy');
+        
+        fetch('/api/email/booking-confirmation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: input.email,
+            date: dateStr,
+            time: input.slot_time,
+            repairType: repairTypeDisplay,
+            duration: input.duration_minutes.toString(),
+            isGuest: false,
+            bookingId: data.id
+          })
+        }).catch(err => {
+          console.error('Failed to send booking confirmation email:', err);
+        });
+      }
       
       return data;
     } catch (err) {
