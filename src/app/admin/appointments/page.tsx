@@ -5,7 +5,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
-import { IconLoader2, IconCalendarEvent, IconClock, IconUser, IconTrash, IconAlertCircle, IconChevronLeft, IconChevronRight, IconEdit } from '@tabler/icons-react';
+import { IconLoader2, IconCalendarEvent, IconClock, IconUser, IconTrash, IconAlertCircle, IconChevronLeft, IconChevronRight, IconEdit, IconArrowRight } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useBookings } from '@/hooks/useBookings';
 import { useShifts } from '@/hooks/useShifts';
@@ -52,21 +52,23 @@ export default function ManageAppointmentsPage() {
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + 30);
       
-      const shifts = await getShifts(startDate, endDate);
+      // Get only open shifts from the database
+      const allShifts = await getShifts(startDate, endDate);
+      const openShifts = allShifts.filter(shift => shift.is_open);
       
-      if (shifts.length > 0) {
-        setAvailableShifts(shifts);
+      if (openShifts.length > 0) {
+        setAvailableShifts(openShifts);
         // Find today's shift or the next upcoming shift
         const todayStr = new Date().toISOString().split('T')[0];
-        const todayIndex = shifts.findIndex(s => s.date >= todayStr);
+        const todayIndex = openShifts.findIndex(s => s.date >= todayStr);
         const index = todayIndex >= 0 ? todayIndex : 0;
         
         setCurrentShiftIndex(index);
-        setCurrentShift(shifts[index]);
-        setCurrentDate(new Date(shifts[index].date));
+        setCurrentShift(openShifts[index]);
+        setCurrentDate(new Date(openShifts[index].date));
         
         // Load bookings for the first shift
-        const shiftBookings = await getShiftBookings(shifts[index].id);
+        const shiftBookings = await getShiftBookings(openShifts[index].id);
         setBookings(shiftBookings);
       } else {
         setAvailableShifts([]);
@@ -208,6 +210,14 @@ export default function ManageAppointmentsPage() {
                   <span className="ml-2 text-green-600">Today</span>
                 )}
               </h3>
+              {currentShift && (
+                <p className="text-sm text-gray-600 mt-1">
+                  {currentShift.start_time.slice(0, 5)} - {currentShift.end_time.slice(0, 5)}
+                  <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">
+                    Open Shift
+                  </span>
+                </p>
+              )}
             </div>
             
             <button
@@ -227,14 +237,16 @@ export default function ManageAppointmentsPage() {
           ) : !currentShift ? (
             <div className="text-center py-12 bg-gray-50 rounded-lg">
               <IconCalendarEvent size={48} className="mx-auto text-gray-400 mb-2" />
-              <p className="text-gray-500">No upcoming shifts scheduled</p>
-              <p className="text-sm text-gray-400 mt-2">Check back later for new shifts</p>
+              <p className="text-gray-500">No open shifts scheduled</p>
+              <p className="text-sm text-gray-400 mt-2">Open shifts in the Admin <IconArrowRight></IconArrowRight> Timeslots page</p>
             </div>
           ) : bookings.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 rounded-lg">
               <IconCalendarEvent size={48} className="mx-auto text-gray-400 mb-2" />
-              <p className="text-gray-500">No bookings for this date</p>
-              <p className="text-sm text-gray-400 mt-2">Shift is scheduled but no appointments booked</p>
+              <p className="text-gray-500">No bookings for this shift</p>
+              <p className="text-sm text-gray-400 mt-2">
+                {format(currentDate, 'EEEE')} {currentShift.start_time.slice(0, 5)} - {currentShift.end_time.slice(0, 5)}
+              </p>
             </div>
           ) : (
             <div className="space-y-3">

@@ -9,7 +9,7 @@ import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import TextInput from '@/components/ui/TextInput';
-import { IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff, IconUpload, IconX } from '@tabler/icons-react';
+import { IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff, IconUpload, IconX, IconPlus } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useEvents } from '@/hooks/useEvents';
 import { Event, CreateEventInput } from '@/types/events';
@@ -251,15 +251,16 @@ export default function ManageEventsPage() {
     <AppLayout title="Admin Panel">
       <div className="space-y-6">
         <section>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-6">
             <h2 className="text-4xl font-bold text-gray-900">Manage Events</h2>
+          </div>
             <PrimaryButton
               onClick={() => setShowCreateDialog(true)}
               size="sm"
+              className='w-full'
             >
-              Create new event
+              <IconPlus></IconPlus>Create new event
             </PrimaryButton>
-          </div>
         </section>
 
         {loading ? (
