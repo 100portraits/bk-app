@@ -174,7 +174,8 @@ export class BookingsAPI {
         repair_type: input.repair_type,
         repair_details: input.repair_details,
         notes: input.notes,
-        status: 'confirmed'
+        status: 'confirmed',
+        is_member: input.is_member || false
       })
       .select()
       .single();

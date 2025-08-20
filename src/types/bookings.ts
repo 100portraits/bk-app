@@ -23,6 +23,7 @@ export interface Booking {
   repair_details: RepairDetails;
   status: BookingStatus;
   notes?: string;
+  is_member: boolean;
   created_at: string;
   updated_at: string;
   
@@ -46,6 +47,7 @@ export interface CreateBookingInput {
   repair_type: RepairType;
   repair_details: RepairDetails;
   notes?: string;
+  is_member?: boolean;
 }
 
 export interface TimeSlot {

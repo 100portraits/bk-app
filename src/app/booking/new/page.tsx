@@ -274,7 +274,8 @@ export default function BookingFormPage() {
         duration_minutes: repairDuration,
         repair_type: toDbRepairType(selectedRepairType),
         repair_details: repairDetails,
-        notes: disclaimerText || undefined
+        notes: disclaimerText || undefined,
+        is_member: profile?.member || false
       });
       
       setBookingCreated(true);
@@ -340,11 +341,15 @@ export default function BookingFormPage() {
               <div className="flex items-center gap-2">
                 <span className="text-gray-700">How much experience do you have fixing bikes?</span>
                 <IconInfoCircle size={16} className="text-gray-400" />
+                {repairLocked && (
+                  <span className="text-xs text-green-600 font-medium">(Confirmed)</span>
+                )}
               </div>
               <div className=''>
               <ExperienceSlider
                 value={experienceLevel}
                 onChange={setExperienceLevel}
+                disabled={repairLocked}
               />
               </div>
             </div>

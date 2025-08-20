@@ -1,4 +1,3 @@
-import Avatar from './Avatar';
 import StatusIndicator from './StatusIndicator';
 
 interface BookingListItemProps {
@@ -6,6 +5,7 @@ interface BookingListItemProps {
   time: string;
   repairDetails: string;
   status: 'completed' | 'no-show' | 'pending' | 'active';
+  isMember?: boolean;
   onClick?: () => void;
   className?: string;
 }
@@ -15,6 +15,7 @@ const BookingListItem = ({
   time, 
   repairDetails, 
   status,
+  isMember = false,
   onClick, 
   className = ''
 }: BookingListItemProps) => {
@@ -38,23 +39,29 @@ const BookingListItem = ({
       `}
     >
       <div className="flex items-center gap-3">
-        <Avatar 
-          variant={isActive ? 'secondary' : 'primary'} 
-        />
-        
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             <span className="font-medium">{customerName}</span>
-            <span className={`text-sm ${isActive ? 'text-purple-100' : 'text-gray-500'}`}>
-              {time}
-            </span>
+            {isMember && (
+              <span className={`px-2 py-0.5 text-xs rounded-full font-medium ${
+                isActive 
+                  ? 'bg-purple-400 text-white' 
+                  : 'bg-purple-100 text-purple-700'
+              }`}>
+                Member
+              </span>
+            )}
+
           </div>
           <div className={`text-sm ${isActive ? 'text-purple-100' : 'text-gray-600'}`}>
             {repairDetails}
           </div>
+                      <span className={`text-lg ${isActive ? 'text-purple-100' : 'text-gray-500'}`}>
+              {time}
+            </span>
         </div>
-        
-        <StatusIndicator status={status} />
+         
+        <StatusIndicator status={status} size='lg' className='mr-2' />
       </div>
     </button>
   );

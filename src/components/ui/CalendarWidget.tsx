@@ -111,9 +111,8 @@ const CalendarWidget = ({
           const todayDate = isToday(day);
 
           return (
-            <div className='flex justify-center items-center'>
+            <div key={index} className='flex justify-center items-center'>
             <button
-              key={index}
               onClick={() => isAvailable && inCurrentMonth && onDateSelect?.(day)}
               disabled={!isAvailable || !inCurrentMonth}
               className={`

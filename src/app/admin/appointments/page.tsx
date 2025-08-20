@@ -11,7 +11,7 @@ import { BookingsAPI } from '@/lib/bookings/api';
 import { ShiftsAPI } from '@/lib/shifts/api';
 import { Booking } from '@/types/bookings';
 import { Shift } from '@/types/shifts';
-import { format, parseISO, addDays, subDays } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 export default function ManageAppointmentsPage() {
   const { authorized, loading: authLoading } = useRequireRole(['admin']);
@@ -21,6 +21,8 @@ export default function ManageAppointmentsPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [currentShift, setCurrentShift] = useState<Shift | null>(null);
+  const [availableShifts, setAvailableShifts] = useState<Shift[]>([]);
+  const [currentShiftIndex, setCurrentShiftIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -31,29 +33,52 @@ export default function ManageAppointmentsPage() {
 
   useEffect(() => {
     if (authorized) {
-      loadBookingsForDate(currentDate);
+      loadUpcomingShifts();
     }
-  }, [authorized, currentDate]);
+  }, [authorized]);
 
-  const loadBookingsForDate = async (date: Date) => {
+  const loadUpcomingShifts = async () => {
     setLoading(true);
     try {
-      // Get shifts for the selected date
-      const shifts = await shiftsAPI.getShifts(date, date);
+      // Get shifts for the next 30 days
+      const startDate = new Date();
+      const endDate = new Date();
+      endDate.setDate(endDate.getDate() + 30);
+      
+      const shifts = await shiftsAPI.getShifts(startDate, endDate);
       
       if (shifts.length > 0) {
-        setCurrentShift(shifts[0]);
-        // Get bookings for this shift
-        const shiftBookings = await bookingsAPI.getShiftBookings(shifts[0].id);
+        setAvailableShifts(shifts);
+        // Find today's shift or the next upcoming shift
+        const todayStr = new Date().toISOString().split('T')[0];
+        const todayIndex = shifts.findIndex(s => s.date >= todayStr);
+        const index = todayIndex >= 0 ? todayIndex : 0;
+        
+        setCurrentShiftIndex(index);
+        setCurrentShift(shifts[index]);
+        setCurrentDate(new Date(shifts[index].date));
+        
+        // Load bookings for the first shift
+        const shiftBookings = await bookingsAPI.getShiftBookings(shifts[index].id);
         setBookings(shiftBookings);
       } else {
+        setAvailableShifts([]);
         setCurrentShift(null);
         setBookings([]);
       }
     } catch (error) {
-      console.error('Error loading bookings:', error);
+      console.error('Error loading shifts:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadBookingsForShift = async (shift: Shift) => {
+    try {
+      const shiftBookings = await bookingsAPI.getShiftBookings(shift.id);
+      setBookings(shiftBookings);
+    } catch (error) {
+      console.error('Error loading bookings:', error);
     }
   };
 
@@ -63,7 +88,9 @@ export default function ManageAppointmentsPage() {
     setDeleting(true);
     try {
       await bookingsAPI.cancelBooking(selectedBooking.id);
-      await loadBookingsForDate(currentDate);
+      if (currentShift) {
+        await loadBookingsForShift(currentShift);
+      }
       setShowDeleteDialog(false);
       setSelectedBooking(null);
     } catch (error) {
@@ -80,7 +107,9 @@ export default function ManageAppointmentsPage() {
     setUpdating(true);
     try {
       await bookingsAPI.updateBookingStatus(selectedBooking.id, editStatus);
-      await loadBookingsForDate(currentDate);
+      if (currentShift) {
+        await loadBookingsForShift(currentShift);
+      }
       setShowEditDialog(false);
       setSelectedBooking(null);
     } catch (error) {
@@ -91,10 +120,21 @@ export default function ManageAppointmentsPage() {
     }
   };
 
-  const navigateDate = (direction: 'prev' | 'next') => {
-    setCurrentDate(current => 
-      direction === 'next' ? addDays(current, 1) : subDays(current, 1)
-    );
+  const navigateShift = (direction: 'prev' | 'next') => {
+    if (availableShifts.length === 0) return;
+    
+    let newIndex;
+    if (direction === 'next') {
+      newIndex = (currentShiftIndex + 1) % availableShifts.length;
+    } else {
+      newIndex = currentShiftIndex === 0 ? availableShifts.length - 1 : currentShiftIndex - 1;
+    }
+    
+    const newShift = availableShifts[newIndex];
+    setCurrentShiftIndex(newIndex);
+    setCurrentShift(newShift);
+    setCurrentDate(new Date(newShift.date));
+    loadBookingsForShift(newShift);
   };
 
   const getRepairTypeDisplay = (repairType: string) => {
@@ -147,26 +187,26 @@ export default function ManageAppointmentsPage() {
           {/* Date Navigation */}
           <div className="flex items-center justify-between mb-6 p-4 bg-white border border-gray-200 rounded-lg">
             <button
-              onClick={() => navigateDate('prev')}
+              onClick={() => navigateShift('prev')}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              disabled={availableShifts.length === 0}
             >
               <IconChevronLeft size={20} />
             </button>
             
             <div className="text-center">
               <h3 className="text-xl font-semibold text-gray-900">
-                {format(currentDate, 'EEEE, MMMM d, yyyy')}
+                {format(currentDate, 'EEE, MMM do')}
+                {format(currentDate, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') && (
+                  <span className="ml-2 text-green-600">Today</span>
+                )}
               </h3>
-              {currentShift && (
-                <p className="text-sm text-gray-600 mt-1">
-                  Shift: {currentShift.start_time.slice(0, 5)} - {currentShift.end_time.slice(0, 5)}
-                </p>
-              )}
             </div>
             
             <button
-              onClick={() => navigateDate('next')}
+              onClick={() => navigateShift('next')}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              disabled={availableShifts.length === 0}
             >
               <IconChevronRight size={20} />
             </button>
@@ -180,7 +220,8 @@ export default function ManageAppointmentsPage() {
           ) : !currentShift ? (
             <div className="text-center py-12 bg-gray-50 rounded-lg">
               <IconCalendarEvent size={48} className="mx-auto text-gray-400 mb-2" />
-              <p className="text-gray-500">No shift scheduled for this date</p>
+              <p className="text-gray-500">No upcoming shifts scheduled</p>
+              <p className="text-sm text-gray-400 mt-2">Check back later for new shifts</p>
             </div>
           ) : bookings.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 rounded-lg">
@@ -210,7 +251,7 @@ export default function ManageAppointmentsPage() {
                         <div className="flex items-center gap-2">
                           <IconUser size={16} />
                           <span>{booking.user?.email || 'Unknown user'}</span>
-                          {booking.user?.member && (
+                          {booking.is_member && (
                             <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
                               Member
                             </span>
@@ -271,7 +312,14 @@ export default function ManageAppointmentsPage() {
                 <p className="font-medium text-gray-900">
                   {getRepairTypeDisplay(selectedBooking.repair_type)} - {selectedBooking.slot_time.slice(0, 5)}
                 </p>
-                <p className="text-gray-600 mt-1">{selectedBooking.user?.email}</p>
+                <p className="text-gray-600 mt-1">
+                  {selectedBooking.user?.email}
+                  {selectedBooking.is_member && (
+                    <span className="ml-2 px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
+                      Member
+                    </span>
+                  )}
+                </p>
               </div>
 
               <div className="space-y-2">

@@ -6,13 +6,15 @@ interface ExperienceSliderProps {
   value?: number;
   onChange?: (value: number) => void;
   className?: string;
+  disabled?: boolean;
 }
 
-const ExperienceSlider = ({ value = 1, onChange, className = '' }: ExperienceSliderProps) => {
+const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = false }: ExperienceSliderProps) => {
   // Convert 1-5 range to 0-1 for internal calculations
   const normalizedValue = (value - 1) / 4;
   
   const { ref } = useMove(({ x }) => {
+    if (disabled) return;
     const clampedX = clamp(x, 0, 1);
     // Convert back to 1-5 stepped values
     const steppedValue = Math.round(clampedX * 4) + 1;
@@ -24,7 +26,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '' }: ExperienceSli
   return (
     <div className={`${className}`}>
       <div 
-        className="relative h-12 bg-gray-100 rounded-lg cursor-pointer select-none"
+        className={`relative h-12 bg-gray-100 rounded-lg select-none ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         style={{
           '--thumb-width': '12px',
           '--thumb-offset': '4px'
@@ -59,7 +61,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '' }: ExperienceSli
 
         {/* Thumb */}
         <div
-          className="absolute top-0 w-4 h-12 bg-white border-2 border-purple-500 rounded-lg flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow cursor-grab active:cursor-grabbing"
+          className={`absolute top-0 w-4 h-12 bg-white border-2 border-purple-500 rounded-lg flex items-center justify-center shadow-lg transition-shadow ${disabled ? '' : 'hover:shadow-xl cursor-grab active:cursor-grabbing'}`}
           style={{ 
             left: `calc(${normalizedValue * 100}% - var(--thumb-width) / 2)` 
           }}
