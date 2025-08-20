@@ -157,7 +157,7 @@ export class BookingsAPI {
   async createBooking(input: CreateBookingInput): Promise<Booking> {
     const { data: userProfile } = await this.supabase
       .from('user_profiles')
-      .select('id')
+      .select('id, email')
       .single();
     
     if (!userProfile) {
@@ -175,9 +175,18 @@ export class BookingsAPI {
         repair_details: input.repair_details,
         notes: input.notes,
         status: 'confirmed',
-        is_member: input.is_member || false
+        is_member: input.is_member || false,
+        email: userProfile.email // Store email for reference
       })
-      .select()
+      .select(`
+        *,
+        shift:shifts (
+          date,
+          day_of_week,
+          start_time,
+          end_time
+        )
+      `)
       .single();
     
     if (error) {
@@ -185,7 +194,50 @@ export class BookingsAPI {
       throw error;
     }
     
+    // Send confirmation email (non-blocking)
+    this.sendBookingConfirmationEmail(data, userProfile.email, false).catch(err => {
+      console.error('Failed to send booking confirmation email:', err);
+    });
+    
     return data;
+  }
+
+  /**
+   * Helper method to send booking confirmation email
+   */
+  private async sendBookingConfirmationEmail(booking: any, email: string, isGuest: boolean) {
+    try {
+      const repairTypeDisplay = this.getRepairTypeDisplay(booking.repair_type);
+      const date = format(parseISO(booking.shift.date), 'EEEE, MMMM d, yyyy');
+      
+      await fetch('/api/email/booking-confirmation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          date,
+          time: booking.slot_time.substring(0, 5),
+          repairType: repairTypeDisplay,
+          duration: booking.duration_minutes.toString(),
+          isGuest,
+          bookingId: booking.id
+        })
+      });
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+    }
+  }
+
+  private getRepairTypeDisplay(repairType: string): string {
+    const mapping: Record<string, string> = {
+      'tire_tube': 'Tire/Tube',
+      'chain': 'Chain',
+      'brakes': 'Brakes',
+      'gears': 'Gears',
+      'wheel': 'Wheel',
+      'other': 'Other'
+    };
+    return mapping[repairType] || repairType;
   }
 
   /**
@@ -222,7 +274,28 @@ export class BookingsAPI {
   /**
    * Cancel a booking
    */
-  async cancelBooking(bookingId: string): Promise<void> {
+  async cancelBooking(bookingId: string, cancelledBy: 'user' | 'admin' = 'user', reason?: string): Promise<void> {
+    // First get the booking details for the email
+    const { data: booking, error: fetchError } = await this.supabase
+      .from('bookings')
+      .select(`
+        *,
+        shift:shifts (
+          date,
+          day_of_week,
+          start_time,
+          end_time
+        )
+      `)
+      .eq('id', bookingId)
+      .single();
+    
+    if (fetchError) {
+      console.error('Error fetching booking:', fetchError);
+      throw fetchError;
+    }
+    
+    // Update the booking status
     const { error } = await this.supabase
       .from('bookings')
       .update({ status: 'cancelled' })
@@ -231,6 +304,43 @@ export class BookingsAPI {
     if (error) {
       console.error('Error cancelling booking:', error);
       throw error;
+    }
+    
+    // Send cancellation email (non-blocking)
+    if (booking && booking.email) {
+      this.sendBookingCancellationEmail(booking, booking.email, cancelledBy, reason).catch(err => {
+        console.error('Failed to send booking cancellation email:', err);
+      });
+    }
+  }
+
+  /**
+   * Helper method to send booking cancellation email
+   */
+  private async sendBookingCancellationEmail(
+    booking: any, 
+    email: string, 
+    cancelledBy: 'user' | 'admin',
+    reason?: string
+  ) {
+    try {
+      const repairTypeDisplay = this.getRepairTypeDisplay(booking.repair_type);
+      const date = format(parseISO(booking.shift.date), 'EEEE, MMMM d, yyyy');
+      
+      await fetch('/api/email/booking-cancellation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          date,
+          time: booking.slot_time.substring(0, 5),
+          repairType: repairTypeDisplay,
+          cancelledBy,
+          reason
+        })
+      });
+    } catch (error) {
+      console.error('Error sending cancellation email:', error);
     }
   }
 

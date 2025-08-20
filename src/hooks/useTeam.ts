@@ -53,6 +53,10 @@ export function useTeam() {
   }, [user?.id]);
 
   const updateMemberRole = async (memberId: string, role: UserRole) => {
+    // Get current member data for email
+    const currentMember = teamMembers.find(m => m.id === memberId);
+    const previousRole = currentMember?.role;
+    
     const { data, error } = await supabase
       .from('user_profiles')
       .update({ role })
@@ -63,18 +67,63 @@ export function useTeam() {
     if (error) throw error;
     
     setTeamMembers(prev => prev.map(m => m.id === memberId ? data : m));
+    
+    // Send role change email notification
+    if (data.email) {
+      try {
+        await fetch('/api/email/role-change', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: data.email,
+            userName: data.name,
+            newRole: role,
+            previousRole: previousRole
+          })
+        });
+      } catch (emailError) {
+        console.error('Failed to send role change email:', emailError);
+        // Don't throw - email failure shouldn't block the role change
+      }
+    }
+    
     return data;
   };
 
   const removeMember = async (memberId: string) => {
-    const { error } = await supabase
+    // Get current member data for email
+    const currentMember = teamMembers.find(m => m.id === memberId);
+    const previousRole = currentMember?.role;
+    
+    const { data, error } = await supabase
       .from('user_profiles')
       .update({ role: null })
-      .eq('id', memberId);
+      .eq('id', memberId)
+      .select()
+      .single();
 
     if (error) throw error;
     
     setTeamMembers(prev => prev.filter(m => m.id !== memberId));
+    
+    // Send role removal email notification
+    if (data?.email) {
+      try {
+        await fetch('/api/email/role-change', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: data.email,
+            userName: data.name,
+            newRole: null,
+            previousRole: previousRole
+          })
+        });
+      } catch (emailError) {
+        console.error('Failed to send role removal email:', emailError);
+        // Don't throw - email failure shouldn't block the role removal
+      }
+    }
   };
 
   const addMember = async (email: string, role: UserRole) => {

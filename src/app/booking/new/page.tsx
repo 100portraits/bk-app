@@ -237,7 +237,7 @@ export default function BookingFormPage() {
       'VERSION:2.0',
       'PRODID:-//Bike Kitchen//EN',
       'BEGIN:VEVENT',
-      `UID:${Date.now()}@bikekitchen.com`,
+      `UID:${Date.now()}@bikekitchen.nl`,
       `DTSTAMP:${formatDate(new Date())}Z`,
       `DTSTART:${formatDate(event.startDateTime)}Z`,
       `DTEND:${formatDate(event.endDateTime)}Z`,

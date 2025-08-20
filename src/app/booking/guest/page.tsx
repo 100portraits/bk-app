@@ -14,6 +14,7 @@ import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { IconInfoCircle, IconLoader2, IconCheck, IconBrandGoogle, IconBrandWindows, IconBrandApple, IconArrowLeft, IconClock } from '@tabler/icons-react';
 import { useAvailableSlots } from '@/hooks/useAvailableSlots';
 import { TimeSlot, toDbRepairType, getRepairDuration, RepairDetails } from '@/types/bookings';
+import { format } from 'date-fns';
 
 export default function GuestBookingPage() {
   const router = useRouter();
@@ -225,7 +226,7 @@ export default function GuestBookingPage() {
       'VERSION:2.0',
       'PRODID:-//Bike Kitchen//EN',
       'BEGIN:VEVENT',
-      `UID:${Date.now()}@bikekitchen.com`,
+      `UID:${Date.now()}@bikekitchen.nl`,
       `DTSTAMP:${formatDate(new Date())}Z`,
       `DTSTART:${formatDate(event.startDateTime)}Z`,
       `DTEND:${formatDate(event.endDateTime)}Z`,
@@ -253,7 +254,7 @@ export default function GuestBookingPage() {
 
     setCreatingBooking(true);
     try {
-      await createBooking({
+      const booking = await createBooking({
         shift_id: selectedShiftId,
         slot_time: selectedTime,
         duration_minutes: repairDuration,
@@ -263,6 +264,27 @@ export default function GuestBookingPage() {
         is_member: false,
         email: email // Pass the guest's email
       });
+
+      // Send confirmation email for guest booking
+      try {
+        const dateStr = format(selectedDate, 'EEEE, MMMM d, yyyy');
+        await fetch('/api/email/booking-confirmation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            date: dateStr,
+            time: selectedTime,
+            repairType: selectedRepairType,
+            duration: repairDuration.toString(),
+            isGuest: true,
+            bookingId: booking.id
+          })
+        });
+      } catch (emailError) {
+        console.error('Failed to send confirmation email:', emailError);
+        // Don't block the booking process if email fails
+      }
 
       setBookingCreated(true);
       setCurrentSection(6);

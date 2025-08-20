@@ -104,10 +104,50 @@ export function useHelpMessages() {
   };
 
   const respondToMessage = async (id: string, response: string) => {
-    return updateMessage(id, {
+    // Find the message to get user details
+    const message = messages.find(m => m.id === id);
+    
+    // Update the message
+    const updatedMessage = await updateMessage(id, {
       response,
       responded_at: new Date().toISOString()
     });
+    
+    // Send email notification if we have user info
+    if (message) {
+      try {
+        // Get user email if user_id exists
+        let userEmail = null;
+        if (message.user_id) {
+          const { data: userProfile } = await supabase
+            .from('user_profiles')
+            .select('email')
+            .eq('id', message.user_id)
+            .single();
+          userEmail = userProfile?.email;
+        }
+        
+        // Only send email if we have an email address
+        if (userEmail) {
+          await fetch('/api/email/admin-response', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: userEmail,
+              userName: message.user_name,
+              originalMessage: message.message,
+              adminResponse: response,
+              messagePage: message.page_name
+            })
+          });
+        }
+      } catch (error) {
+        console.error('Failed to send response email:', error);
+        // Don't throw - email failure shouldn't block the response
+      }
+    }
+    
+    return updatedMessage;
   };
   
   const markAsRead = async (id: string) => {

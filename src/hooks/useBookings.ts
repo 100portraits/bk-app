@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase/singleton-client';
 import { Booking } from '@/types/bookings';
 import { useAuth } from '@/contexts/AuthContext';
+import { BookingsAPI } from '@/lib/bookings/api';
 
 export function useBookings() {
   const { user } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const api = new BookingsAPI();
 
   useEffect(() => {
     if (!user) {
@@ -73,23 +75,20 @@ export function useBookings() {
     };
   }, [user?.id]); // Only re-fetch if user ID changes (not the object reference)
 
-  const cancelBooking = async (bookingId: string) => {
-    console.log('[useBookings] Cancelling booking:', bookingId);
+  const cancelBooking = async (bookingId: string, cancelledBy: 'user' | 'admin' = 'user', reason?: string) => {
+    console.log('[useBookings] Cancelling booking:', bookingId, 'by:', cancelledBy);
     
-    const { error } = await supabase
-      .from('bookings')
-      .update({ status: 'cancelled' })
-      .eq('id', bookingId);
-
-    if (error) {
+    try {
+      await api.cancelBooking(bookingId, cancelledBy, reason);
+      
+      // Update local state
+      setBookings(prev => 
+        prev.map(b => b.id === bookingId ? { ...b, status: 'cancelled' as const } : b)
+      );
+    } catch (error) {
       console.error('[useBookings] Error cancelling booking:', error);
       throw error;
     }
-
-    // Update local state
-    setBookings(prev => 
-      prev.map(b => b.id === bookingId ? { ...b, status: 'cancelled' } : b)
-    );
   };
 
   const updateBookingStatus = async (bookingId: string, status: 'confirmed' | 'completed' | 'no_show' | 'cancelled') => {

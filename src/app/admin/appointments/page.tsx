@@ -96,7 +96,7 @@ export default function ManageAppointmentsPage() {
     
     setDeleting(true);
     try {
-      await cancelBooking(selectedBooking.id);
+      await cancelBooking(selectedBooking.id, 'admin', 'Cancelled by administrator');
       if (currentShift) {
         await loadBookingsForShift(currentShift);
       }
