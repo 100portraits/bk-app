@@ -29,7 +29,7 @@ export default function ShiftCalendarPage() {
     loading, 
     error, 
     getShifts, 
-    toggleShiftSignup, 
+    toggleShiftSignup: toggleShiftSignupAPI, 
     refresh 
   } = useShifts();
   const [showShiftDetails, setShowShiftDetails] = useState(false);
@@ -121,7 +121,7 @@ export default function ShiftCalendarPage() {
       for (const change of pendingChanges.toToggle) {
         const shift = rangeShifts.find(s => s.id === change.shiftId);
         if (shift) {
-          await toggleShiftSignup(
+          await toggleShiftSignupAPI(
             shift,
             user.id,
             user.email || '',
