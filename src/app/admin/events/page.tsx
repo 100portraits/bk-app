@@ -93,7 +93,8 @@ export default function ManageEventsPage() {
       const formData = {
         ...eventForm,
         start_time: eventForm.start_time ? `${eventForm.start_time}:00` : '',
-        end_time: eventForm.end_time ? `${eventForm.end_time}:00` : undefined
+        end_time: eventForm.end_time ? `${eventForm.end_time}:00` : undefined,
+        is_published: eventForm.is_published || false
       };
       
       await createEvent(formData);
