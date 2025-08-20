@@ -43,7 +43,7 @@ export default function HomePage() {
         {!profile?.member && (
           <DismissableCard
             id="membership-prompt"
-            title="Are you a Bike Kitchen member?"
+            title="Are you a Member?"
             color="green"
           >
             <div>
