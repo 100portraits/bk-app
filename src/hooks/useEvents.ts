@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase/singleton-client';
-import { Event, EventSignup } from '@/types/events';
+import { Event } from '@/types/events';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function useEvents() {
   const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
-  const [signups, setSignups] = useState<EventSignup[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -30,20 +29,7 @@ export function useEvents() {
         if (isCancelled) return;
         if (eventsError) throw eventsError;
 
-        // Fetch signups if user is logged in
-        let signupsData: EventSignup[] = [];
-        if (user) {
-          const { data, error: signupsError } = await supabase
-            .from('event_signups')
-            .select('*')
-            .eq('user_id', user.id);
-          
-          if (signupsError) throw signupsError;
-          signupsData = data || [];
-        }
-
         setEvents(eventsData || []);
-        setSignups(signupsData);
       } catch (err) {
         if (!isCancelled) {
           setError(err instanceof Error ? err : new Error('Failed to fetch events'));
@@ -62,57 +48,13 @@ export function useEvents() {
     };
   }, [user?.id]);
 
-  const signUpForEvent = async (eventId: string) => {
-    if (!user) throw new Error('Must be logged in to sign up');
+  // Note: Event signup functionality would require an event_signups table
+  // which doesn't exist in the current database schema
 
-    const { data, error } = await supabase
-      .from('event_signups')
-      .insert({
-        event_id: eventId,
-        user_id: user.id
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    setSignups(prev => [...prev, data]);
-    
-    // Update event participant count
-    setEvents(prev => prev.map(e => 
-      e.id === eventId 
-        ? { ...e, current_participants: (e.current_participants || 0) + 1 }
-        : e
-    ));
-    
-    return data;
-  };
-
-  const cancelSignup = async (eventId: string) => {
-    if (!user) throw new Error('Must be logged in');
-
-    const { error } = await supabase
-      .from('event_signups')
-      .delete()
-      .eq('event_id', eventId)
-      .eq('user_id', user.id);
-
-    if (error) throw error;
-
-    setSignups(prev => prev.filter(s => s.event_id !== eventId));
-    
-    // Update event participant count
-    setEvents(prev => prev.map(e => 
-      e.id === eventId 
-        ? { ...e, current_participants: Math.max(0, (e.current_participants || 0) - 1) }
-        : e
-    ));
-  };
-
-  const createEvent = async (event: Omit<Event, 'id' | 'created_at' | 'current_participants'>) => {
+  const createEvent = async (event: Omit<Event, 'id' | 'created_at'>) => {
     const { data, error } = await supabase
       .from('events')
-      .insert({ ...event, current_participants: 0 })
+      .insert(event)
       .select()
       .single();
 
@@ -160,33 +102,15 @@ export function useEvents() {
     if (fetchError) throw fetchError;
     
     setEvents(data || []);
-    
-    if (user) {
-      const { data: signupsData, error: signupsError } = await supabase
-        .from('event_signups')
-        .select('*')
-        .eq('user_id', user.id);
-      
-      if (signupsError) throw signupsError;
-      setSignups(signupsData || []);
-    }
-  };
-
-  const isSignedUp = (eventId: string) => {
-    return signups.some(s => s.event_id === eventId);
   };
 
   return {
     events,
-    signups,
     loading,
     error,
-    signUpForEvent,
-    cancelSignup,
     createEvent,
     updateEvent,
     deleteEvent,
-    isSignedUp,
     refresh
   };
 }

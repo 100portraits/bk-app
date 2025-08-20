@@ -103,6 +103,7 @@ export default function EventCalendarPage() {
         isOpen={showEventDetails}
         onClose={() => setShowEventDetails(false)}
         title="Event Details"
+        
       >
         {selectedEvent && (
           <div className="space-y-6">
@@ -139,15 +140,18 @@ export default function EventCalendarPage() {
             </div>
 
             {selectedEvent.poster_url && (
-              <div className="bg-purple-50 p-4 rounded-lg">
-                <Image 
-                  src={selectedEvent.poster_url} 
-                  alt={selectedEvent.title}
-                  className="w-full rounded-lg"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
+              <div className="bg-purple-50 p-2 rounded-lg">
+                <div className="relative w-full max-w-lg mx-auto" style={{ aspectRatio: '17/22', maxHeight: '600px' }}>
+                  <Image 
+                    src={selectedEvent.poster_url} 
+                    alt={selectedEvent.title}
+                    fill
+                    className="rounded-lg object-contain"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
               </div>
             )}
 

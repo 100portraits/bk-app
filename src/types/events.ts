@@ -9,18 +9,10 @@ export interface Event {
   whatsapp_link?: string;
   poster_url?: string;
   max_capacity?: number;
-  current_participants?: number;
   is_published: boolean;
   created_by?: string;
   created_at?: string;
   updated_at?: string;
-}
-
-export interface EventSignup {
-  id: string;
-  event_id: string;
-  user_id: string;
-  created_at?: string;
 }
 
 export interface CreateEventInput {

@@ -96,11 +96,19 @@ export function useShifts() {
 
   const getShifts = async (startDate: Date, endDate: Date) => {
     try {
+      // Format dates in local timezone to avoid UTC conversion issues
+      const formatLocalDate = (date: Date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
+      
       const { data, error: fetchError } = await supabase
         .from('shifts')
         .select('*')
-        .gte('date', startDate.toISOString().split('T')[0])
-        .lte('date', endDate.toISOString().split('T')[0])
+        .gte('date', formatLocalDate(startDate))
+        .lte('date', formatLocalDate(endDate))
         .order('date', { ascending: true })
         .order('start_time', { ascending: true });
 
@@ -148,7 +156,11 @@ export function useShifts() {
   };
 
   const toggleShift = async (date: Date, dayOfWeek: DayOfWeek, startTime: string) => {
-    const dateStr = date.toISOString().split('T')[0];
+    // Format date in local timezone to avoid UTC conversion issues
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
     
     // Check if shift already exists
     const existingShift = shifts.find(s => s.date === dateStr && s.day_of_week === dayOfWeek);

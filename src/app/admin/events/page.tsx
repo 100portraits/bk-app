@@ -9,12 +9,13 @@ import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import TextInput from '@/components/ui/TextInput';
-import { IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff } from '@tabler/icons-react';
+import { IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff, IconUpload, IconX } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useEvents } from '@/hooks/useEvents';
 import { Event, CreateEventInput } from '@/types/events';
 import { format, parseISO } from 'date-fns';
 import Image from 'next/image';
+import { uploadEventPoster, deleteEventPoster } from '@/lib/supabase/storage';
 
 export default function ManageEventsPage() {
   const { authorized, loading: authLoading } = useRequireRole(['admin']);
@@ -32,6 +33,9 @@ export default function ManageEventsPage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploadingPoster, setUploadingPoster] = useState(false);
+  const [posterFile, setPosterFile] = useState<File | null>(null);
+  const [posterPreview, setPosterPreview] = useState<string | null>(null);
   
   const [eventForm, setEventForm] = useState<CreateEventInput>({
     title: '',
@@ -67,6 +71,9 @@ export default function ManageEventsPage() {
       max_capacity: event.max_capacity,
       is_published: event.is_published
     });
+    // Reset poster file state when editing
+    setPosterFile(null);
+    setPosterPreview(null);
     setShowEditDialog(true);
   };
 
@@ -83,14 +90,52 @@ export default function ManageEventsPage() {
       max_capacity: undefined,
       is_published: false
     });
+    setPosterFile(null);
+    setPosterPreview(null);
+  };
+
+  const handlePosterSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setPosterFile(file);
+    
+    // Create preview URL
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPosterPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removePoster = () => {
+    setPosterFile(null);
+    setPosterPreview(null);
+    setEventForm(prev => ({ ...prev, poster_url: '' }));
   };
 
   const handleCreateSubmit = async () => {
     setSaving(true);
     try {
+      let posterUrl = eventForm.poster_url;
+      
+      // Upload poster if selected
+      if (posterFile) {
+        setUploadingPoster(true);
+        const { url, error } = await uploadEventPoster(posterFile);
+        setUploadingPoster(false);
+        
+        if (error) {
+          alert(`Failed to upload poster: ${error}`);
+          return;
+        }
+        posterUrl = url || '';
+      }
+      
       // Convert HH:MM to HH:MM:SS for database
       const formData = {
         ...eventForm,
+        poster_url: posterUrl,
         start_time: eventForm.start_time ? `${eventForm.start_time}:00` : '',
         end_time: eventForm.end_time ? `${eventForm.end_time}:00` : undefined,
         is_published: eventForm.is_published || false
@@ -103,6 +148,7 @@ export default function ManageEventsPage() {
       console.error('Error creating event:', error);
     } finally {
       setSaving(false);
+      setUploadingPoster(false);
     }
   };
 
@@ -111,10 +157,31 @@ export default function ManageEventsPage() {
     
     setSaving(true);
     try {
+      let posterUrl = eventForm.poster_url;
+      
+      // Upload new poster if selected
+      if (posterFile) {
+        setUploadingPoster(true);
+        const { url, error } = await uploadEventPoster(posterFile);
+        setUploadingPoster(false);
+        
+        if (error) {
+          alert(`Failed to upload poster: ${error}`);
+          return;
+        }
+        posterUrl = url || '';
+        
+        // Delete old poster if it exists
+        if (selectedEvent.poster_url && selectedEvent.poster_url !== posterUrl) {
+          await deleteEventPoster(selectedEvent.poster_url);
+        }
+      }
+      
       // Convert HH:MM to HH:MM:SS for database
       const formData = {
         ...eventForm,
         id: selectedEvent.id,
+        poster_url: posterUrl,
         start_time: eventForm.start_time ? `${eventForm.start_time}:00` : '',
         end_time: eventForm.end_time ? `${eventForm.end_time}:00` : undefined
       };
@@ -127,6 +194,7 @@ export default function ManageEventsPage() {
       console.error('Error updating event:', error);
     } finally {
       setSaving(false);
+      setUploadingPoster(false);
     }
   };
 
@@ -363,14 +431,45 @@ export default function ManageEventsPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <IconPhoto size={16} className="inline mr-1" />
-                Poster Image URL
+                Event Poster
               </label>
-              <TextInput
-                placeholder="https://..."
-                value={eventForm.poster_url}
-                onChange={(value) => setEventForm(prev => ({ ...prev, poster_url: value }))}
-                fullWidth
-              />
+              
+              {!posterPreview && !eventForm.poster_url ? (
+                <label className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 transition-colors">
+                  <IconUpload size={32} className="text-gray-400 mb-2" />
+                  <span className="text-sm text-gray-600">Click to upload poster</span>
+                  <span className="text-xs text-gray-500 mt-1">JPEG, PNG, WebP (max 5MB)</span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={handlePosterSelect}
+                  />
+                </label>
+              ) : (
+                <div className="space-y-2">
+                  <div className="relative w-full bg-gray-50 rounded-lg p-2">
+                    <div className="relative w-full max-w-sm mx-auto" style={{ aspectRatio: '17/22', maxHeight: '400px' }}>
+                      <Image 
+                        src={posterPreview || eventForm.poster_url || ''} 
+                        alt="Poster preview"
+                        fill
+                        className="rounded object-contain"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={removePoster}
+                      className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                    >
+                      <IconX size={16} />
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    {posterFile ? `New file: ${posterFile.name}` : 'Current poster'}
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-3">
@@ -523,14 +622,45 @@ export default function ManageEventsPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <IconPhoto size={16} className="inline mr-1" />
-                Poster Image URL
+                Event Poster
               </label>
-              <TextInput
-                placeholder="https://..."
-                value={eventForm.poster_url}
-                onChange={(value) => setEventForm(prev => ({ ...prev, poster_url: value }))}
-                fullWidth
-              />
+              
+              {!posterPreview && !eventForm.poster_url ? (
+                <label className="w-full p-8 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 transition-colors">
+                  <IconUpload size={32} className="text-gray-400 mb-2" />
+                  <span className="text-sm text-gray-600">Click to upload poster</span>
+                  <span className="text-xs text-gray-500 mt-1">JPEG, PNG, WebP (max 5MB)</span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={handlePosterSelect}
+                  />
+                </label>
+              ) : (
+                <div className="space-y-2">
+                  <div className="relative w-full bg-gray-50 rounded-lg p-2">
+                    <div className="relative w-full max-w-sm mx-auto" style={{ aspectRatio: '17/22', maxHeight: '400px' }}>
+                      <Image 
+                        src={posterPreview || eventForm.poster_url || ''} 
+                        alt="Poster preview"
+                        fill
+                        className="rounded object-contain"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={removePoster}
+                      className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                    >
+                      <IconX size={16} />
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    {posterFile ? `New file: ${posterFile.name}` : 'Current poster'}
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-3">
@@ -626,14 +756,17 @@ export default function ManageEventsPage() {
             {selectedEvent.poster_url && (
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-600 mb-2">Event Poster:</p>
-                <Image 
-                  src={selectedEvent.poster_url} 
-                  alt={selectedEvent.title}
-                  className="w-full rounded-lg"
-                  onError={(e) => {
-                    e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="200"%3E%3Crect fill="%23f3f4f6" width="400" height="200"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%239ca3af"%3EPoster not available%3C/text%3E%3C/svg%3E';
-                  }}
-                />
+                <div className="relative w-full max-w-md mx-auto" style={{ aspectRatio: '17/22', maxHeight: '500px' }}>
+                  <Image 
+                    src={selectedEvent.poster_url} 
+                    alt={selectedEvent.title}
+                    fill
+                    className="rounded-lg object-contain"
+                    onError={(e) => {
+                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="200"%3E%3Crect fill="%23f3f4f6" width="400" height="200"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" fill="%239ca3af"%3EPoster not available%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
+                </div>
               </div>
             )}
 
