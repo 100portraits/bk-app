@@ -9,8 +9,8 @@ import PillButton from '@/components/ui/PillButton';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useAuth } from '@/contexts/AuthContext';
 import { TeamAPI, TeamMember } from '@/lib/team/api';
-import { UserRole } from '@/types/user';
 import { IconLoader2, IconUserOff } from '@tabler/icons-react';
+import { UserRole } from '@/types/auth';
 
 export default function ManageTeamPage() {
   const { authorized, loading: authLoading } = useRequireRole(['admin']);
