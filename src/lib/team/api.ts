@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/client';
-import { UserRole } from '@/types/user';
+import { UserRole } from '@/types/auth';
 
 export interface TeamMember {
   id: string;
