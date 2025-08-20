@@ -7,6 +7,7 @@ import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import { IconLoader2, IconAlertCircle } from '@tabler/icons-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useMembership } from '@/hooks/useMembership';
 
 interface ManageMembershipDialogProps {
   isOpen: boolean;
@@ -18,11 +19,29 @@ export default function ManageMembershipDialog({ isOpen, onClose }: ManageMember
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const router = useRouter();
+  const { cancelMembership } = useMembership();
 
-  const handleCancelMembership = () => {
+  const handleCancelMembership = async () => {
     setIsCancelling(true);
-    // Navigate to goodbye page with a query parameter to indicate cancellation
-    router.push('/goodbye?cancel=true');
+    
+    try {
+      // Cancel the membership
+      await cancelMembership();
+      
+      // Close the dialog first
+      onClose();
+      setShowCancelConfirmation(false);
+      
+      // Then navigate to the goodbye page
+      setTimeout(() => {
+        router.push('/goodbye');
+      }, 100);
+    } catch (error) {
+      console.error('Error cancelling membership:', error);
+      alert('Failed to cancel membership. Please try again.');
+    } finally {
+      setIsCancelling(false);
+    }
   };
 
   const handleClose = () => {
