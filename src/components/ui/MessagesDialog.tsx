@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React from 'react';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
-import { HelpMessagesAPI } from '@/lib/help-messages/api';
-import { HelpMessage } from '@/types/help-messages';
+import { useHelpMessages } from '@/hooks/useHelpMessages';
+import { HelpMessage } from '@/types/help';
 import { format, parseISO } from 'date-fns';
 import { IconLoader2, IconMessage, IconCheck, IconClock } from '@tabler/icons-react';
 
@@ -13,27 +13,13 @@ interface MessagesDialogProps {
 }
 
 export default function MessagesDialog({ isOpen, onClose }: MessagesDialogProps) {
-  const [messages, setMessages] = useState<HelpMessage[]>([]);
-  const [loading, setLoading] = useState(true);
-  const helpMessagesAPI = new HelpMessagesAPI();
+  const { 
+    messages, 
+    loading, 
+    error: messagesError 
+  } = useHelpMessages();
 
-  useEffect(() => {
-    if (isOpen) {
-      loadMessages();
-    }
-  }, [isOpen]);
-
-  const loadMessages = async () => {
-    setLoading(true);
-    try {
-      const data = await helpMessagesAPI.getUserMessages();
-      setMessages(data);
-    } catch (error) {
-      console.error('Error loading messages:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Messages are loaded automatically by the hook
 
   const formatDate = (dateString: string) => {
     const date = parseISO(dateString);

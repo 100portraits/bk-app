@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
-import { MembershipAPI } from '@/lib/membership/api';
+import { useMembership } from '@/hooks/useMembership';
 import { useAuth } from '@/contexts/AuthContext';
 import { IconLoader2 } from '@tabler/icons-react';
 
@@ -14,20 +14,19 @@ function GoodbyeContent() {
   const { refreshProfile } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const membershipAPI = new MembershipAPI();
+  const { cancelMembership } = useMembership();
 
   useEffect(() => {
     const shouldCancel = searchParams.get('cancel') === 'true';
     if (shouldCancel && !isProcessing && !isComplete) {
-      cancelMembership();
+      handleCancelMembership();
     }
   }, [searchParams]);
 
-  const cancelMembership = async () => {
+  const handleCancelMembership = async () => {
     setIsProcessing(true);
     try {
-      await membershipAPI.updateMembershipStatus(false);
-      await refreshProfile();
+      await cancelMembership();
       setIsComplete(true);
     } catch (error) {
       console.error('Error cancelling membership:', error);

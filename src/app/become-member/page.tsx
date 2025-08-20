@@ -8,15 +8,15 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import Avatar from '@/components/ui/Avatar';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { IconExternalLink, IconAlertCircle, IconLoader2 } from '@tabler/icons-react';
-import { MembershipAPI } from '@/lib/membership/api';
+import { useMembership } from '@/hooks/useMembership';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function BecomeMemberPage() {
   const router = useRouter();
   const { refreshProfile } = useAuth();
+  const { becomeMember, loading } = useMembership();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const membershipAPI = new MembershipAPI();
 
   const handleJoinCommunity = () => {
     window.open('https://doneren.auf.nl/bike-kitchen', '_blank');
@@ -29,8 +29,7 @@ export default function BecomeMemberPage() {
   const handleConfirmMembership = async () => {
     setIsUpdating(true);
     try {
-      await membershipAPI.updateMembershipStatus(true);
-      await refreshProfile();
+      await becomeMember();
       router.push('/become-member/welcome');
     } catch (error) {
       console.error('Error updating membership status:', error);

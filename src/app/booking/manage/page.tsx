@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
@@ -8,46 +8,26 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconAlertCircle, IconX, IconCheck, IconBike } from '@tabler/icons-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { BookingsAPI } from '@/lib/bookings/api';
+import { useBookings } from '@/hooks/useBookings';
 import { Booking } from '@/types/bookings';
 import { format, parseISO, isPast, isFuture } from 'date-fns';
 
 export default function ManageBookingsPage() {
   const { user, profile } = useAuth();
   const router = useRouter();
-  const bookingsAPI = new BookingsAPI();
+  const { bookings, loading, error, cancelBooking, refresh } = useBookings();
   
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [cancelling, setCancelling] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      loadBookings();
-    }
-  }, [user]);
-
-  const loadBookings = async () => {
-    setLoading(true);
-    try {
-      const data = await bookingsAPI.getUserBookings();
-      setBookings(data);
-    } catch (error) {
-      console.error('Error loading bookings:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleCancelBooking = async () => {
     if (!selectedBooking) return;
     
     setCancelling(true);
     try {
-      await bookingsAPI.cancelBooking(selectedBooking.id);
-      await loadBookings();
+      await cancelBooking(selectedBooking.id);
+      await refresh(); // Refresh the list after cancellation
       setShowCancelDialog(false);
       setSelectedBooking(null);
     } catch (error) {
@@ -103,18 +83,32 @@ export default function ManageBookingsPage() {
     );
   }
 
+  if (error) {
+    return (
+      <AppLayout title="My Bookings">
+        <div className="flex flex-col items-center justify-center h-64">
+          <IconAlertCircle size={48} className="text-red-500 mb-4" />
+          <p className="text-gray-600">Failed to load bookings</p>
+          <PrimaryButton onClick={refresh} size="sm" className="mt-4">
+            Try Again
+          </PrimaryButton>
+        </div>
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout title="My Bookings">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-4xl font-bold text-gray-900">My Bookings</h2>
-        </div>
           <PrimaryButton
             onClick={() => router.push('/booking/new')}
             size="sm"
           >
             New Booking
           </PrimaryButton>
+        </div>
 
         {/* Upcoming Bookings */}
         <section>

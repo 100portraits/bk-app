@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import EventCard from '@/components/ui/EventCard';
 import HelpButton from '@/components/ui/HelpButton';
@@ -11,20 +11,27 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import TextInput from '@/components/ui/TextInput';
 import { IconPaperclip, IconEdit, IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
-import { EventsAPI } from '@/lib/events/api';
+import { useEvents } from '@/hooks/useEvents';
 import { Event, CreateEventInput } from '@/types/events';
 import { format, parseISO } from 'date-fns';
 
 export default function ManageEventsPage() {
   const { authorized, loading: authLoading } = useRequireRole(['admin']);
+  const { 
+    events, 
+    loading, 
+    error, 
+    createEvent, 
+    updateEvent, 
+    deleteEvent, 
+    refresh 
+  } = useEvents();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showEventDetails, setShowEventDetails] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   
   const [eventForm, setEventForm] = useState<CreateEventInput>({
@@ -40,27 +47,7 @@ export default function ManageEventsPage() {
     is_published: false
   });
 
-  const eventsAPI = new EventsAPI();
-
-  // Load events on mount
-  useEffect(() => {
-    if (authorized) {
-      loadEvents();
-    }
-  }, [authorized]);
-
-  const loadEvents = async () => {
-    setLoading(true);
-    try {
-      // Admin can see all events (published and unpublished)
-      const data = await eventsAPI.getEvents(false);
-      setEvents(data);
-    } catch (error) {
-      console.error('Error loading events:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Events are loaded automatically by the hook
 
   const handleEventClick = (event: Event) => {
     setSelectedEvent(event);
@@ -109,8 +96,7 @@ export default function ManageEventsPage() {
         end_time: eventForm.end_time ? `${eventForm.end_time}:00` : undefined
       };
       
-      await eventsAPI.createEvent(formData);
-      await loadEvents();
+      await createEvent(formData);
       setShowCreateDialog(false);
       resetForm();
     } catch (error) {
@@ -133,8 +119,7 @@ export default function ManageEventsPage() {
         end_time: eventForm.end_time ? `${eventForm.end_time}:00` : undefined
       };
       
-      await eventsAPI.updateEvent(formData);
-      await loadEvents();
+      await updateEvent(formData.id, formData);
       setShowEditDialog(false);
       resetForm();
       setSelectedEvent(null);
@@ -150,8 +135,7 @@ export default function ManageEventsPage() {
     
     setSaving(true);
     try {
-      await eventsAPI.deleteEvent(selectedEvent.id);
-      await loadEvents();
+      await deleteEvent(selectedEvent.id);
       setShowDeleteConfirm(false);
       setShowEditDialog(false);
       setSelectedEvent(null);
@@ -165,8 +149,7 @@ export default function ManageEventsPage() {
 
   const togglePublishStatus = async (event: Event) => {
     try {
-      await eventsAPI.togglePublishStatus(event.id);
-      await loadEvents();
+      await updateEvent(event.id, { is_published: !event.is_published });
     } catch (error) {
       console.error('Error toggling publish status:', error);
     }

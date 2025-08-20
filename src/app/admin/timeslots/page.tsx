@@ -9,7 +9,7 @@ import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import PillButton from '@/components/ui/PillButton';
 import { useRequireAdmin } from '@/hooks/useAuthorization';
-import { ShiftsAPI } from '@/lib/shifts/api';
+import { useShifts } from '@/hooks/useShifts';
 import { Shift, DayOfWeek, DEFAULT_SHIFTS } from '@/types/shifts';
 import { 
   format, 
@@ -27,17 +27,25 @@ export default function ManageTimeslotsPage() {
   const { authorized, loading: authLoading } = useRequireAdmin();
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [shifts, setShifts] = useState<Shift[]>([]);
+  const { 
+    shifts, 
+    loading: shiftsLoading, 
+    error: shiftsError, 
+    getShifts, 
+    toggleShift 
+  } = useShifts();
   const [loading, setLoading] = useState(false);
   const [pendingChanges, setPendingChanges] = useState<{
     toToggle: { date: Date; dayOfWeek: DayOfWeek; startTime: string }[];
   }>({ toToggle: [] });
 
-  const shiftsAPI = new ShiftsAPI();
+  // Hook handles shifts loading automatically
   const today = startOfToday();
   const fourWeeksFromNow = addWeeks(today, 4);
 
-  // Load shifts
+  // Load shifts on mount
+  const [pageShifts, setPageShifts] = useState<Shift[]>([]);
+  
   useEffect(() => {
     if (authorized) {
       loadShifts();
@@ -47,8 +55,8 @@ export default function ManageTimeslotsPage() {
   const loadShifts = async () => {
     setLoading(true);
     try {
-      const data = await shiftsAPI.getShifts(today, fourWeeksFromNow);
-      setShifts(data);
+      const data = await getShifts(today, fourWeeksFromNow);
+      setPageShifts(data);
     } catch (error) {
       console.error('Error loading shifts:', error);
     } finally {
@@ -58,7 +66,7 @@ export default function ManageTimeslotsPage() {
 
   // Get which dates have open shifts for the calendar
   const getOpenShiftDates = (): Date[] => {
-    return shifts
+    return pageShifts
       .filter(shift => shift.is_open)
       .map(shift => new Date(shift.date));
   };
@@ -78,7 +86,7 @@ export default function ManageTimeslotsPage() {
       else if (dayNum === 4) dayOfWeek = 'thursday';
       
       if (dayOfWeek) {
-        const shift = shifts.find(s => 
+        const shift = pageShifts.find(s => 
           isSameDay(new Date(s.date), day) && 
           s.day_of_week === dayOfWeek
         );
@@ -122,7 +130,7 @@ export default function ManageTimeslotsPage() {
     try {
       // Apply all pending changes
       for (const change of pendingChanges.toToggle) {
-        await shiftsAPI.toggleShift(change.date, change.dayOfWeek, change.startTime);
+        await toggleShift(change.date, change.dayOfWeek, change.startTime);
       }
       
       // Reload shifts

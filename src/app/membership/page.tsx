@@ -12,7 +12,7 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRequireMember } from '@/hooks/useAuthorization';
 import { IconLoader2, IconAlertCircle } from '@tabler/icons-react';
-import { MembershipAPI } from '@/lib/membership/api';
+import { useMembership } from '@/hooks/useMembership';
 
 export default function MembershipPage() {
   const { authorized, loading: authLoading } = useRequireMember();
@@ -22,7 +22,7 @@ export default function MembershipPage() {
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const router = useRouter();
-  const membershipAPI = new MembershipAPI();
+  const { cancelMembership } = useMembership();
 
   if (authLoading) {
     return (

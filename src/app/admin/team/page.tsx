@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import HelpButton from '@/components/ui/HelpButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
@@ -9,43 +9,31 @@ import PrimaryButton from '@/components/ui/PrimaryButton';
 import PillButton from '@/components/ui/PillButton';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useAuth } from '@/contexts/AuthContext';
-import { TeamAPI, TeamMember } from '@/lib/team/api';
+import { useTeam } from '@/hooks/useTeam';
 import { IconLoader2, IconUserOff } from '@tabler/icons-react';
-import { UserRole } from '@/types/auth';
+import { UserRole, UserProfile } from '@/types/auth';
 
 export default function ManageTeamPage() {
   const { authorized, loading: authLoading } = useRequireRole(['admin']);
   const { user } = useAuth();
   const [showUserRoleDialog, setShowUserRoleDialog] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<TeamMember | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [selectedRole, setSelectedRole] = useState<UserRole | 'remove'>('host');
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  
+  const { 
+    teamMembers, 
+    loading, 
+    error: teamError, 
+    updateMemberRole, 
+    removeMember, 
+    refresh 
+  } = useTeam();
 
-  const teamAPI = new TeamAPI();
+  // Team members are loaded automatically by the hook
 
-  // Load team members on mount
-  useEffect(() => {
-    if (authorized) {
-      loadTeamMembers();
-    }
-  }, [authorized]);
-
-  const loadTeamMembers = async () => {
-    setLoading(true);
-    try {
-      const members = await teamAPI.getTeamMembers();
-      setTeamMembers(members);
-    } catch (error) {
-      console.error('Error loading team members:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUserClick = (member: TeamMember) => {
+  const handleUserClick = (member: UserProfile) => {
     setSelectedUser(member);
     setSelectedRole(member.role || 'remove');
     setShowUserRoleDialog(true);
@@ -62,13 +50,10 @@ export default function ManageTeamPage() {
     setSaving(true);
     try {
       if (selectedRole === 'remove') {
-        await teamAPI.removeFromTeam(selectedUser.id);
+        await removeMember(selectedUser.id);
       } else {
-        await teamAPI.updateUserRole(selectedUser.id, selectedRole as UserRole);
+        await updateMemberRole(selectedUser.id, selectedRole as UserRole);
       }
-      
-      // Reload team members
-      await loadTeamMembers();
       
       setShowUserRoleDialog(false);
       setSelectedUser(null);

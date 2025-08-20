@@ -11,7 +11,7 @@ import ToggleSelector from '@/components/ui/ToggleSelector';
 import TextInput from '@/components/ui/TextInput';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import { IconLoader2, IconCheck } from '@tabler/icons-react';
-import { WalkInsAPI } from '@/lib/walk-ins/api';
+import { useWalkIns } from '@/hooks/useWalkIns';
 
 export default function HostPage() {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
@@ -22,12 +22,12 @@ export default function HostPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const router = useRouter();
-  const walkInsAPI = new WalkInsAPI();
+  const { createWalkIn } = useWalkIns();
 
   const handleWalkInSubmit = async () => {
     setIsSubmitting(true);
     try {
-      await walkInsAPI.createWalkIn({
+      await createWalkIn({
         is_community_member: isCommunityMember === 'Yes',
         amount_paid: isCommunityMember === 'No' ? parseFloat(amountPaid) : undefined,
         notes: notes.trim() || undefined

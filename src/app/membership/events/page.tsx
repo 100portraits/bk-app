@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import EventCard from '@/components/ui/EventCard';
 import HelpButton from '@/components/ui/HelpButton';
@@ -8,7 +8,7 @@ import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import { useRequireMember } from '@/hooks/useAuthorization';
-import { EventsAPI } from '@/lib/events/api';
+import { useEvents } from '@/hooks/useEvents';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
 import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp } from '@tabler/icons-react';
@@ -18,30 +18,15 @@ export default function EventCalendarPage() {
   const [showEventDetails, setShowEventDetails] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { 
+    events, 
+    loading, 
+    error: eventsError 
+  } = useEvents();
 
-  const eventsAPI = new EventsAPI();
-
-  // Load events on mount
-  useEffect(() => {
-    if (authorized) {
-      loadEvents();
-    }
-  }, [authorized]);
-
-  const loadEvents = async () => {
-    setLoading(true);
-    try {
-      // Members can only see published events
-      const data = await eventsAPI.getUpcomingEvents(20, true);
-      setEvents(data);
-    } catch (error) {
-      console.error('Error loading events:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Events are loaded automatically by the hook
+  // Filter to show only published events
+  const publishedEvents = events.filter(event => event.is_published);
 
   const handleEventClick = (event: Event) => {
     setSelectedEvent(event);
@@ -63,7 +48,7 @@ export default function EventCalendarPage() {
   }
 
   // Group events by month
-  const eventsByMonth = events.reduce((acc, event) => {
+  const eventsByMonth = publishedEvents.reduce((acc, event) => {
     const monthKey = format(parseISO(event.event_date), 'MMMM yyyy');
     if (!acc[monthKey]) {
       acc[monthKey] = [];
@@ -82,7 +67,7 @@ export default function EventCalendarPage() {
             <div className="flex items-center justify-center h-32">
               <IconLoader2 className="animate-spin" size={24} />
             </div>
-          ) : events.length === 0 ? (
+          ) : publishedEvents.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <p>No upcoming events at the moment.</p>
               <p className="text-sm mt-2">Check back later for new events!</p>

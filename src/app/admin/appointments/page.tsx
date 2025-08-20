@@ -7,16 +7,26 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { IconLoader2, IconCalendarEvent, IconClock, IconUser, IconTrash, IconAlertCircle, IconChevronLeft, IconChevronRight, IconEdit } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
-import { BookingsAPI } from '@/lib/bookings/api';
-import { ShiftsAPI } from '@/lib/shifts/api';
+import { useBookings } from '@/hooks/useBookings';
+import { useShifts } from '@/hooks/useShifts';
 import { Booking } from '@/types/bookings';
 import { Shift } from '@/types/shifts';
 import { format, parseISO } from 'date-fns';
 
 export default function ManageAppointmentsPage() {
   const { authorized, loading: authLoading } = useRequireRole(['admin']);
-  const bookingsAPI = new BookingsAPI();
-  const shiftsAPI = new ShiftsAPI();
+  const { 
+    loading: bookingsLoading, 
+    error: bookingsError, 
+    updateBookingStatus, 
+    cancelBooking, 
+    getShiftBookings 
+  } = useBookings();
+  const { 
+    loading: shiftsLoading, 
+    error: shiftsError, 
+    getShifts 
+  } = useShifts();
   
   const [currentDate, setCurrentDate] = useState(new Date());
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -45,7 +55,7 @@ export default function ManageAppointmentsPage() {
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + 30);
       
-      const shifts = await shiftsAPI.getShifts(startDate, endDate);
+      const shifts = await getShifts(startDate, endDate);
       
       if (shifts.length > 0) {
         setAvailableShifts(shifts);
@@ -59,7 +69,7 @@ export default function ManageAppointmentsPage() {
         setCurrentDate(new Date(shifts[index].date));
         
         // Load bookings for the first shift
-        const shiftBookings = await bookingsAPI.getShiftBookings(shifts[index].id);
+        const shiftBookings = await getShiftBookings(shifts[index].id);
         setBookings(shiftBookings);
       } else {
         setAvailableShifts([]);
@@ -75,7 +85,7 @@ export default function ManageAppointmentsPage() {
 
   const loadBookingsForShift = async (shift: Shift) => {
     try {
-      const shiftBookings = await bookingsAPI.getShiftBookings(shift.id);
+      const shiftBookings = await getShiftBookings(shift.id);
       setBookings(shiftBookings);
     } catch (error) {
       console.error('Error loading bookings:', error);
@@ -87,7 +97,7 @@ export default function ManageAppointmentsPage() {
     
     setDeleting(true);
     try {
-      await bookingsAPI.cancelBooking(selectedBooking.id);
+      await cancelBooking(selectedBooking.id);
       if (currentShift) {
         await loadBookingsForShift(currentShift);
       }
@@ -106,7 +116,7 @@ export default function ManageAppointmentsPage() {
     
     setUpdating(true);
     try {
-      await bookingsAPI.updateBookingStatus(selectedBooking.id, editStatus);
+      await updateBookingStatus(selectedBooking.id, editStatus);
       if (currentShift) {
         await loadBookingsForShift(currentShift);
       }

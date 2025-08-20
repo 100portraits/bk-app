@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
@@ -12,17 +13,15 @@ import TextInput from '@/components/ui/TextInput';
 import PillButton from '@/components/ui/PillButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import { IconInfoCircle, IconLoader2, IconCheck, IconPencil, IconBrandGoogle, IconBrandWindows, IconBrandApple } from '@tabler/icons-react';
-import { mockUser } from '@/lib/placeholderData';
-import { BookingsAPI } from '@/lib/bookings/api';
+import { useAuth } from '@/contexts/AuthContext';
+import { useAvailableSlots } from '@/hooks/useAvailableSlots';
 import { TimeSlot, toDbRepairType, getRepairDuration, RepairDetails } from '@/types/bookings';
 import { format } from 'date-fns';
-import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
 
 export default function BookingFormPage() {
   const { user, profile } = useAuth();
   const router = useRouter();
-  const bookingsAPI = new BookingsAPI();
+  const { loading, error, getAvailableSlots, getAvailableDates, createBooking } = useAvailableSlots();
   
   const [currentSection, setCurrentSection] = useState(1);
   const [experienceLevel, setExperienceLevel] = useState(1);
@@ -77,7 +76,7 @@ export default function BookingFormPage() {
   const loadAvailableDates = async () => {
     setLoadingDates(true);
     try {
-      const dates = await bookingsAPI.getAvailableDates(4);
+      const dates = await getAvailableDates(4);
       setAvailableDates(dates);
     } catch (error) {
       console.error('Error loading available dates:', error);
@@ -92,7 +91,7 @@ export default function BookingFormPage() {
     setSelectedTime('');
     
     try {
-      const slots = await bookingsAPI.getAvailableSlots(date, repairDuration);
+      const slots = await getAvailableSlots(date, repairDuration);
       if (slots.length > 0) {
         // Use the first shift's slots (typically only one shift per day)
         setSelectedShiftId(slots[0].shift_id);
@@ -268,7 +267,7 @@ export default function BookingFormPage() {
     
     setCreatingBooking(true);
     try {
-      await bookingsAPI.createBooking({
+      await createBooking({
         shift_id: selectedShiftId,
         slot_time: selectedTime,
         duration_minutes: repairDuration,
@@ -732,7 +731,7 @@ export default function BookingFormPage() {
               
               <div className="flex gap-3">
                 <PrimaryButton
-                  onClick={() => router.push('/booking')}
+                  onClick={() => router.push('/booking/manage')}
                   fullWidth
                 >
                   View My Bookings

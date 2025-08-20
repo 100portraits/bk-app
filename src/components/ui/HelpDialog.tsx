@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
-import { HelpMessagesAPI } from '@/lib/help-messages/api';
+import { useHelpMessages } from '@/hooks/useHelpMessages';
 import { IconLoader2, IconCheck } from '@tabler/icons-react';
 
 interface HelpDialogProps {
@@ -22,16 +22,17 @@ export default function HelpDialog({
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const helpMessagesAPI = new HelpMessagesAPI();
+  const { createMessage } = useHelpMessages();
 
   const handleSubmit = async () => {
     if (!message.trim()) return;
 
     setIsSubmitting(true);
     try {
-      await helpMessagesAPI.createHelpMessage({
-        page_name: pageName,
-        message: message.trim()
+      await createMessage({
+        category: 'general',
+        message: message.trim(),
+        context_page: pageName
       });
       
       setIsSuccess(true);

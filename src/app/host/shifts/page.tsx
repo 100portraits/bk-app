@@ -9,7 +9,7 @@ import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRequireRole } from '@/hooks/useAuthorization';
-import { ShiftsAPI } from '@/lib/shifts/api';
+import { useShifts } from '@/hooks/useShifts';
 import { Shift } from '@/types/shifts';
 import { 
   format, 
@@ -24,49 +24,53 @@ import { IconLoader2, IconUserPlus, IconUserMinus } from '@tabler/icons-react';
 export default function ShiftCalendarPage() {
   const { authorized, loading: authLoading } = useRequireRole(['host', 'mechanic', 'admin']);
   const { user, profile, role } = useAuth();
+  const { 
+    shifts, 
+    loading, 
+    error, 
+    getShifts, 
+    toggleShiftSignup, 
+    refresh 
+  } = useShifts();
   const [showShiftDetails, setShowShiftDetails] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [selectedShift, setSelectedShift] = useState<Shift | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [shifts, setShifts] = useState<Shift[]>([]);
-  const [loading, setLoading] = useState(false);
   const [pendingChanges, setPendingChanges] = useState<{
     toToggle: { shiftId: string; role: 'mechanic' | 'host' }[];
   }>({ toToggle: [] });
 
-  const shiftsAPI = new ShiftsAPI();
   const today = startOfToday();
   const fourWeeksFromNow = addWeeks(today, 4);
 
-  // Load shifts
+  // Load additional shifts for date range
+  const [rangeShifts, setRangeShifts] = useState<Shift[]>([]);
+  
   useEffect(() => {
     if (authorized) {
-      loadShifts();
+      loadRangeShifts();
     }
   }, [authorized]);
 
-  const loadShifts = async () => {
-    setLoading(true);
+  const loadRangeShifts = async () => {
     try {
-      const data = await shiftsAPI.getShifts(today, fourWeeksFromNow);
-      setShifts(data);
+      const data = await getShifts(today, fourWeeksFromNow);
+      setRangeShifts(data);
     } catch (error) {
-      console.error('Error loading shifts:', error);
-    } finally {
-      setLoading(false);
+      console.error('Error loading range shifts:', error);
     }
   };
 
   // Get open shifts only
   const getOpenShifts = (): Shift[] => {
-    return shifts.filter(shift => shift.is_open);
+    return rangeShifts.filter(shift => shift.is_open);
   };
 
   // Get shifts where user is signed up
   const getUserShifts = (): Shift[] => {
     if (!user) return [];
     
-    return shifts.filter(shift => {
+    return rangeShifts.filter(shift => {
       const isMechanic = shift.mechanics?.some(m => m.id === user.id);
       const isHost = shift.hosts?.some(h => h.id === user.id);
       return isMechanic || isHost;
@@ -112,13 +116,12 @@ export default function ShiftCalendarPage() {
   const saveChanges = async () => {
     if (!user || !profile) return;
     
-    setLoading(true);
     try {
       // Apply all pending changes
       for (const change of pendingChanges.toToggle) {
-        const shift = shifts.find(s => s.id === change.shiftId);
+        const shift = rangeShifts.find(s => s.id === change.shiftId);
         if (shift) {
-          await shiftsAPI.toggleShiftSignup(
+          await toggleShiftSignup(
             shift,
             user.id,
             user.email || '',
@@ -129,15 +132,14 @@ export default function ShiftCalendarPage() {
       }
       
       // Reload shifts
-      await loadShifts();
+      await refresh();
+      await loadRangeShifts();
       
       // Reset state
       setIsEditMode(false);
       setPendingChanges({ toToggle: [] });
     } catch (error) {
       console.error('Error saving changes:', error);
-    } finally {
-      setLoading(false);
     }
   };
 

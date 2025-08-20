@@ -10,8 +10,8 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import ToggleSelector from '@/components/ui/ToggleSelector';
 import TextInput from '@/components/ui/TextInput';
 import { IconEdit, IconTrash, IconLoader2, IconUsers, IconCurrencyEuro, IconChevronLeft, IconChevronRight, IconAlertCircle } from '@tabler/icons-react';
-import { WalkInsAPI } from '@/lib/walk-ins/api';
-import { ShiftsAPI } from '@/lib/shifts/api';
+import { useWalkIns } from '@/hooks/useWalkIns';
+import { useShifts } from '@/hooks/useShifts';
 import { WalkIn } from '@/types/walk-ins';
 import { Shift } from '@/types/shifts';
 import { format, parseISO } from 'date-fns';
@@ -21,8 +21,19 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function WalkInsPage() {
   const { authorized, loading: authLoading } = useRequireRole(['host', 'mechanic', 'admin']);
   const { profile } = useAuth();
-  const walkInsAPI = new WalkInsAPI();
-  const shiftsAPI = new ShiftsAPI();
+  const { 
+    loading: walkInsLoading, 
+    error: walkInsError, 
+    updateWalkIn, 
+    deleteWalkIn, 
+    getWalkInsByDate, 
+    getWalkInStats 
+  } = useWalkIns();
+  const { 
+    loading: shiftsLoading, 
+    error: shiftsError, 
+    getShifts 
+  } = useShifts();
   
   const [currentDate, setCurrentDate] = useState(new Date());
   const [walkIns, setWalkIns] = useState<WalkIn[]>([]);
@@ -57,7 +68,7 @@ export default function WalkInsPage() {
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + 30);
       
-      const shifts = await shiftsAPI.getShifts(startDate, endDate);
+      const shifts = await getShifts(startDate, endDate);
       
       if (shifts.length > 0) {
         setAvailableShifts(shifts);
@@ -87,8 +98,8 @@ export default function WalkInsPage() {
   const loadWalkInsForDate = async (date: Date) => {
     try {
       const [walkInsData, statsData] = await Promise.all([
-        walkInsAPI.getWalkInsByDate(date),
-        walkInsAPI.getWalkInStats(
+        getWalkInsByDate(date),
+        getWalkInStats(
           new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
           new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)
         )
@@ -137,7 +148,7 @@ export default function WalkInsPage() {
     
     setUpdating(true);
     try {
-      await walkInsAPI.updateWalkIn(selectedWalkIn.id, {
+      await updateWalkIn(selectedWalkIn.id, {
         is_community_member: editIsMember === 'Yes',
         amount_paid: editIsMember === 'No' ? parseFloat(editAmount) : null,
         notes: editNotes.trim() || undefined
@@ -158,7 +169,7 @@ export default function WalkInsPage() {
     
     setDeleting(true);
     try {
-      await walkInsAPI.deleteWalkIn(selectedWalkIn.id);
+      await deleteWalkIn(selectedWalkIn.id);
       await loadWalkInsForDate(currentDate);
       setShowDeleteDialog(false);
       setShowWalkInDetails(false);
