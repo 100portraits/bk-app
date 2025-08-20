@@ -4,7 +4,6 @@
 CREATE TABLE public.bookings (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   user_id uuid,
-  email text NOT NULL,
   shift_id uuid,
   slot_time time without time zone NOT NULL,
   duration_minutes integer NOT NULL CHECK (duration_minutes = ANY (ARRAY[30, 40, 45, 60])),
@@ -15,6 +14,7 @@ CREATE TABLE public.bookings (
   created_at timestamp with time zone DEFAULT now(),
   updated_at timestamp with time zone DEFAULT now(),
   is_member boolean NOT NULL DEFAULT false,
+  email text NOT NULL,
   CONSTRAINT bookings_pkey PRIMARY KEY (id),
   CONSTRAINT bookings_shift_id_fkey FOREIGN KEY (shift_id) REFERENCES public.shifts(id),
   CONSTRAINT bookings_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.user_profiles(id)
@@ -39,13 +39,14 @@ CREATE TABLE public.events (
 );
 CREATE TABLE public.help_messages (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
-  user_id uuid NOT NULL,
+  user_id uuid,
   page_name text NOT NULL,
   message text NOT NULL,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   read_at timestamp with time zone,
   response text,
   responded_at timestamp with time zone,
+  user_name text,
   CONSTRAINT help_messages_pkey PRIMARY KEY (id),
   CONSTRAINT help_messages_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.user_profiles(id)
 );
@@ -70,11 +71,11 @@ CREATE TABLE public.shifts (
 CREATE TABLE public.user_profiles (
   id uuid NOT NULL,
   email text NOT NULL,
-  name text NOT NULL,
   member boolean NOT NULL DEFAULT false,
   role text CHECK ((role = ANY (ARRAY['host'::text, 'mechanic'::text, 'admin'::text])) OR role IS NULL),
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()),
   updated_at timestamp with time zone DEFAULT timezone('utc'::text, now()),
+  name text NOT NULL,
   CONSTRAINT user_profiles_pkey PRIMARY KEY (id),
   CONSTRAINT user_profiles_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id)
 );

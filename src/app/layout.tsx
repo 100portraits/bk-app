@@ -5,6 +5,7 @@ import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { MenuProvider } from '@/contexts/MenuContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { DialogProvider } from '@/contexts/DialogContext';
 import GlobalMenu from '@/components/layout/GlobalMenu';
 import "./globals.css";
 import '@mantine/core/styles.css';
@@ -40,13 +41,15 @@ export default function RootLayout({
       >
         <AuthProvider>
           <MenuProvider>
-            <MantineProvider theme={theme}>
-              <ModalsProvider>
-                <Notifications />
-                <GlobalMenu />
-                {children}
-              </ModalsProvider>
-            </MantineProvider>
+            <DialogProvider>
+              <MantineProvider theme={theme}>
+                <ModalsProvider>
+                  <Notifications />
+                  <GlobalMenu />
+                  {children}
+                </ModalsProvider>
+              </MantineProvider>
+            </DialogProvider>
           </MenuProvider>
         </AuthProvider>
       </body>

@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase/singleton-client';
 import { WalkIn, CreateWalkInInput } from '@/types/walk-ins';
 import { useAuth } from '@/contexts/AuthContext';
 
-export function useWalkIns(shiftId?: string) {
+export function useWalkIns() {
   const { user } = useAuth();
   const [walkIns, setWalkIns] = useState<WalkIn[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,22 +24,16 @@ export function useWalkIns(shiftId?: string) {
       setError(null);
 
       try {
-        let query = supabase
+        const query = supabase
           .from('walk_ins')
           .select(`
             *,
-            shift:shifts (
-              date,
-              day_of_week,
-              start_time,
-              end_time
+            creator:user_profiles (
+              email,
+              name
             )
           `)
-          .order('arrival_time', { ascending: false });
-
-        if (shiftId) {
-          query = query.eq('shift_id', shiftId);
-        }
+          .order('created_at', { ascending: false });
 
         const { data, error: fetchError } = await query;
 
@@ -63,19 +57,22 @@ export function useWalkIns(shiftId?: string) {
     return () => {
       isCancelled = true;
     };
-  }, [user?.id, shiftId]);
+  }, [user?.id]);
 
   const createWalkIn = async (walkIn: CreateWalkInInput) => {
+    if (!user) throw new Error('User not authenticated');
+    
     const { data, error } = await supabase
       .from('walk_ins')
-      .insert(walkIn)
+      .insert({
+        ...walkIn,
+        created_by: user.id
+      })
       .select(`
         *,
-        shift:shifts (
-          date,
-          day_of_week,
-          start_time,
-          end_time
+        creator:user_profiles (
+          email,
+          name
         )
       `)
       .single();
@@ -93,11 +90,9 @@ export function useWalkIns(shiftId?: string) {
       .eq('id', id)
       .select(`
         *,
-        shift:shifts (
-          date,
-          day_of_week,
-          start_time,
-          end_time
+        creator:user_profiles (
+          email,
+          name
         )
       `)
       .single();
@@ -214,11 +209,8 @@ export function useWalkIns(shiftId?: string) {
             end_time
           )
         `)
-        .order('arrival_time', { ascending: false });
+        .order('created_at', { ascending: false });
 
-      if (shiftId) {
-        query = query.eq('shift_id', shiftId);
-      }
 
       const { data, error: fetchError } = await query;
       if (fetchError) throw fetchError;

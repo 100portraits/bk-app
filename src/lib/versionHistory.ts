@@ -7,10 +7,21 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.5.0',
+    date: '2025-01-20',
+    changes: [
+      'Quick Links feature on homepage',
+      'Pin favorite actions for quick access',
+      'Extracted dialogs for global accessibility',
+      'Help messages now include user names',
+      'Added version tracker with changelog'
+    ],
+    type: 'minor'
+  },
+  {
     version: '0.4.2',
     date: '2025-01-20',
     changes: [
-      'Added version tracker component for debugging',
       'Minor booking form tweaks',
       'Improved guest booking flow'
     ],

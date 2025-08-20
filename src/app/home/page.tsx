@@ -4,21 +4,30 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/layout/AppLayout';
 import NavigationCard from '@/components/ui/NavigationCard';
+import QuickLinkCard from '@/components/ui/QuickLinkCard';
 import HelpButton from '@/components/ui/HelpButton';
 import HelpDialog from '@/components/ui/HelpDialog';
 import DismissableCard from '@/components/ui/DismissableCard';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import VersionTracker from '@/components/ui/VersionTracker';
-import { IconPlus } from '@tabler/icons-react';
-import { quickLinksOptions, widgetOptions } from '@/lib/placeholderData';
+import { IconPlus, IconInfoCircle } from '@tabler/icons-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useQuickLinks } from '@/hooks/useQuickLinks';
 
 export default function HomePage() {
   const { profile } = useAuth();
   const router = useRouter();
   const [showQuickLinksDialog, setShowQuickLinksDialog] = useState(false);
-  const [showWidgetsDialog, setShowWidgetsDialog] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const { 
+    quickLinks, 
+    availableByCategory, 
+    addQuickLink, 
+    removeQuickLink,
+    isQuickLink,
+    hasReachedLimit 
+  } = useQuickLinks();
 
   return (
     <AppLayout 
@@ -88,23 +97,55 @@ export default function HomePage() {
         </section>
 
         <section>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Quick Links</h2>
-          <button
-            onClick={() => setShowQuickLinksDialog(true)}
-            className="w-full h-24 bg-purple-50 border-2 border-dashed border-purple-200 rounded-lg flex items-center justify-center hover:bg-purple-100 transition-colors"
-          >
-            <IconPlus size={32} className="text-purple-400" />
-          </button>
-        </section>
-
-        <section>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Widgets</h2>
-          <button
-            onClick={() => setShowWidgetsDialog(true)}
-            className="w-full h-24 bg-purple-50 border-2 border-dashed border-purple-200 rounded-lg flex items-center justify-center hover:bg-purple-100 transition-colors"
-          >
-            <IconPlus size={32} className="text-purple-400" />
-          </button>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-4xl font-bold text-gray-900">Quick Links</h2>
+            {quickLinks.length > 0 && (
+              <button
+                onClick={() => setEditMode(!editMode)}
+                className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+              >
+                {editMode ? 'Done' : 'Edit'}
+              </button>
+            )}
+          </div>
+          
+          {quickLinks.length === 0 ? (
+            <div className="space-y-3">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
+                <IconInfoCircle size={32} className="mx-auto text-gray-400 mb-2" />
+                <p className="text-gray-600 mb-3">No quick links added yet</p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Add your favorite actions for quick access from the homepage
+                </p>
+              </div>
+              <button
+                onClick={() => setShowQuickLinksDialog(true)}
+                className="w-full h-24 bg-purple-50 border-2 border-dashed border-purple-200 rounded-lg flex items-center justify-center hover:bg-purple-100 transition-colors"
+              >
+                <IconPlus size={32} className="text-purple-400" />
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {quickLinks.map((action) => (
+                <QuickLinkCard
+                  key={action.id}
+                  action={action}
+                  showRemoveButton={editMode}
+                  onRemove={() => removeQuickLink(action.id)}
+                />
+              ))}
+              
+              {!hasReachedLimit && (
+                <button
+                  onClick={() => setShowQuickLinksDialog(true)}
+                  className="w-full h-20 bg-purple-50 border-2 border-dashed border-purple-200 rounded-lg flex items-center justify-center hover:bg-purple-100 transition-colors"
+                >
+                  <IconPlus size={24} className="text-purple-400" />
+                </button>
+              )}
+            </div>
+          )}
         </section>
 
         <HelpButton
@@ -117,34 +158,132 @@ export default function HomePage() {
         isOpen={showQuickLinksDialog}
         onClose={() => setShowQuickLinksDialog(false)}
         title="Add Quick Link"
+        scrollable
+        maxHeight='80vh'
       >
-        <div className="space-y-3">
-          {quickLinksOptions.map((option) => (
-            <NavigationCard
-              key={option.id}
-              title={option.title}
-              subtitle={option.subtitle}
-              variant="secondary"
-              onClick={() => {
-                setShowQuickLinksDialog(false);
-              }}
-            />
-          ))}
-        </div>
-      </BottomSheetDialog>
-
-      <BottomSheetDialog
-        isOpen={showWidgetsDialog}
-        onClose={() => setShowWidgetsDialog(false)}
-        title="Add Widget"
-      >
-        <div className="space-y-4">
-          {widgetOptions.map((widget) => (
-            <div key={widget.id} className="p-6 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-              <h3 className="font-medium text-gray-900">{widget.title}</h3>
-              <p className="text-sm text-gray-600">{widget.subtitle}</p>
+        <div className="space-y-6">
+          {hasReachedLimit && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+              <p className="text-sm text-yellow-800">
+                You've reached the maximum of 8 quick links. Remove some to add more.
+              </p>
             </div>
-          ))}
+          )}
+          
+          {/* Booking Actions */}
+          {availableByCategory.booking.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Booking</h3>
+              <div className="space-y-2">
+                {availableByCategory.booking.map((action) => {
+                  const Icon = action.icon;
+                  return (
+                    <NavigationCard
+                      key={action.id}
+                      title={action.title}
+                      subtitle={action.subtitle}
+                      variant="secondary"
+                      icon={Icon ? <Icon size={20} /> : undefined}
+                      onClick={() => {
+                        if (!isQuickLink(action.id)) {
+                          addQuickLink(action.id);
+                        }
+                        setShowQuickLinksDialog(false);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          
+          {/* Host Actions */}
+          {availableByCategory.host.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Host Tools</h3>
+              <div className="space-y-2">
+                {availableByCategory.host.map((action) => {
+                  const Icon = action.icon;
+                  return (
+                    <NavigationCard
+                      key={action.id}
+                      title={action.title}
+                      subtitle={action.subtitle}
+                      variant="secondary"
+                      icon={Icon ? <Icon size={20} /> : undefined}
+                      onClick={() => {
+                        if (!isQuickLink(action.id)) {
+                          addQuickLink(action.id);
+                        }
+                        setShowQuickLinksDialog(false);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          
+          {/* Admin Actions */}
+          {availableByCategory.admin.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Admin</h3>
+              <div className="space-y-2">
+                {availableByCategory.admin.map((action) => {
+                  const Icon = action.icon;
+                  return (
+                    <NavigationCard
+                      key={action.id}
+                      title={action.title}
+                      subtitle={action.subtitle}
+                      variant="secondary"
+                      icon={Icon ? <Icon size={20} /> : undefined}
+                      onClick={() => {
+                        if (!isQuickLink(action.id)) {
+                          addQuickLink(action.id);
+                        }
+                        setShowQuickLinksDialog(false);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          
+          {/* Membership Actions */}
+          {availableByCategory.membership.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Membership</h3>
+              <div className="space-y-2">
+                {availableByCategory.membership.map((action) => {
+                  const Icon = action.icon;
+                  return (
+                    <NavigationCard
+                      key={action.id}
+                      title={action.title}
+                      subtitle={action.subtitle}
+                      variant="secondary"
+                      icon={Icon ? <Icon size={20} /> : undefined}
+                      onClick={() => {
+                        if (!isQuickLink(action.id)) {
+                          addQuickLink(action.id);
+                        }
+                        setShowQuickLinksDialog(false);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          
+          {/* Show message if no actions available */}
+          {Object.values(availableByCategory).every(category => category.length === 0) && (
+            <div className="text-center py-6 text-gray-500">
+              <p>All available actions have been added to quick links.</p>
+            </div>
+          )}
         </div>
       </BottomSheetDialog>
 
