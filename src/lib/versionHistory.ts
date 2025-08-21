@@ -7,6 +7,22 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.7.3',
+    date: '2025-08-21',
+    changes: [
+      'Fixed datepicker functionality on desktop browsers',
+      'Added date format display as dd-mm-yyyy in walk-in dialog',
+      'Fixed team management database queries and RLS policies',
+      'Added user search functionality for team management',
+      'Implemented "Add Team Member" feature with email search',
+      'Extended booking cancellation to registered users',
+      'Added cancel button in booking confirmation emails for all users',
+      'Updated cancellation API to handle both guest and registered bookings',
+      'Created comprehensive RLS policy migration for user_profiles table'
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.7.2',
     date: '2025-08-21',
     changes: [
