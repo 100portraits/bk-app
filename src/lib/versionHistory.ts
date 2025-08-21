@@ -7,8 +7,21 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.7.1',
+    date: '2025-08-21',
+    changes: [
+      'Added date picker to walk-in recording dialog',
+      'Implemented real-time message updates for help dialog system',
+      'Made name field mandatory for guest bookings',
+      'Added connection retry logic for Supabase with improved session management',
+      'Enhanced error handling in connection retry logic',
+      'Minor email system tweaks and improvements'
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.7.0',
-    date: '2025-01-21',
+    date: '2025-08-21',
     changes: [
       'Complete email system integration with Resend',
       'Automated emails for booking confirmations and cancellations',
@@ -21,7 +34,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.6.0',
-    date: '2025-01-21',
+    date: '2025-08-21',
     changes: [
       'Event poster upload system with Supabase Storage',
       'Fixed timezone issues with shift scheduling',
@@ -34,7 +47,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.5.0',
-    date: '2025-01-20',
+    date: '2025-08-20',
     changes: [
       'Quick Links feature on homepage',
       'Pin favorite actions for quick access',
@@ -46,7 +59,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.4.2',
-    date: '2025-01-20',
+    date: '2025-08-20',
     changes: [
       'Minor booking form tweaks',
       'Improved guest booking flow'
@@ -55,7 +68,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.4.1',
-    date: '2025-01-19',
+    date: '2025-08-19',
     changes: [
       'Added admin messages inbox for help requests',
       'Fixed help messages database schema',
@@ -65,7 +78,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.4.0',
-    date: '2025-01-18',
+    date: '2025-08-18',
     changes: [
       'Major API architecture refactor',
       'Fixed tab-switching loading issues',
@@ -75,7 +88,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.3.0',
-    date: '2025-01-17',
+    date: '2025-08-17',
     changes: [
       'Implemented walk-in registration system',
       'Added comprehensive booking logic',
@@ -87,7 +100,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.2.0',
-    date: '2025-01-15',
+    date: '2025-08-15',
     changes: [
       'Implemented authentication system',
       'Added page-level authorization',
@@ -98,7 +111,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.1.2',
-    date: '2025-01-14',
+    date: '2025-08-14',
     changes: [
       'Booking form UI implementation',
       'Various UI adjustments and tweaks'
@@ -107,7 +120,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.1.1',
-    date: '2025-01-13',
+    date: '2025-08-13',
     changes: [
       'Added global navigation menu',
       'Implemented bottom sheet component',
@@ -118,7 +131,7 @@ export const versionHistory: Version[] = [
   },
   {
     version: '0.1.0',
-    date: '2025-01-12',
+    date: '2025-08-12',
     changes: [
       'Initial app setup',
       'Basic UI implementation',
