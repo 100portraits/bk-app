@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { IconMenu2, IconUser, IconSearch, IconLogout, IconCrown, IconShieldCheck, IconTool, IconMessage } from '@tabler/icons-react';
+import { IconMenu2, IconUser, IconSearch, IconLogout, IconCrown, IconShieldCheck, IconTool, IconMessage, IconArrowLeft } from '@tabler/icons-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import MessagesDialog from '@/components/ui/MessagesDialog';
 
 interface TopNavigationBarProps {
@@ -68,6 +68,11 @@ const TopNavigationBar = ({
     }
   };
 
+  const path = usePathname();
+  const isSubPage = path.split('/').length > 2;
+  console.log('Is Sub Page:', isSubPage);
+
+
   return (
     <header 
       className={`
@@ -88,12 +93,25 @@ const TopNavigationBar = ({
         ${className}
       `}
     >
-      <button 
+      {isSubPage ?
+       (<button className='hover:bg-purple-100 rounded-lg transition-colors p-2'>
+        <IconArrowLeft 
+          size={24} 
+          className="text-gray-700 " 
+          onClick={() => router.back()}
+       />
+       </button>  
+
+       )
+       : 
+       (<button 
         onClick={onMenuClick}
         className="p-2 -ml-2 rounded-lg hover:bg-purple-100 transition-colors"
       >
         <IconMenu2 size={24} className="text-gray-700" />
       </button>
+      )}
+
       
       <h1 className="text-xl font-semibold text-gray-900 flex-1 text-center">
         {title}

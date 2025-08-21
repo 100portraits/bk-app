@@ -225,7 +225,7 @@ export default function ManageEventsPage() {
 
   if (authLoading) {
     return (
-      <AppLayout title="Admin Panel">
+      <AppLayout title="Manage Events">
         <div className="flex items-center justify-center h-64">
           <IconLoader2 className="animate-spin" size={32} />
         </div>
@@ -248,7 +248,7 @@ export default function ManageEventsPage() {
   }, {} as Record<string, Event[]>);
 
   return (
-    <AppLayout title="Admin Panel">
+    <AppLayout title="Manage Events">
       <div className="space-y-6">
         <section>
           <div className="flex items-center justify-between mb-6">

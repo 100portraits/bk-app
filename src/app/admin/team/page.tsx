@@ -69,7 +69,7 @@ export default function ManageTeamPage() {
 
   if (authLoading) {
     return (
-      <AppLayout title="Admin Panel">
+      <AppLayout title="Manage Team">
         <div className="flex items-center justify-center h-64">
           <IconLoader2 className="animate-spin" size={32} />
         </div>
@@ -82,7 +82,7 @@ export default function ManageTeamPage() {
   }
 
   return (
-    <AppLayout title="Admin Panel">
+    <AppLayout title="Manage Team">
       <div className="space-y-6">
         <section>
           <h2 className="text-4xl font-bold text-gray-900 mb-6">Manage Team</h2>

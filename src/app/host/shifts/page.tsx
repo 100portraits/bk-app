@@ -145,7 +145,7 @@ export default function ShiftCalendarPage() {
 
   if (authLoading) {
     return (
-      <AppLayout title="Host App">
+      <AppLayout title="Shift Calendar">
         <div className="flex items-center justify-center h-64">
           <IconLoader2 className="animate-spin" size={32} />
         </div>
@@ -166,7 +166,7 @@ export default function ShiftCalendarPage() {
   const canSignUpAsHost = role === 'host' || role === 'mechanic' || role === 'admin';
 
   return (
-    <AppLayout title="Host App">
+    <AppLayout title="Shift Calendar">
       <div className="space-y-6">
         <section>
           <div className="flex items-center justify-between mb-4">

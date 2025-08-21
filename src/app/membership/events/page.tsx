@@ -35,7 +35,7 @@ export default function EventCalendarPage() {
 
   if (authLoading) {
     return (
-      <AppLayout title="Member Info">
+      <AppLayout title="Event Calendar">
         <div className="flex items-center justify-center h-64">
           <IconLoader2 className="animate-spin" size={32} />
         </div>
@@ -58,7 +58,7 @@ export default function EventCalendarPage() {
   }, {} as Record<string, Event[]>);
 
   return (
-    <AppLayout title="Member Info">
+    <AppLayout title="Event Calendar">
       <div className="space-y-6">
         <section>
           <h2 className="text-4xl font-bold text-gray-900 mb-6">Event Calendar</h2>

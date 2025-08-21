@@ -301,7 +301,7 @@ export default function BookingFormPage() {
   return (
     <AppLayout
       title="Booking Form"
-      showSearchIcon={true}
+
     >
       <div className="space-y-8">
         <div className="">
