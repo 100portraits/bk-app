@@ -5,7 +5,11 @@ import { getRouteConfig } from '@/config/routes';
 import { UserProfile } from '@/types/auth';
 
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next();
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
   
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -25,7 +29,15 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  // First try to get session from cookies (faster)
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  
+  // If there's an error getting the session, try to refresh it
+  if (sessionError) {
+    console.error('Error getting session in middleware:', sessionError);
+  }
+  
+  const user = session?.user ?? null;
   
   // Get user profile if authenticated
   let profile: UserProfile | null = null;

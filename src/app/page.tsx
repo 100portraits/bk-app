@@ -8,7 +8,7 @@ import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import TextInput from '@/components/ui/TextInput';
 import VersionTracker from '@/components/ui/VersionTracker';
 import { IconUser, IconPlus, IconMail, IconCheck } from '@tabler/icons-react';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/singleton-client';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Home() {
@@ -27,7 +27,6 @@ export default function Home() {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -56,6 +55,8 @@ export default function Home() {
       } else {
         setShowLogin(false);
         setShowBookingOptions(false);
+        // Refresh to ensure middleware picks up the new session
+        router.refresh();
         // If login was initiated from booking flow, go to booking
         // Otherwise go to home
         if (loginFromBooking) {

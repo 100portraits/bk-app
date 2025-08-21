@@ -70,39 +70,114 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    let mounted = true;
+    let profileFetchTimeout: NodeJS.Timeout;
+    let currentUserId: string | null = null;
+
     const getUser = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
+        const { data: { session } } = await supabase.auth.getSession();
         
-        if (user) {
-          const profileData = await fetchProfile(user.id);
-          setProfile(profileData);
+        if (mounted) {
+          const sessionUser = session?.user ?? null;
+          setUser(sessionUser);
+          currentUserId = sessionUser?.id ?? null;
+          
+          if (sessionUser) {
+            const profileData = await fetchProfile(sessionUser.id);
+            if (mounted) {
+              setProfile(profileData);
+            }
+          }
         }
       } catch (error) {
         console.error('Error getting user:', error);
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
     getUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('[Auth] Auth state changed:', event, session?.user?.email);
       
-      if (currentUser) {
-        const profileData = await fetchProfile(currentUser.id);
-        setProfile(profileData);
-      } else {
-        setProfile(null);
+      // Skip INITIAL_SESSION as we already handled it in getUser()
+      if (event === 'INITIAL_SESSION') {
+        return;
       }
       
-      setLoading(false);
+      const newUser = session?.user ?? null;
+      const newUserId = newUser?.id ?? null;
+      
+      if (mounted) {
+        // Handle TOKEN_REFRESHED - only skip if user hasn't changed
+        if (event === 'TOKEN_REFRESHED' && newUserId === currentUserId) {
+          console.log('[Auth] Token refreshed for same user, skipping');
+          return;
+        }
+        
+        // Handle SIGNED_IN, SIGNED_OUT, or user change
+        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || newUserId !== currentUserId) {
+          console.log('[Auth] User changed:', currentUserId, '->', newUserId);
+          setUser(newUser);
+          currentUserId = newUserId;
+          
+          // Clear any pending profile fetch
+          clearTimeout(profileFetchTimeout);
+          
+          if (newUser) {
+            // Fetch profile for new user
+            profileFetchTimeout = setTimeout(async () => {
+              const profileData = await fetchProfile(newUser.id);
+              if (mounted) {
+                setProfile(profileData);
+              }
+            }, 100);
+          } else {
+            setProfile(null);
+          }
+        }
+        
+        setLoading(false);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    // Handle tab visibility changes to refresh session
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && currentUserId) {
+        console.log('[Auth] Tab became visible, checking session');
+        supabase.auth.getSession().then(({ data: { session }, error }) => {
+          if (error) {
+            console.error('[Auth] Error refreshing session on tab focus:', error);
+          } else if (session) {
+            console.log('[Auth] Session refreshed on tab focus');
+          }
+        });
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Also handle focus event as a backup
+    const handleFocus = () => {
+      if (currentUserId) {
+        console.log('[Auth] Window focused, checking session');
+        supabase.auth.getSession();
+      }
+    };
+    
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      mounted = false;
+      clearTimeout(profileFetchTimeout);
+      subscription.unsubscribe();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const signOut = async () => {

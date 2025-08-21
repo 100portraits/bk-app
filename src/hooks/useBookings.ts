@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase/singleton-client';
 import { Booking } from '@/types/bookings';
 import { useAuth } from '@/contexts/AuthContext';
 import { BookingsAPI } from '@/lib/bookings/api';
+import { withConnectionRetry } from '@/hooks/useSupabaseConnection';
 
 export function useBookings() {
   const { user } = useAuth();
@@ -28,32 +29,36 @@ export function useBookings() {
       setError(null);
 
       try {
-        const { data, error: fetchError } = await supabase
-          .from('bookings')
-          .select(`
-            *,
-            shift:shifts (
-              date,
-              day_of_week,
-              start_time,
-              end_time
-            )
-          `)
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false });
+        const result = await withConnectionRetry(async () => {
+          const { data, error: fetchError } = await supabase
+            .from('bookings')
+            .select(`
+              *,
+              shift:shifts (
+                date,
+                day_of_week,
+                start_time,
+                end_time
+              )
+            `)
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false });
+
+          if (fetchError) {
+            console.error('[useBookings] Error:', fetchError);
+            throw fetchError;
+          }
+
+          return data;
+        });
 
         if (isCancelled) {
           console.log('[useBookings] Request was cancelled');
           return;
         }
 
-        if (fetchError) {
-          console.error('[useBookings] Error:', fetchError);
-          throw fetchError;
-        }
-
-        console.log('[useBookings] Fetched bookings:', data?.length || 0);
-        setBookings(data || []);
+        console.log('[useBookings] Fetched bookings:', result?.length || 0);
+        setBookings(result || []);
       } catch (err) {
         if (!isCancelled) {
           console.error('[useBookings] Error fetching bookings:', err);
