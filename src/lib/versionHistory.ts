@@ -7,6 +7,19 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.7.4',
+    date: '2025-08-21',
+    changes: [
+      'Implemented comprehensive dark mode support across all components',
+      'Added customizable accent color theming system',
+      'Enhanced VersionDialog with scrollable content and max height constraints',
+      'Fixed button positioning and styling in Home component',
+      'Replaced SecondaryButton with anchor tag for community join link',
+      'Migrated entire UI to support light/dark theme switching'
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.7.3',
     date: '2025-08-21',
     changes: [
