@@ -5,8 +5,9 @@ import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import ToggleSelector from '@/components/ui/ToggleSelector';
 import TextInput from '@/components/ui/TextInput';
 import PrimaryButton from '@/components/ui/PrimaryButton';
-import { IconLoader2, IconCheck } from '@tabler/icons-react';
+import { IconLoader2, IconCheck, IconCalendar } from '@tabler/icons-react';
 import { useWalkIns } from '@/hooks/useWalkIns';
+import { format } from 'date-fns';
 
 interface RecordWalkInDialogProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
   const [isCommunityMember, setIsCommunityMember] = useState('No');
   const [amountPaid, setAmountPaid] = useState('');
   const [notes, setNotes] = useState('');
+  const [recordDate, setRecordDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const { createWalkIn } = useWalkIns();
@@ -27,7 +29,8 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
       await createWalkIn({
         is_community_member: isCommunityMember === 'Yes',
         amount_paid: isCommunityMember === 'No' ? parseFloat(amountPaid) : undefined,
-        notes: notes.trim() || undefined
+        notes: notes.trim() || undefined,
+        date: recordDate // Pass the date in YYYY-MM-DD format
       });
       
       // Show success state
@@ -38,6 +41,7 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
         setAmountPaid('');
         setNotes('');
         setIsCommunityMember('No');
+        setRecordDate(format(new Date(), 'yyyy-MM-dd'));
         onClose();
       }, 1500);
     } catch (error) {
@@ -53,6 +57,7 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
       setAmountPaid('');
       setNotes('');
       setIsCommunityMember('No');
+      setRecordDate(format(new Date(), 'yyyy-MM-dd'));
       setShowSuccess(false);
       onClose();
     }
@@ -79,6 +84,25 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
       ) : (
         <div className="space-y-6">
           <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Date of Walk-in
+              </label>
+              <div className="relative">
+                <input
+                  type="date"
+                  value={recordDate}
+                  onChange={(e) => setRecordDate(e.target.value)}
+                  max={format(new Date(), 'yyyy-MM-dd')}
+                  className="w-full p-3 pr-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+                <IconCalendar className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Defaults to today. You can select a past date if needed.
+              </p>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 Community Member?

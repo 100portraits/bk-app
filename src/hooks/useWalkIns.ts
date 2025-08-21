@@ -133,10 +133,7 @@ export function useWalkIns() {
   };
 
   const getWalkInsByDate = async (date: Date) => {
-    const startDate = new Date(date);
-    startDate.setHours(0, 0, 0, 0);
-    const endDate = new Date(date);
-    endDate.setHours(23, 59, 59, 999);
+    const dateStr = date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
     try {
       const { data, error } = await supabase
@@ -147,8 +144,7 @@ export function useWalkIns() {
             email
           )
         `)
-        .gte('created_at', startDate.toISOString())
-        .lte('created_at', endDate.toISOString())
+        .eq('date', dateStr)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
@@ -161,12 +157,26 @@ export function useWalkIns() {
   };
 
   const getWalkInStats = async (startDate: Date, endDate: Date) => {
+    // For single day stats, just use the date
+    const isSameDay = startDate.toDateString() === endDate.toDateString();
+    
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('walk_ins')
-        .select('is_community_member, amount_paid')
-        .gte('created_at', startDate.toISOString())
-        .lte('created_at', endDate.toISOString());
+        .select('is_community_member, amount_paid');
+      
+      if (isSameDay) {
+        // For single day, use the date column
+        const dateStr = startDate.toISOString().split('T')[0];
+        query = query.eq('date', dateStr);
+      } else {
+        // For date range, use date column with range
+        const startStr = startDate.toISOString().split('T')[0];
+        const endStr = endDate.toISOString().split('T')[0];
+        query = query.gte('date', startStr).lte('date', endStr);
+      }
+      
+      const { data, error } = await query;
       
       if (error) throw error;
       
