@@ -251,7 +251,7 @@ export default function GuestBookingPage() {
   };
 
   const handleCreateBooking = async () => {
-    if (!selectedShiftId || !selectedTime || !selectedDate || !email) return;
+    if (!selectedShiftId || !selectedTime || !selectedDate || !email || !name.trim()) return;
 
     setCreatingBooking(true);
     try {
@@ -264,7 +264,7 @@ export default function GuestBookingPage() {
         notes: disclaimerText || undefined,
         is_member: false,
         email: email, // Pass the guest's email
-        name: name.trim() || undefined // Pass the guest's name if provided
+        name: name.trim() // Pass the guest's name
       });
 
       // Send confirmation email for guest booking
@@ -639,7 +639,7 @@ export default function GuestBookingPage() {
                 <h3 className="font-medium text-gray-800">Enter your details:</h3>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Your name (optional)
+                    Your name
                   </label>
                   <TextInput
                     type="text"
@@ -678,7 +678,7 @@ export default function GuestBookingPage() {
                 <PrimaryButton
                   onClick={handleCreateBooking}
                   fullWidth
-                  disabled={creatingBooking || !email}
+                  disabled={creatingBooking || !email || !name.trim()}
                 >
                   {creatingBooking ? (
                     <span className="flex items-center justify-center gap-2">
