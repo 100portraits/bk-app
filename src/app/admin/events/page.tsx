@@ -354,9 +354,14 @@ export default function ManageEventsPage() {
                 </label>
                 <input
                   type="date"
-                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   value={eventForm.event_date}
                   onChange={(e) => setEventForm(prev => ({ ...prev, event_date: e.target.value }))}
+                  onClick={(e) => {
+                    if (e.currentTarget.showPicker) {
+                      e.currentTarget.showPicker();
+                    }
+                  }}
                 />
               </div>
               
@@ -367,9 +372,14 @@ export default function ManageEventsPage() {
                 </label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   value={eventForm.start_time}
                   onChange={(e) => setEventForm(prev => ({ ...prev, start_time: e.target.value }))}
+                  onClick={(e) => {
+                    if (e.currentTarget.showPicker) {
+                      e.currentTarget.showPicker();
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -382,9 +392,14 @@ export default function ManageEventsPage() {
                 </label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   value={eventForm.end_time}
                   onChange={(e) => setEventForm(prev => ({ ...prev, end_time: e.target.value }))}
+                  onClick={(e) => {
+                    if (e.currentTarget.showPicker) {
+                      e.currentTarget.showPicker();
+                    }
+                  }}
                 />
               </div>
               
@@ -545,9 +560,14 @@ export default function ManageEventsPage() {
                 </label>
                 <input
                   type="date"
-                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   value={eventForm.event_date}
                   onChange={(e) => setEventForm(prev => ({ ...prev, event_date: e.target.value }))}
+                  onClick={(e) => {
+                    if (e.currentTarget.showPicker) {
+                      e.currentTarget.showPicker();
+                    }
+                  }}
                 />
               </div>
               
@@ -558,9 +578,14 @@ export default function ManageEventsPage() {
                 </label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   value={eventForm.start_time}
                   onChange={(e) => setEventForm(prev => ({ ...prev, start_time: e.target.value }))}
+                  onClick={(e) => {
+                    if (e.currentTarget.showPicker) {
+                      e.currentTarget.showPicker();
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -573,9 +598,14 @@ export default function ManageEventsPage() {
                 </label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   value={eventForm.end_time}
                   onChange={(e) => setEventForm(prev => ({ ...prev, end_time: e.target.value }))}
+                  onClick={(e) => {
+                    if (e.currentTarget.showPicker) {
+                      e.currentTarget.showPicker();
+                    }
+                  }}
                 />
               </div>
               

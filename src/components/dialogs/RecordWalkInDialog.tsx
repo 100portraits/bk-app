@@ -91,15 +91,18 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date of Walk-in
               </label>
-              <div className="relative">
-                <input
-                  type="date"
-                  value={recordDate}
-                  onChange={(e) => setRecordDate(e.target.value)}
-                  max={format(new Date(), 'yyyy-MM-dd')}
-                  className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                />
-              </div>
+              <input
+                type="date"
+                value={recordDate}
+                onChange={(e) => setRecordDate(e.target.value)}
+                className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                onClick={(e) => {
+                  // Force the date picker to show on click
+                  if (e.currentTarget.showPicker) {
+                    e.currentTarget.showPicker();
+                  }
+                }}
+              />
               <p className="text-xs text-gray-500 mt-1">
                 Defaults to today. You can select a past date if needed.
               </p>
