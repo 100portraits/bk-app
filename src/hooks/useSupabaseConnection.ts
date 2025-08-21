@@ -99,7 +99,7 @@ export async function withConnectionRetry<T>(
   maxRetries = 3,
   retryDelay = 1000
 ): Promise<T> {
-  let lastError: any;
+  let lastError: unknown;
   
   for (let i = 0; i < maxRetries; i++) {
     try {
@@ -111,13 +111,13 @@ export async function withConnectionRetry<T>(
       }
       
       return await operation();
-    } catch (error: any) {
+    } catch (error: unknown) {
       lastError = error;
       
       // Check if it's a connection-related error
-      if (error?.message?.includes('Failed to fetch') || 
-          error?.message?.includes('NetworkError') ||
-          error?.message?.includes('fetch')) {
+      if (error instanceof Error && (error.message.includes('Failed to fetch') || 
+          error.message.includes('NetworkError') ||
+          error.message.includes('fetch'))) {
         console.log('[Connection] Network error detected, will retry');
         continue;
       }
