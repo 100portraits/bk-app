@@ -55,22 +55,6 @@ export const AdminResponseEmail: React.FC<AdminResponseEmailProps> = ({
           </p>
         </div>
         
-        <div style={{ textAlign: 'center', marginTop: '30px' }}>
-          <a
-            href="https://bikekitchen.nl"
-            style={{
-              backgroundColor: '#7c3aed',
-              color: 'white',
-              padding: '12px 30px',
-              borderRadius: '6px',
-              textDecoration: 'none',
-              display: 'inline-block',
-              fontWeight: 'bold'
-            }}
-          >
-            Visit Bike Kitchen
-          </a>
-        </div>
         
         <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '1px solid #e5e7eb' }}>
           <p style={{ color: '#6b7280', fontSize: '14px', margin: '5px 0' }}>
