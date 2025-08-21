@@ -740,6 +740,8 @@ export default function ManageEventsPage() {
         isOpen={showEventDetails}
         onClose={() => setShowEventDetails(false)}
         title="Event Preview"
+        scrollable={true}
+        maxHeight='80vh'
       >
         {selectedEvent && (
           <div className="space-y-6">

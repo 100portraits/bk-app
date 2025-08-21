@@ -70,8 +70,8 @@ const TopNavigationBar = ({
 
   const path = usePathname();
   const isSubPage = path.split('/').length > 2;
-  console.log('Is Sub Page:', isSubPage);
-
+  const isWelcomePage = path === '/become-member/welcome';
+  const shouldShowBackButton = isSubPage && !isWelcomePage;
 
   return (
     <header 
@@ -93,7 +93,7 @@ const TopNavigationBar = ({
         ${className}
       `}
     >
-      {isSubPage ?
+      {shouldShowBackButton ?
        (<button className='hover:bg-purple-100 rounded-lg transition-colors p-2'>
         <IconArrowLeft 
           size={24} 
