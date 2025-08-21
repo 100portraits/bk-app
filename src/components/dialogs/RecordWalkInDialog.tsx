@@ -36,13 +36,16 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
       // Show success state
       setShowSuccess(true);
       setTimeout(() => {
-        // Reset form and close
-        setShowSuccess(false);
-        setAmountPaid('');
-        setNotes('');
-        setIsCommunityMember('No');
-        setRecordDate(format(new Date(), 'yyyy-MM-dd'));
+        // Close dialog first, then reset everything
         onClose();
+        // Reset form after a small delay to ensure dialog is fully closed
+        setTimeout(() => {
+          setShowSuccess(false);
+          setAmountPaid('');
+          setNotes('');
+          setIsCommunityMember('No');
+          setRecordDate(format(new Date(), 'yyyy-MM-dd'));
+        }, 300);
       }, 1500);
     } catch (error) {
       console.error('Error recording walk-in:', error);
