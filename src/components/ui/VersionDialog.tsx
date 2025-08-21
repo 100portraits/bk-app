@@ -28,6 +28,8 @@ export default function VersionDialog({ isOpen, onClose }: VersionDialogProps) {
       title="Version History"
       isOpen={isOpen}
       onClose={onClose}
+      scrollable
+      maxHeight='85vh'
     >
       <div className="space-y-4">
         <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">

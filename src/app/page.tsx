@@ -141,16 +141,17 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <VersionTracker />
-      <div className="flex justify-end p-4">
+      <div className="absolute top-4 right-4">
         <SecondaryButton
           onClick={() => {
             setLoginFromBooking(false);
             setShowLogin(true);
           }}
-          icon={<IconUser size={20} />}
+          icon={<IconUser size={22} />}
           className="bg-purple-100 text-purple-700 border-purple-200"
+          size='md'
         >
-          Log in
+          <span className='text-lg'>Log in</span>
         </SecondaryButton>
       </div>
 
