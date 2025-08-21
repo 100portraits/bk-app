@@ -196,20 +196,20 @@ export default function WalkInsPage() {
     <AppLayout title="Walk-ins">
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">Walk-ins</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 mb-6">Walk-ins</h2>
           
           {/* Date Navigation */}
-          <div className="flex items-center justify-between mb-6 p-4 bg-white border border-gray-200 rounded-lg">
+          <div className="flex items-center justify-between mb-6 p-4 bg-white border border-zinc-200 rounded-lg">
             <button
               onClick={() => navigateShift('prev')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
               <IconChevronLeft size={20} />
             </button>
             
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-gray-900">
+              <h3 className="text-xl font-semibold text-zinc-900">
                 {format(currentDate, 'EEE, MMM do')}
                 {format(currentDate, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') && (
                   <span className="ml-2 text-green-600">Today</span>
@@ -219,7 +219,7 @@ export default function WalkInsPage() {
             
             <button
               onClick={() => navigateShift('next')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
               <IconChevronRight size={20} />
@@ -246,9 +246,9 @@ export default function WalkInsPage() {
 
           {/* Walk-ins List */}
           {walkIns.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <IconUsers size={48} className="mx-auto text-gray-400 mb-2" />
-              <p className="text-gray-500">No walk-ins recorded for this date</p>
+            <div className="text-center py-12 bg-zinc-50 rounded-lg">
+              <IconUsers size={48} className="mx-auto text-zinc-400 mb-2" />
+              <p className="text-zinc-500">No walk-ins recorded for this date</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -256,11 +256,11 @@ export default function WalkInsPage() {
                 <button
                   key={walkIn.id}
                   onClick={() => handleWalkInClick(walkIn)}
-                  className="w-full p-4 bg-white border border-gray-200 rounded-lg text-left hover:bg-gray-50 transition-colors"
+                  className="w-full p-4 bg-white border border-zinc-200 rounded-lg text-left hover:bg-zinc-50 transition-colors"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-zinc-900">
                         {walkIn.is_community_member ? (
                           <span className="flex items-center gap-2">
                             Community Member
@@ -272,14 +272,14 @@ export default function WalkInsPage() {
                           <span className="text-lg">€{walkIn.amount_paid?.toFixed(2)}</span>
                         )}
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">
+                      <div className="text-sm text-zinc-600 mt-1">
                         Recorded at {format(parseISO(walkIn.created_at), 'HH:mm')}
                         {walkIn.notes && (
-                          <span className="ml-2 text-gray-500">• Has notes</span>
+                          <span className="ml-2 text-zinc-500">• Has notes</span>
                         )}
                       </div>
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-zinc-500">
                       by {walkIn.creator?.email?.split('@')[0] || 'Unknown'}
                     </div>
                   </div>
@@ -305,31 +305,31 @@ export default function WalkInsPage() {
           <div className="space-y-6">
             <div className="space-y-3">
               <div>
-                <span className="text-sm text-gray-600">Type:</span>
+                <span className="text-sm text-zinc-600">Type:</span>
                 <p className="font-medium">
                   {selectedWalkIn.is_community_member ? 'Community Member' : 'Paid Customer'}
                 </p>
               </div>
               {!selectedWalkIn.is_community_member && (
                 <div>
-                  <span className="text-sm text-gray-600">Payment Amount:</span>
+                  <span className="text-sm text-zinc-600">Payment Amount:</span>
                   <p className="font-medium">€{selectedWalkIn.amount_paid?.toFixed(2)}</p>
                 </div>
               )}
               <div>
-                <span className="text-sm text-gray-600">Recorded:</span>
+                <span className="text-sm text-zinc-600">Recorded:</span>
                 <p className="font-medium">
                   {format(parseISO(selectedWalkIn.created_at), 'MMM d, yyyy at HH:mm')}
                 </p>
               </div>
               {selectedWalkIn.notes && (
                 <div>
-                  <span className="text-sm text-gray-600">Notes:</span>
+                  <span className="text-sm text-zinc-600">Notes:</span>
                   <p className="font-medium">{selectedWalkIn.notes}</p>
                 </div>
               )}
               <div>
-                <span className="text-sm text-gray-600">Recorded by:</span>
+                <span className="text-sm text-zinc-600">Recorded by:</span>
                 <p className="font-medium">{selectedWalkIn.creator?.email || 'Unknown'}</p>
               </div>
             </div>
@@ -369,7 +369,7 @@ export default function WalkInsPage() {
         <div className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-zinc-700 mb-3">
                 Community Member?
               </label>
               <ToggleSelector
@@ -384,7 +384,7 @@ export default function WalkInsPage() {
 
             {editIsMember === 'No' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 mb-2">
                   Amount paid (€)
                 </label>
                 <TextInput
@@ -398,11 +398,11 @@ export default function WalkInsPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
                 Notes
               </label>
               <textarea
-                className="w-full p-3 border border-gray-200 rounded-lg resize-none"
+                className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
                 rows={3}
                 value={editNotes}
                 onChange={(e) => setEditNotes(e.target.value)}

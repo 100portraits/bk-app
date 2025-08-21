@@ -24,7 +24,7 @@ const ToggleSelector = ({ options, value, onChange, className = '' }: ToggleSele
               min-h-[44px]
               ${isSelected 
                 ? 'bg-purple-500 text-white' 
-                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
               }
             `}
           >

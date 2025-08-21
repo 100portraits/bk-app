@@ -97,7 +97,7 @@ const TopNavigationBar = ({
        (<button className='hover:bg-purple-100 rounded-lg transition-colors p-2'>
         <IconArrowLeft 
           size={24} 
-          className="text-gray-700 " 
+          className="text-zinc-700 " 
           onClick={() => router.back()}
        />
        </button>  
@@ -108,12 +108,12 @@ const TopNavigationBar = ({
         onClick={onMenuClick}
         className="p-2 -ml-2 rounded-lg hover:bg-purple-100 transition-colors"
       >
-        <IconMenu2 size={24} className="text-gray-700" />
+        <IconMenu2 size={24} className="text-zinc-700" />
       </button>
       )}
 
       
-      <h1 className="text-xl font-semibold text-gray-900 flex-1 text-center">
+      <h1 className="text-xl font-semibold text-zinc-900 flex-1 text-center">
         {title}
       </h1>
       
@@ -122,7 +122,7 @@ const TopNavigationBar = ({
           <button 
             className="p-2 rounded-lg hover:bg-purple-100 transition-colors"
           >
-            <IconSearch size={24} className="text-gray-700" />
+            <IconSearch size={24} className="text-zinc-700" />
           </button>
         )}
         {showUserIcon && (
@@ -131,22 +131,22 @@ const TopNavigationBar = ({
               onClick={toggleDropdown}
               className="p-2 -mr-2 rounded-lg hover:bg-purple-100 transition-colors"
             >
-              <IconUser size={24} className="text-gray-700" />
+              <IconUser size={24} className="text-zinc-700" />
             </button>
             
             {showDropdown && user && (
-              <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                <div className="p-4 border-b border-gray-100">
-                  <p className="text-sm text-gray-500">Signed in as</p>
-                  <p className="text-sm font-medium text-gray-900 truncate">
+              <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg border border-zinc-200 z-50">
+                <div className="p-4 border-b border-zinc-100">
+                  <p className="text-sm text-zinc-500">Signed in as</p>
+                  <p className="text-sm font-medium text-zinc-900 truncate">
                     {profile?.name || user.email}
                   </p>
-                  <p className="text-xs text-gray-500 truncate mt-0.5">{user.email}</p>
+                  <p className="text-xs text-zinc-500 truncate mt-0.5">{user.email}</p>
                   
                   <div className="mt-3 flex items-center gap-3">
                     <div className="flex items-center gap-1.5">
                       <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                        isMember ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                        isMember ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-600'
                       }`}>
                         {isMember ? 'Member' : 'Non-member'}
                       </span>
@@ -155,7 +155,7 @@ const TopNavigationBar = ({
                     {role && (
                       <div className="flex items-center gap-1.5">
                         {getRoleIcon()}
-                        <span className="text-xs font-medium text-gray-700 capitalize">
+                        <span className="text-xs font-medium text-zinc-700 capitalize">
                           {role}
                         </span>
                       </div>
@@ -169,7 +169,7 @@ const TopNavigationBar = ({
                       setShowDropdown(false);
                       setShowMessagesDialog(true);
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
                   >
                     <IconMessage size={18} />
                     <span>Messages</span>
@@ -177,7 +177,7 @@ const TopNavigationBar = ({
                   
                   <button
                     onClick={handleSignOut}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
                   >
                     <IconLogout size={18} />
                     <span>Sign out</span>

@@ -14,7 +14,7 @@ function UnauthorizedContent() {
   const attemptedPath = searchParams.get('from') || '';
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-zinc-50 flex flex-col items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
         <div className="mb-6">
           <div className="mx-auto w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
@@ -22,11 +22,11 @@ function UnauthorizedContent() {
           </div>
         </div>
         
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-zinc-900 mb-2">
           Access Denied
         </h1>
         
-        <p className="text-gray-600 mb-8">
+        <p className="text-zinc-600 mb-8">
           {!user ? (
             "You need to be logged in to access this page."
           ) : attemptedPath.includes('become-member') && isMember ? (
@@ -45,8 +45,8 @@ function UnauthorizedContent() {
         </p>
 
         {user && (
-          <div className="bg-gray-100 rounded-lg p-4 mb-6 text-left">
-            <p className="text-sm text-gray-600">Your current status:</p>
+          <div className="bg-zinc-100 rounded-lg p-4 mb-6 text-left">
+            <p className="text-sm text-zinc-600">Your current status:</p>
             <ul className="mt-2 space-y-1">
               <li className="text-sm">
                 <span className="font-medium">Member:</span> {isMember ? 'Yes' : 'No'}
@@ -84,14 +84,14 @@ function UnauthorizedContent() {
 export default function UnauthorizedPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
+      <div className="min-h-screen bg-zinc-50 flex flex-col items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
           <div className="mb-6">
             <div className="mx-auto w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
               <IconLock size={40} className="text-red-600" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-zinc-900 mb-2">
             Loading...
           </h1>
         </div>

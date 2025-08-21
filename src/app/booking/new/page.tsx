@@ -305,22 +305,22 @@ export default function BookingFormPage() {
     >
       <div className="space-y-8">
         <div className="">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-zinc-900 mb-2">
             Make an appointment:
           </h1>
-          <p className="text-gray-600">
+          <p className="text-zinc-600">
             {isLoggedIn ? `Logged in as ${profile?.name || 'Loading...'} - ${profile?.member ? 'Member' : 'Guest'}` : 'Not logged in - Guest'}
           </p>
         </div>
 
         {currentSection >= 1 && (
           <section className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">1. About the BK</h2>
+            <h2 className="text-xl font-semibold text-zinc-900">1. About the BK</h2>
             <div className="space-y-3">
-              <p className="text-gray-700 font-medium">
+              <p className="text-zinc-700 font-medium">
                 At the Bike Kitchen, you repair your own bike:
               </p>
-              <ul className="space-y-2 text-gray-600 ml-4">
+              <ul className="space-y-2 text-zinc-600 ml-4">
                 <li>• We have the tools, but you need to bring your own parts.</li>
                 <li>• This is a learning space - are you ready to get your hands dirty?</li>
               </ul>
@@ -333,7 +333,7 @@ export default function BookingFormPage() {
                   >
                     I understand!
                   </PrimaryButton>
-                  <p className="text-xs text-gray-500 ">
+                  <p className="text-xs text-zinc-500 ">
                     By proceeding, you agree to the{' '}
                     <a href="#" className="text-purple-600 underline">UvA Privacy Policy</a>
                   </p>
@@ -345,11 +345,11 @@ export default function BookingFormPage() {
 
         {currentSection >= 2 && (
           <section className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900">2. The Details</h2>
+            <h2 className="text-xl font-semibold text-zinc-900">2. The Details</h2>
 
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <span className="text-gray-700">How much experience do you have fixing bikes?</span>
+                <span className="text-zinc-700">How much experience do you have fixing bikes?</span>
 
                 {repairLocked && (
                   <span className="text-xs text-green-600 font-medium">(Confirmed)</span>
@@ -366,7 +366,7 @@ export default function BookingFormPage() {
 
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <span className="text-gray-700">Which part of your bike needs repair?</span>
+                <span className="text-zinc-700">Which part of your bike needs repair?</span>
 
                 {repairLocked && (
                   <span className="text-xs text-green-600 font-medium">(Confirmed)</span>
@@ -399,12 +399,12 @@ export default function BookingFormPage() {
 
         {currentSection >= 3 && repairTypes.length > 0 && !isOtherSelected && !isWheelSelected && (
           <section className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900">2b. Follow-up</h2>
+            <h2 className="text-xl font-semibold text-zinc-900">2b. Follow-up</h2>
 
             <div className="space-y-2">
-              <span className="text-gray-700">You selected </span>
+              <span className="text-zinc-700">You selected </span>
               <PillButton selected>{selectedRepairType}</PillButton>
-              <p className="text-gray-600">
+              <p className="text-zinc-600">
                 The duration of this repair can depend on some other information:
               </p>
             </div>
@@ -414,7 +414,7 @@ export default function BookingFormPage() {
               <>
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-700">Is it the front or rear tire/tube?</span>
+                    <span className="text-zinc-700">Is it the front or rear tire/tube?</span>
 
                   </div>
                   <ToggleSelector
@@ -429,7 +429,7 @@ export default function BookingFormPage() {
 
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
+                    <span className="text-zinc-700">Is it a city bike or a road/mountain/touring bike?</span>
 
                   </div>
                   <ToggleSelector
@@ -448,7 +448,7 @@ export default function BookingFormPage() {
             {selectedRepairType === 'Chain' && (
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
+                  <span className="text-zinc-700">Is it a city bike or a road/mountain/touring bike?</span>
 
                 </div>
                 <ToggleSelector
@@ -466,7 +466,7 @@ export default function BookingFormPage() {
             {selectedRepairType === 'Brakes' && (
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-700">What type of brakes does your bike have?</span>
+                  <span className="text-zinc-700">What type of brakes does your bike have?</span>
 
                 </div>
                 <ToggleSelector
@@ -485,7 +485,7 @@ export default function BookingFormPage() {
             {selectedRepairType === 'Gears' && (
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-700">Is it a city bike or a road/mountain/touring bike?</span>
+                  <span className="text-zinc-700">Is it a city bike or a road/mountain/touring bike?</span>
 
                 </div>
                 <ToggleSelector
@@ -511,7 +511,7 @@ export default function BookingFormPage() {
                 <IconInfoCircle size={16} className="text-orange-500" />
                 <span className="text-sm text-orange-700">Why these questions?</span>
               </div>
-              <p className="text-sm text-gray-700 mb-2">
+              <p className="text-sm text-zinc-700 mb-2">
                 Repairing city bikes often takes longer, especially when dealing with the rear wheel. Taking apart brakes, shifters and chain guards can take most of the time.
               </p>
 
@@ -543,10 +543,10 @@ export default function BookingFormPage() {
 
         {currentSection >= 4 && (
           <section className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900">3. The Calendar</h2>
+            <h2 className="text-xl font-semibold text-zinc-900">3. The Calendar</h2>
 
             <div className="space-y-4">
-              <h3 className="font-medium text-gray-800">What day?</h3>
+              <h3 className="font-medium text-zinc-800">What day?</h3>
               {loadingDates ? (
                 <div className="flex items-center justify-center h-64">
                   <IconLoader2 className="animate-spin" size={24} />
@@ -567,13 +567,13 @@ export default function BookingFormPage() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-medium text-gray-800">What time?</h3>
+              <h3 className="font-medium text-zinc-800">What time?</h3>
               {loadingSlots ? (
                 <div className="flex items-center justify-center h-32">
                   <IconLoader2 className="animate-spin" size={24} />
                 </div>
               ) : availableSlots.length === 0 && selectedDate ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-zinc-500">
                   <p>No available slots for this date.</p>
                   <p className="text-sm mt-2">Please select another date.</p>
                 </div>
@@ -613,10 +613,10 @@ export default function BookingFormPage() {
 
         {currentSection >= 5 && (
           <section className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900">4. Confirmation</h2>
+            <h2 className="text-xl font-semibold text-zinc-900">4. Confirmation</h2>
 
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <p className="text-gray-700 mb-4">
+            <div className="p-4 bg-zinc-50 rounded-lg">
+              <p className="text-zinc-700 mb-4">
                 {formatBookingSummary()}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -629,7 +629,7 @@ export default function BookingFormPage() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-medium text-gray-800">Confirmation email will be sent to:</h3>
+              <h3 className="font-medium text-zinc-800">Confirmation email will be sent to:</h3>
               {editingEmail ? (
                 <div className="flex gap-2">
                   <TextInput
@@ -665,7 +665,7 @@ export default function BookingFormPage() {
                 </div>
               )}
               {email !== profile?.email && email && (
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-zinc-600">
                   Note: Using a different email than your account ({profile?.email})
                 </p>
               )}
@@ -692,7 +692,7 @@ export default function BookingFormPage() {
 
         {currentSection >= 6 && bookingCreated && (
           <section className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900">5. Booking Confirmed!</h2>
+            <h2 className="text-xl font-semibold text-zinc-900">5. Booking Confirmed!</h2>
 
             <div className="space-y-4">
               <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -700,31 +700,31 @@ export default function BookingFormPage() {
                   <IconCheck className="text-green-600" size={24} />
                   <span className="font-semibold text-green-900">Your booking is confirmed!</span>
                 </div>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-zinc-700">
                   {formatBookingSummary()}
                 </p>
               </div>
 
               <div className="space-y-3">
-                <h3 className="font-medium text-gray-800">Add to Calendar:</h3>
+                <h3 className="font-medium text-zinc-800">Add to Calendar:</h3>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={handleGoogleCalendar}
-                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 transition-colors"
                   >
                     <IconBrandGoogle size={18} />
                     <span>Google Calendar</span>
                   </button>
                   <button
                     onClick={handleOutlookCalendar}
-                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 transition-colors"
                   >
                     <IconBrandWindows size={18} />
                     <span>Outlook</span>
                   </button>
                   <button
                     onClick={handleAppleCalendar}
-                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 transition-colors"
                   >
                     <IconBrandApple size={18} />
                     <span>Apple Calendar</span>
@@ -733,15 +733,15 @@ export default function BookingFormPage() {
               </div>
 
               <div className="p-3 bg-purple-50 rounded-lg">
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-zinc-700">
                   You will also receive a confirmation email at{' '}
                   <span className="text-purple-600 font-medium">{email}</span>
                 </p>
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-4xl font-bold text-gray-900">That's all</h3>
-                <p className="text-gray-600">See you soon at the Bike Kitchen!</p>
+                <h3 className="text-4xl font-bold text-zinc-900">That's all</h3>
+                <p className="text-zinc-600">See you soon at the Bike Kitchen!</p>
               </div>
 
               <div className="flex gap-3">
@@ -772,21 +772,21 @@ export default function BookingFormPage() {
         <div className="space-y-4">
           {isOtherSelected ? (
             <>
-              <p className="text-gray-700">
+              <p className="text-zinc-700">
                 You selected Other - tell us more about the repair, but be aware that for more tricky problems
                 the first appointment may be a diagnosis only:
               </p>
               <textarea
                 value={disclaimerText}
                 onChange={(e) => setDisclaimerText(e.target.value)}
-                className="w-full p-3 border border-gray-200 rounded-lg resize-none"
+                className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
                 rows={4}
                 placeholder="There's a clicking noise every time I turn the pedals and I'm not sure where it's coming from!!!"
               />
             </>
           ) : (
             <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-              <p className="text-gray-700">
+              <p className="text-zinc-700">
                 {disclaimerText}
               </p>
             </div>

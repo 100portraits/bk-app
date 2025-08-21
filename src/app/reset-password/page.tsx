@@ -83,20 +83,20 @@ export default function ResetPasswordPage() {
 
   if (checkingToken) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Verifying reset link...</p>
+          <p className="mt-4 text-zinc-600">Verifying reset link...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-zinc-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">
+          <h1 className="text-2xl font-bold text-zinc-900 mb-6">
             Reset Your Password
           </h1>
 
@@ -112,7 +112,7 @@ export default function ResetPasswordPage() {
               <PrimaryButton
                 onClick={() => router.push('/')}
                 fullWidth
-                className="bg-gray-900 hover:bg-gray-800"
+                className="bg-zinc-900 hover:bg-zinc-800"
               >
                 Back to Home
               </PrimaryButton>
@@ -129,7 +129,7 @@ export default function ResetPasswordPage() {
             </div>
           ) : (
             <div className="space-y-6">
-              <p className="text-gray-600">
+              <p className="text-zinc-600">
                 Enter your new password below. Make sure it's at least 6 characters long.
               </p>
 
@@ -141,7 +141,7 @@ export default function ResetPasswordPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-zinc-700 mb-2">
                     New Password
                   </label>
                   <TextInput
@@ -155,7 +155,7 @@ export default function ResetPasswordPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-zinc-700 mb-2">
                     Confirm New Password
                   </label>
                   <TextInput
@@ -171,7 +171,7 @@ export default function ResetPasswordPage() {
                 <PrimaryButton
                   onClick={handleResetPassword}
                   fullWidth
-                  className="bg-gray-900 hover:bg-gray-800"
+                  className="bg-zinc-900 hover:bg-zinc-800"
                   disabled={loading || !password || !confirmPassword}
                 >
                   {loading ? 'Updating...' : 'Reset Password'}
@@ -180,7 +180,7 @@ export default function ResetPasswordPage() {
                 <div className="text-center">
                   <button
                     onClick={() => router.push('/')}
-                    className="text-sm text-gray-600 underline hover:text-gray-800"
+                    className="text-sm text-zinc-600 underline hover:text-zinc-800"
                   >
                     Cancel
                   </button>

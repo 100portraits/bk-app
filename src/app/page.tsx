@@ -139,7 +139,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-zinc-50 flex flex-col">
       <VersionTracker />
       <div className="absolute top-4 right-4">
         <SecondaryButton
@@ -157,10 +157,10 @@ export default function Home() {
 
       <div className="flex-1 flex flex-col items-center justify-center px-6">
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-zinc-900 mb-4">
             Bike Kitchen UvA
           </h1>
-          <p className="text-xl text-gray-600 max-w-md">
+          <p className="text-xl text-zinc-600 max-w-md">
             Your innovative, circular bike workshop at the Roeterseilandcampus.
           </p>
         </div>
@@ -190,7 +190,7 @@ export default function Home() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
                 Email
               </label>
               <TextInput
@@ -203,7 +203,7 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
                 Password
               </label>
               <TextInput
@@ -218,7 +218,7 @@ export default function Home() {
             <PrimaryButton
               onClick={handleLogin}
               fullWidth
-              className="bg-gray-900 hover:bg-gray-800"
+              className="bg-zinc-900 hover:bg-zinc-800"
               disabled={loading || !email || !password}
             >
               {loading ? 'Signing In...' : 'Sign In'}
@@ -232,14 +232,14 @@ export default function Home() {
                   setResetEmail(email); // Pre-fill with email if entered
                   setError('');
                 }}
-                className="text-sm text-gray-600 underline hover:text-gray-800"
+                className="text-sm text-zinc-600 underline hover:text-zinc-800"
               >
                 Forgot password?
               </button>
             </div>
 
             <div className="text-center">
-              <span className="text-gray-600">Or </span>
+              <span className="text-zinc-600">Or </span>
               <button
                 onClick={() => {
                   setShowLogin(false);
@@ -274,7 +274,7 @@ export default function Home() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
                 Name
               </label>
               <TextInput
@@ -287,7 +287,7 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
                 Email
               </label>
               <TextInput
@@ -300,7 +300,7 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
                 Password
               </label>
               <TextInput
@@ -313,7 +313,7 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
                 Repeat Password
               </label>
               <TextInput
@@ -328,7 +328,7 @@ export default function Home() {
             <PrimaryButton
               onClick={handleRegister}
               fullWidth
-              className="bg-gray-900 hover:bg-gray-800"
+              className="bg-zinc-900 hover:bg-zinc-800"
               disabled={loading || !email || !password || !confirmPassword}
             >
               {loading ? 'Signing Up...' : 'Sign Up'}
@@ -343,7 +343,7 @@ export default function Home() {
         onClose={() => setShowBookingOptions(false)}
       >
         <div className="space-y-2">
-          <p className="text-lg text-gray-600 font-medium">
+          <p className="text-lg text-zinc-600 font-medium">
             Would you like to
           </p>
 
@@ -356,7 +356,7 @@ export default function Home() {
             >
               continue as guest
             </PrimaryButton>
-            <span className="text-gray-500 font-medium px-2">or</span>
+            <span className="text-zinc-500 font-medium px-2">or</span>
 
             <PrimaryButton
               onClick={() => {
@@ -368,17 +368,17 @@ export default function Home() {
               log in
             </PrimaryButton>
 
-            <span className="text-gray-600 text-lg">?</span>
+            <span className="text-zinc-600 text-lg">?</span>
           </div>
 
-          <div className="border-t border-gray-100 pt-6 space-y-4">
+          <div className="border-t border-zinc-100 pt-6 space-y-4">
             <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-5 border border-purple-100">
-              <p className="text-gray-700 font-medium">
+              <p className="text-zinc-700 font-medium">
                 Bookings made with an account can be managed easily through the app.
               </p>
             </div>
 
-            <p className="text-gray-600 text-center">
+            <p className="text-zinc-600 text-center">
               Want to{' '}
               <button
                 onClick={() => {
@@ -406,7 +406,7 @@ export default function Home() {
         }}
       >
         <div className="space-y-6">
-          <p className="text-gray-600">
+          <p className="text-zinc-600">
             Enter your email address and we'll send you a link to reset your password.
           </p>
 
@@ -424,7 +424,7 @@ export default function Home() {
             )}
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 mb-2">
                 Email Address
               </label>
               <TextInput
@@ -440,7 +440,7 @@ export default function Home() {
             <PrimaryButton
               onClick={handleForgotPassword}
               fullWidth
-              className="bg-gray-900 hover:bg-gray-800"
+              className="bg-zinc-900 hover:bg-zinc-800"
               disabled={loading || !resetEmail || !!success}
             >
               {loading ? 'Sending...' : 'Send Reset Link'}
@@ -479,11 +479,11 @@ export default function Home() {
           </div>
           
           <div className="text-center space-y-3">
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-zinc-900">
               Check your email!
             </h2>
             
-            <p className="text-gray-600">
+            <p className="text-zinc-600">
               We've sent a confirmation link to your email address. 
               Please check your inbox and click the link to verify your account.
             </p>
@@ -503,13 +503,13 @@ export default function Home() {
                 setShowLogin(true);
               }}
               fullWidth
-              className="bg-gray-900 hover:bg-gray-800"
+              className="bg-zinc-900 hover:bg-zinc-800"
             >
               <IconCheck size={20} className="mr-2" />
               Got it, I'll check my email
             </PrimaryButton>
             
-            <div className="text-center text-sm text-gray-600">
+            <div className="text-center text-sm text-zinc-600">
               <p>Once confirmed, you can log in with your credentials.</p>
             </div>
           </div>

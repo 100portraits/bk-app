@@ -43,15 +43,15 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
         px-4 
         py-3 
         border 
-        border-gray-200 
+        border-zinc-200 
         rounded-lg 
-        text-gray-700 
-        placeholder-gray-400
+        text-zinc-700 
+        placeholder-zinc-400
         focus:outline-none 
         focus:ring-2 
         focus:ring-purple-500 
         focus:border-transparent
-        disabled:bg-gray-50 
+        disabled:bg-zinc-50 
         disabled:cursor-not-allowed
         min-h-[44px]
         ${fullWidth ? 'w-full' : ''}

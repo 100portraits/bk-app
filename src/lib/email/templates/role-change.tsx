@@ -17,7 +17,7 @@ const getRoleColor = (role: string | null) => {
     case 'host':
       return '#16a34a'; // green
     default:
-      return '#6b7280'; // gray
+      return '#6b7280'; // zinc
   }
 };
 

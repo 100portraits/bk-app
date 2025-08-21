@@ -168,20 +168,20 @@ export default function UpcomingBookingsPage() {
     <AppLayout title="Upcoming Bookings">
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">Upcoming Bookings</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 mb-6">Upcoming Bookings</h2>
           
           {/* Date Navigation */}
-          <div className="flex items-center justify-between mb-6 p-4 bg-white border border-gray-200 rounded-lg">
+          <div className="flex items-center justify-between mb-6 p-4 bg-white border border-zinc-200 rounded-lg">
             <button
               onClick={() => navigateShift('prev')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
               <IconChevronLeft size={20} />
             </button>
             
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-gray-900">
+              <h3 className="text-xl font-semibold text-zinc-900">
                 {format(currentDate, 'EEE, MMM do')}
                 {isToday(currentDate) && (
                   <span className="ml-2 text-green-600">Today</span>
@@ -191,7 +191,7 @@ export default function UpcomingBookingsPage() {
             
             <button
               onClick={() => navigateShift('next')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
               <IconChevronRight size={20} />
@@ -199,16 +199,16 @@ export default function UpcomingBookingsPage() {
           </div>
 
           {!currentShift ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <IconCalendarEvent size={48} className="mx-auto text-gray-400 mb-2" />
-              <p className="text-gray-500">No upcoming shifts scheduled</p>
-              <p className="text-sm text-gray-400 mt-2">Check back later for new shifts</p>
+            <div className="text-center py-12 bg-zinc-50 rounded-lg">
+              <IconCalendarEvent size={48} className="mx-auto text-zinc-400 mb-2" />
+              <p className="text-zinc-500">No upcoming shifts scheduled</p>
+              <p className="text-sm text-zinc-400 mt-2">Check back later for new shifts</p>
             </div>
           ) : bookings.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <IconTools size={48} className="mx-auto text-gray-400 mb-2" />
-              <p className="text-gray-500">No bookings for this date</p>
-              <p className="text-sm text-gray-400 mt-2">Enjoy a quieter shift!</p>
+            <div className="text-center py-12 bg-zinc-50 rounded-lg">
+              <IconTools size={48} className="mx-auto text-zinc-400 mb-2" />
+              <p className="text-zinc-500">No bookings for this date</p>
+              <p className="text-sm text-zinc-400 mt-2">Enjoy a quieter shift!</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -248,14 +248,14 @@ export default function UpcomingBookingsPage() {
         {selectedBooking && (
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">
+              <h3 className="text-xl font-semibold text-zinc-900">
                 {selectedBooking.slot_time.slice(0, 5)} - {getRepairTypeDisplay(selectedBooking.repair_type)}
               </h3>
-              <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2 mt-2 text-sm text-zinc-600">
                 <IconUser size={16} />
                 <div className="flex flex-col">
                   {selectedBooking.name && (
-                    <span className="font-medium text-gray-900">{selectedBooking.name}</span>
+                    <span className="font-medium text-zinc-900">{selectedBooking.name}</span>
                   )}
                   <span>{selectedBooking.user?.email || selectedBooking.email}</span>
                 </div>
@@ -265,15 +265,15 @@ export default function UpcomingBookingsPage() {
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
+              <div className="flex items-center gap-2 mt-1 text-sm text-zinc-600">
                 <IconClock size={16} />
                 <span>Duration: {selectedBooking.duration_minutes} minutes</span>
               </div>
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-medium text-gray-900">Repair Details:</h4>
-              <div className="p-3 bg-gray-50 rounded-lg text-sm">
+              <h4 className="font-medium text-zinc-900">Repair Details:</h4>
+              <div className="p-3 bg-zinc-50 rounded-lg text-sm">
                 <p><span className="font-medium">Type:</span> {getRepairTypeDisplay(selectedBooking.repair_type)}</p>
                 {selectedBooking.repair_details?.bikeType && (
                   <p><span className="font-medium">Bike:</span> {selectedBooking.repair_details.bikeType === 'city' ? 'City bike' : 'Road/Mountain/Touring'}</p>
@@ -296,7 +296,7 @@ export default function UpcomingBookingsPage() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-sm text-gray-600">Current Status:</span>
+                  <span className="text-sm text-zinc-600">Current Status:</span>
                   <p className="font-medium capitalize">{selectedBooking.status}</p>
                 </div>
                 {(selectedBooking.status === 'completed' || selectedBooking.status === 'no_show') && !editingStatus && (
@@ -315,11 +315,11 @@ export default function UpcomingBookingsPage() {
 
               {editingStatus && (
                 <div className="space-y-2 p-3 bg-blue-50 rounded-lg">
-                  <label className="block text-sm font-medium text-gray-700">Change Status:</label>
+                  <label className="block text-sm font-medium text-zinc-700">Change Status:</label>
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value as 'confirmed' | 'completed' | 'no_show')}
-                    className="w-full p-2 border border-gray-200 rounded-lg"
+                    className="w-full p-2 border border-zinc-200 rounded-lg"
                   >
                     <option value="confirmed">Confirmed</option>
                     <option value="completed">Completed</option>

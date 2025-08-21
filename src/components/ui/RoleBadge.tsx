@@ -6,7 +6,7 @@ interface RoleBadgeProps {
 
 const RoleBadge = ({ role, variant = 'default', className = '' }: RoleBadgeProps) => {
   const variantClasses = {
-    default: 'bg-gray-100 text-gray-700',
+    default: 'bg-zinc-100 text-zinc-700',
     active: 'bg-purple-500 text-white'
   };
 

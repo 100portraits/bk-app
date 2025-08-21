@@ -26,14 +26,14 @@ export default function MemberWelcomePage() {
     <AppLayout title="Welcome Member">
       <div className="space-y-8">
         <section className="space-y-4">
-          <h1 className="text-4xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold text-zinc-900">
             Welcome to the community!
           </h1>
           
           <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Account</p>
-              <p className="font-medium text-gray-900">{profile?.email || 'Loading...'}</p>
+              <p className="text-sm text-zinc-600 mb-1">Account</p>
+              <p className="font-medium text-zinc-900">{profile?.email || 'Loading...'}</p>
               <span className="inline-block mt-2 px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full font-medium">
                 Active Membership
               </span>
@@ -42,12 +42,12 @@ export default function MemberWelcomePage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">Your member benefits:</h2>
+          <h2 className="text-xl font-semibold text-zinc-900">Your member benefits:</h2>
           
           <div className="space-y-3">
-            <div className="p-4 bg-white rounded-lg border border-gray-200">
-              <h3 className="font-semibold text-gray-900 mb-2">Come by anytime for free</h3>
-              <p className="text-gray-600 text-sm mb-3">
+            <div className="p-4 bg-white rounded-lg border border-zinc-200">
+              <h3 className="font-semibold text-zinc-900 mb-2">Come by anytime for free</h3>
+              <p className="text-zinc-600 text-sm mb-3">
                 Visit during any open hours without payment
               </p>
               <SecondaryButton
@@ -58,9 +58,9 @@ export default function MemberWelcomePage() {
               </SecondaryButton>
             </div>
 
-            <div className="p-4 bg-white rounded-lg border border-gray-200">
-              <h3 className="font-semibold text-gray-900 mb-2">Join community events</h3>
-              <p className="text-gray-600 text-sm mb-3">
+            <div className="p-4 bg-white rounded-lg border border-zinc-200">
+              <h3 className="font-semibold text-zinc-900 mb-2">Join community events</h3>
+              <p className="text-zinc-600 text-sm mb-3">
                 Workshops, borrels, and member-only activities
               </p>
               <SecondaryButton
@@ -72,7 +72,7 @@ export default function MemberWelcomePage() {
             </div>
           </div>
 
-          <p className="text-gray-600 text-sm mt-4">
+          <p className="text-zinc-600 text-sm mt-4">
             You can find these options in the main menu now.
           </p>
         </section>

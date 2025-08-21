@@ -33,7 +33,7 @@ const BookingListItem = ({
         border
         ${isActive 
           ? 'bg-purple-500 text-white border-purple-500' 
-          : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+          : 'bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-50'
         }
         ${className}
       `}
@@ -53,10 +53,10 @@ const BookingListItem = ({
             )}
 
           </div>
-          <div className={`text-sm ${isActive ? 'text-purple-100' : 'text-gray-600'}`}>
+          <div className={`text-sm ${isActive ? 'text-purple-100' : 'text-zinc-600'}`}>
             {repairDetails}
           </div>
-                      <span className={`text-lg ${isActive ? 'text-purple-100' : 'text-gray-500'}`}>
+                      <span className={`text-lg ${isActive ? 'text-purple-100' : 'text-zinc-500'}`}>
               {time}
             </span>
         </div>

@@ -61,21 +61,21 @@ export default function EventCalendarPage() {
     <AppLayout title="Event Calendar">
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">Event Calendar</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 mb-6">Event Calendar</h2>
           
           {loading ? (
             <div className="flex items-center justify-center h-32">
               <IconLoader2 className="animate-spin" size={24} />
             </div>
           ) : publishedEvents.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-zinc-500">
               <p>No upcoming events at the moment.</p>
               <p className="text-sm mt-2">Check back later for new events!</p>
             </div>
           ) : (
             Object.entries(eventsByMonth).map(([month, monthEvents]) => (
               <div key={month} className="mb-6">
-                <h3 className="text-xl font-semibold text-gray-700 mb-3">{month}</h3>
+                <h3 className="text-xl font-semibold text-zinc-700 mb-3">{month}</h3>
                 <div className="space-y-4">
                   {monthEvents.map((event) => (
                     <EventCard
@@ -109,30 +109,30 @@ export default function EventCalendarPage() {
         {selectedEvent && (
           <div className="space-y-6">
             <div className="">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              <h3 className="text-2xl font-bold text-zinc-900 mb-2">
                 {selectedEvent.title}
               </h3>
               {selectedEvent.description && (
-                <p className="text-gray-600 mb-3">{selectedEvent.description}</p>
+                <p className="text-zinc-600 mb-3">{selectedEvent.description}</p>
               )}
               <div className="space-y-2 text-sm">
-                <p className="text-gray-600">
+                <p className="text-zinc-600">
                   <IconCalendarEvent size={16} className="inline mr-2" />
                   {format(parseISO(selectedEvent.event_date), 'EEEE, MMMM d, yyyy')}
                 </p>
-                <p className="text-gray-600">
+                <p className="text-zinc-600">
                   <IconClock size={16} className="inline mr-2" />
                   {selectedEvent.start_time.slice(0, 5)}
                   {selectedEvent.end_time && ` - ${selectedEvent.end_time.slice(0, 5)}`}
                 </p>
                 {selectedEvent.location && (
-                  <p className="text-gray-600">
+                  <p className="text-zinc-600">
                     <IconMapPin size={16} className="inline mr-2" />
                     {selectedEvent.location}
                   </p>
                 )}
                 {selectedEvent.max_capacity && (
-                  <p className="text-gray-600">
+                  <p className="text-zinc-600">
                     <IconUsers size={16} className="inline mr-2" />
                     Max capacity: {selectedEvent.max_capacity} people
                   </p>

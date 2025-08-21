@@ -21,12 +21,12 @@ const NavigationCard = ({
   className = ''
 }: NavigationCardProps) => {
   const variantClasses = {
-    primary: 'bg-purple-500 text-white',
-    secondary: 'bg-white text-gray-700 border border-gray-200',
-    border: 'bg-purple-50 text-gray-700 border-2 border-purple-500'
+    primary: 'bg-accent-500 text-white',
+    secondary: 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700',
+    border: 'bg-accent-50 dark:bg-accent-950 text-zinc-700 dark:text-zinc-300 border-2 border-accent-500'
   };
 
-  const iconColor = variant === 'primary' ? 'text-purple-200' : 'text-gray-400';
+  const iconColor = variant === 'primary' ? 'text-accent-200' : 'text-zinc-400 dark:text-zinc-500';
 
   return (
     <button
@@ -42,7 +42,7 @@ const NavigationCard = ({
         transition-colors
         min-h-[80px]
         ${variantClasses[variant]}
-        ${variant === 'primary' ? 'hover:bg-purple-600' : 'hover:bg-gray-50'}
+        ${variant === 'primary' ? 'hover:bg-accent-600' : 'hover:bg-zinc-50 dark:hover:bg-zinc-700'}
         ${className}
       `}
     >
@@ -52,7 +52,7 @@ const NavigationCard = ({
       
       <div className="flex-1">
         <div className="font-medium text-base">{title}</div>
-        <div className={`text-sm ${variant === 'primary' ? 'text-purple-100' : 'text-gray-500'}`}>
+        <div className={`text-sm ${variant === 'primary' ? 'text-accent-100' : 'text-zinc-500 dark:text-zinc-400'}`}>
           {subtitle}
         </div>
       </div>
@@ -60,7 +60,7 @@ const NavigationCard = ({
       {showChevron && (
         <IconChevronRight 
           size={24} 
-          className={variant === 'primary' ? 'text-purple-200' : 'text-gray-400'} 
+          className={variant === 'primary' ? 'text-accent-200' : 'text-zinc-400 dark:text-zinc-500'} 
         />
       )}
     </button>

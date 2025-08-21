@@ -43,7 +43,7 @@ const StatusIndicator = ({ status, size = 'md', className = '' }: StatusIndicato
         };
       default:
         return {
-          bgColor: 'bg-gray-400',
+          bgColor: 'bg-zinc-400',
           icon: <IconUser size={iconSizes[size]} />
         };
     }

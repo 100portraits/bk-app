@@ -115,7 +115,7 @@ function CancelBookingContent() {
         <div className="max-w-2xl mx-auto py-8">
           <div className="flex flex-col items-center justify-center h-64">
             <IconAlertCircle size={48} className="text-red-500 mb-4" />
-            <p className="text-gray-600 text-center mb-4">{error}</p>
+            <p className="text-zinc-600 text-center mb-4">{error}</p>
             <PrimaryButton onClick={() => router.push('/')} size="sm">
               Back to Home
             </PrimaryButton>
@@ -134,8 +134,8 @@ function CancelBookingContent() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
                 <IconCheck size={32} className="text-green-600" />
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Booking Cancelled</h1>
-              <p className="text-gray-600">Your booking has been successfully cancelled.</p>
+              <h1 className="text-3xl font-bold text-zinc-900 mb-2">Booking Cancelled</h1>
+              <p className="text-zinc-600">Your booking has been successfully cancelled.</p>
             </div>
             
             <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -169,12 +169,12 @@ function CancelBookingContent() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.push('/')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
               title="Back to home"
             >
-              <IconArrowLeft size={24} className="text-gray-600" />
+              <IconArrowLeft size={24} className="text-zinc-600" />
             </button>
-            <h1 className="text-3xl font-bold text-gray-900">Cancel Your Booking</h1>
+            <h1 className="text-3xl font-bold text-zinc-900">Cancel Your Booking</h1>
           </div>
 
           {booking.status === 'cancelled' ? (
@@ -188,15 +188,15 @@ function CancelBookingContent() {
             </div>
           ) : (
             <>
-              <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Booking Details</h2>
+              <div className="p-6 bg-white border border-zinc-200 rounded-lg shadow-sm">
+                <h2 className="text-xl font-semibold text-zinc-900 mb-4">Booking Details</h2>
                 
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
-                    <IconCalendarEvent size={20} className="text-gray-400 mt-0.5" />
+                    <IconCalendarEvent size={20} className="text-zinc-400 mt-0.5" />
                     <div>
-                      <p className="text-sm text-gray-600">Date & Time</p>
-                      <p className="font-medium text-gray-900">
+                      <p className="text-sm text-zinc-600">Date & Time</p>
+                      <p className="font-medium text-zinc-900">
                         {booking.shift && format(parseISO(booking.shift.date), 'EEEE, MMMM d, yyyy')}
                         {' at '}
                         {booking.slot_time.slice(0, 5)}
@@ -205,27 +205,27 @@ function CancelBookingContent() {
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <IconClock size={20} className="text-gray-400 mt-0.5" />
+                    <IconClock size={20} className="text-zinc-400 mt-0.5" />
                     <div>
-                      <p className="text-sm text-gray-600">Repair Type & Duration</p>
-                      <p className="font-medium text-gray-900">
+                      <p className="text-sm text-zinc-600">Repair Type & Duration</p>
+                      <p className="font-medium text-zinc-900">
                         {getRepairTypeDisplay(booking.repair_type)} ({booking.duration_minutes} minutes)
                       </p>
                     </div>
                   </div>
                   
                   {booking.notes && (
-                    <div className="pt-3 border-t border-gray-100">
-                      <p className="text-sm text-gray-600">Notes</p>
-                      <p className="text-gray-900">{booking.notes}</p>
+                    <div className="pt-3 border-t border-zinc-100">
+                      <p className="text-sm text-zinc-600">Notes</p>
+                      <p className="text-zinc-900">{booking.notes}</p>
                     </div>
                   )}
                   
                   {booking.name && (
                     <div className="flex items-start gap-3">
                       <div>
-                        <p className="text-sm text-gray-600">Name</p>
-                        <p className="font-medium text-gray-900">{booking.name}</p>
+                        <p className="text-sm text-zinc-600">Name</p>
+                        <p className="font-medium text-zinc-900">{booking.name}</p>
                       </div>
                     </div>
                   )}
@@ -280,7 +280,7 @@ function CancelBookingContent() {
             </p>
           </div>
           
-          <p className="text-gray-600 text-sm">
+          <p className="text-zinc-600 text-sm">
             You will receive a cancellation confirmation email at <strong>{email}</strong>
           </p>
 

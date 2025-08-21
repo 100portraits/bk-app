@@ -25,22 +25,22 @@ const EventCard = ({
   return (
     <div className={`${className}`}>
       {date && dayOfWeek && (
-        <div className="text-sm font-medium text-gray-600 mb-2">
+        <div className="text-sm font-medium text-zinc-600 mb-2">
           {dayOfWeek} {date}
         </div>
       )}
       
       <div
         onClick={onClick}
-        className="w-full p-4 bg-white border border-gray-200 rounded-lg text-left hover:bg-gray-50 transition-colors cursor-pointer"
+        className="w-full p-4 bg-white border border-zinc-200 rounded-lg text-left hover:bg-zinc-50 transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-3">
           <Avatar variant="secondary" />
           
           <div className="flex-1">
-            <div className="font-medium text-gray-900">{title}</div>
+            <div className="font-medium text-zinc-900">{title}</div>
             {subtitle && (
-              <div className="text-sm text-gray-600">{subtitle}</div>
+              <div className="text-sm text-zinc-600">{subtitle}</div>
             )}
           </div>
           
@@ -50,9 +50,9 @@ const EventCard = ({
                 e.stopPropagation();
                 onEdit?.();
               }}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-lg hover:bg-zinc-100 transition-colors"
             >
-              <IconEdit size={18} className="text-gray-500" />
+              <IconEdit size={18} className="text-zinc-500" />
             </button>
           )}
         </div>

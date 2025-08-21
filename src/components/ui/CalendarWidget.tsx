@@ -72,22 +72,22 @@ const CalendarWidget = ({
   const days = getDaysInMonth(currentMonth);
 
   return (
-    <div className={`bg-white rounded-lg border border-gray-200 p-4 ${className}`}>
+    <div className={`bg-white rounded-lg border border-zinc-200 p-4 ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <button 
           onClick={() => navigateMonth('prev')}
-          className="p-1 rounded hover:bg-gray-100"
+          className="p-1 rounded hover:bg-zinc-100"
         >
           <IconChevronLeft size={20} />
         </button>
         
-        <h3 className="font-semibold text-gray-900">
+        <h3 className="font-semibold text-zinc-900">
           {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
         </h3>
         
         <button 
           onClick={() => navigateMonth('next')}
-          className="p-1 rounded hover:bg-gray-100"
+          className="p-1 rounded hover:bg-zinc-100"
         >
           <IconChevronRight size={20} />
         </button>
@@ -95,7 +95,7 @@ const CalendarWidget = ({
 
       <div className="grid grid-cols-7 gap-1 mb-2">
         {weekDays.map((day, index) => (
-          <div key={`weekday-${index}`} className="text-center text-sm font-medium text-gray-500 py-2">
+          <div key={`weekday-${index}`} className="text-center text-sm font-medium text-zinc-500 py-2">
             {day}
           </div>
         ))}
@@ -122,7 +122,7 @@ const CalendarWidget = ({
                 font-medium 
                 transition-colors
                 ${!inCurrentMonth 
-                  ? 'text-gray-300 cursor-not-allowed' 
+                  ? 'text-zinc-300 cursor-not-allowed' 
                   : isSelected
                     ? 'bg-purple-500 text-white'
                     : isHighlighted
@@ -130,8 +130,8 @@ const CalendarWidget = ({
                       : todayDate
                         ? 'bg-purple-50 text-purple-600 border border-purple-200'
                         : isAvailable
-                          ? 'text-gray-700 hover:bg-gray-100'
-                          : 'text-gray-300 cursor-not-allowed'
+                          ? 'text-zinc-700 hover:bg-zinc-100'
+                          : 'text-zinc-300 cursor-not-allowed'
                 }
               `}
             >

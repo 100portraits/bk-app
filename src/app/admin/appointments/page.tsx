@@ -170,9 +170,9 @@ export default function ManageAppointmentsPage() {
       case 'completed':
         return 'bg-blue-100 text-blue-800';
       case 'no_show':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-zinc-100 text-zinc-800';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-zinc-100 text-zinc-800';
     }
   };
 
@@ -194,27 +194,27 @@ export default function ManageAppointmentsPage() {
     <AppLayout title="Admin Panel">
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">Manage Appointments</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 mb-6">Manage Appointments</h2>
           
           {/* Date Navigation */}
-          <div className="flex items-center justify-between mb-6 p-4 bg-white border border-gray-200 rounded-lg">
+          <div className="flex items-center justify-between mb-6 p-4 bg-white border border-zinc-200 rounded-lg">
             <button
               onClick={() => navigateShift('prev')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
               <IconChevronLeft size={20} />
             </button>
             
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-gray-900">
+              <h3 className="text-xl font-semibold text-zinc-900">
                 {format(currentDate, 'EEE, MMM do')}
                 {format(currentDate, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') && (
                   <span className="ml-2 text-green-600">Today</span>
                 )}
               </h3>
               {currentShift && (
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-zinc-600 mt-1">
                   {currentShift.start_time.slice(0, 5)} - {currentShift.end_time.slice(0, 5)}
                   <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">
                     Open Shift
@@ -225,7 +225,7 @@ export default function ManageAppointmentsPage() {
             
             <button
               onClick={() => navigateShift('next')}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
               <IconChevronRight size={20} />
@@ -238,16 +238,16 @@ export default function ManageAppointmentsPage() {
               <IconLoader2 className="animate-spin" size={24} />
             </div>
           ) : !currentShift ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <IconCalendarEvent size={48} className="mx-auto text-gray-400 mb-2" />
-              <p className="text-gray-500">No open shifts scheduled</p>
-              <p className="text-sm text-gray-400 mt-2">Open shifts in the Admin <IconArrowRight></IconArrowRight> Timeslots page</p>
+            <div className="text-center py-12 bg-zinc-50 rounded-lg">
+              <IconCalendarEvent size={48} className="mx-auto text-zinc-400 mb-2" />
+              <p className="text-zinc-500">No open shifts scheduled</p>
+              <p className="text-sm text-zinc-400 mt-2">Open shifts in the Admin <IconArrowRight></IconArrowRight> Timeslots page</p>
             </div>
           ) : bookings.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <IconCalendarEvent size={48} className="mx-auto text-gray-400 mb-2" />
-              <p className="text-gray-500">No bookings for this shift</p>
-              <p className="text-sm text-gray-400 mt-2">
+            <div className="text-center py-12 bg-zinc-50 rounded-lg">
+              <IconCalendarEvent size={48} className="mx-auto text-zinc-400 mb-2" />
+              <p className="text-zinc-500">No bookings for this shift</p>
+              <p className="text-sm text-zinc-400 mt-2">
                 {format(currentDate, 'EEEE')} {currentShift.start_time.slice(0, 5)} - {currentShift.end_time.slice(0, 5)}
               </p>
             </div>
@@ -256,12 +256,12 @@ export default function ManageAppointmentsPage() {
               {bookings.map((booking) => (
                 <div
                   key={booking.id}
-                  className="p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                  className="p-4 bg-white border border-zinc-200 rounded-lg hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between">
                     <div className="space-y-2 flex-1">
                       <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-gray-900">
+                        <h4 className="font-semibold text-zinc-900">
                           {booking.slot_time.slice(0, 5)} - {getRepairTypeDisplay(booking.repair_type)}
                         </h4>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
@@ -269,12 +269,12 @@ export default function ManageAppointmentsPage() {
                         </span>
                       </div>
                       
-                      <div className="space-y-1 text-sm text-gray-600">
+                      <div className="space-y-1 text-sm text-zinc-600">
                         <div className="flex items-center gap-2">
                           <IconUser size={16} />
                           <div className="flex flex-col">
                             {booking.name && (
-                              <span className="font-medium text-gray-900">{booking.name}</span>
+                              <span className="font-medium text-zinc-900">{booking.name}</span>
                             )}
                             <span>{booking.user?.email || booking.email || 'Unknown user'}</span>
                           </div>
@@ -291,7 +291,7 @@ export default function ManageAppointmentsPage() {
                       </div>
                       
                       {booking.notes && (
-                        <p className="text-sm text-gray-500 italic">Note: {booking.notes}</p>
+                        <p className="text-sm text-zinc-500 italic">Note: {booking.notes}</p>
                       )}
                     </div>
                     
@@ -335,13 +335,13 @@ export default function ManageAppointmentsPage() {
         <div className="space-y-4">
           {selectedBooking && (
             <>
-              <div className="p-3 bg-gray-50 rounded-lg text-sm">
-                <p className="font-medium text-gray-900">
+              <div className="p-3 bg-zinc-50 rounded-lg text-sm">
+                <p className="font-medium text-zinc-900">
                   {getRepairTypeDisplay(selectedBooking.repair_type)} - {selectedBooking.slot_time.slice(0, 5)}
                 </p>
-                <div className="text-gray-600 mt-1">
+                <div className="text-zinc-600 mt-1">
                   {selectedBooking.name && (
-                    <p className="font-medium text-gray-900">{selectedBooking.name}</p>
+                    <p className="font-medium text-zinc-900">{selectedBooking.name}</p>
                   )}
                   <p>{selectedBooking.user?.email || selectedBooking.email}</p>
                   {selectedBooking.is_member && (
@@ -353,11 +353,11 @@ export default function ManageAppointmentsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Status:</label>
+                <label className="block text-sm font-medium text-zinc-700">Status:</label>
                 <select
                   value={editStatus}
                   onChange={(e) => setEditStatus(e.target.value as Booking['status'])}
-                  className="w-full p-3 border border-gray-200 rounded-lg"
+                  className="w-full p-3 border border-zinc-200 rounded-lg"
                 >
                   <option value="confirmed">Confirmed</option>
                   <option value="completed">Completed</option>
@@ -414,8 +414,8 @@ export default function ManageAppointmentsPage() {
           </div>
 
           {selectedBooking && (
-            <div className="p-3 bg-gray-50 rounded-lg text-sm text-gray-600">
-              <p className="font-medium text-gray-900 mb-1">
+            <div className="p-3 bg-zinc-50 rounded-lg text-sm text-zinc-600">
+              <p className="font-medium text-zinc-900 mb-1">
                 {getRepairTypeDisplay(selectedBooking.repair_type)} Repair
               </p>
               <p>Time: {selectedBooking.slot_time.slice(0, 5)}</p>
@@ -424,17 +424,17 @@ export default function ManageAppointmentsPage() {
           )}
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-zinc-700">
               Reason for cancellation (optional):
             </label>
             <textarea
               value={cancellationReason}
               onChange={(e) => setCancellationReason(e.target.value)}
-              className="w-full p-3 border border-gray-200 rounded-lg resize-none"
+              className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
               rows={3}
               placeholder="e.g., Equipment maintenance, Customer request, Emergency closure..."
             />
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-zinc-500">
               This reason will be included in the cancellation email sent to the customer.
             </p>
           </div>

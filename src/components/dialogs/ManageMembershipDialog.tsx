@@ -110,17 +110,17 @@ export default function ManageMembershipDialog({ isOpen, onClose }: ManageMember
     >
       <div className="space-y-6">
         <div>
-          <p className="text-gray-700 mb-2">
+          <p className="text-zinc-700 mb-2">
             Account: <span className="font-medium">{profile?.email || 'Loading...'}</span>
           </p>
-          <p className="text-gray-700 mb-6">
+          <p className="text-zinc-700 mb-6">
             Status: <span className="font-medium text-green-600">Active Member</span>
           </p>
         </div>
 
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-900">Cancel monthly contribution</h3>
-          <div className="space-y-3 text-sm text-gray-600">
+          <h3 className="font-semibold text-zinc-900">Cancel monthly contribution</h3>
+          <div className="space-y-3 text-sm text-zinc-600">
             <p>
               If you want to cancel your monthly contribution to the Bike Kitchen, 
               mail universiteitsfonds@uva.nl.

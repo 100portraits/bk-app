@@ -34,9 +34,9 @@ const SecondaryButton = ({
       disabled={disabled}
       className={`
         bg-white 
-        text-gray-700 
+        text-zinc-700 
         border 
-        border-gray-200 
+        border-zinc-200 
         rounded-lg 
         font-medium 
         flex 
@@ -44,8 +44,8 @@ const SecondaryButton = ({
         justify-center 
         gap-2
         transition-colors
-        hover:bg-gray-50 
-        disabled:bg-gray-100 
+        hover:bg-zinc-50 
+        disabled:bg-zinc-100 
         disabled:cursor-not-allowed
         min-h-[44px]
         ${sizeClasses[size]}

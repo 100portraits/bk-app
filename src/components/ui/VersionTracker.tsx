@@ -15,7 +15,7 @@ export default function VersionTracker({ className = '' }: VersionTrackerProps) 
     <>
       <button
         onClick={() => setShowDialog(true)}
-        className={`fixed bottom-4 left-4 text-xs text-gray-400 bg-white/80 backdrop-blur-sm px-2 py-1 rounded border border-gray-200 hover:bg-white hover:text-gray-600 hover:border-gray-300 transition-all cursor-pointer ${className}`}
+        className={`fixed bottom-4 left-4 text-xs text-zinc-400 bg-white/80 backdrop-blur-sm px-2 py-1 rounded border border-zinc-200 hover:bg-white hover:text-zinc-600 hover:border-zinc-300 transition-all cursor-pointer ${className}`}
       >
         v{currentVersion}
       </button>

@@ -25,7 +25,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
   return (
     <div className={`${className}`}>
       <div 
-        className={`relative h-12 bg-gray-100 rounded-lg select-none ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        className={`relative h-12 bg-zinc-100 rounded-lg select-none ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         style={{
           '--thumb-width': '12px',
           '--thumb-offset': '4px'
@@ -50,7 +50,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
 
         {/* Empty track */}
         <div
-          className="absolute top-0 right-0 h-full bg-gray-100 rounded-r-lg flex items-center justify-center"
+          className="absolute top-0 right-0 h-full bg-zinc-100 rounded-r-lg flex items-center justify-center"
           style={{
             width: `calc(${(1 - normalizedValue) * 100}% - var(--thumb-width) / 2 - var(--thumb-offset) / 2)`,
           }}
@@ -74,7 +74,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
         </div>
 
         {/* Step indicators */}
-        <div className="absolute top-full mt-2 w-full flex justify-between text-xs text-gray-500">
+        <div className="absolute top-full mt-2 w-full flex justify-between text-xs text-zinc-500">
           {[1, 2, 3, 4, 5].map((step) => (
             <span key={step} className="text-center">
               {step}
@@ -84,7 +84,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
       </div>
       
       {/* Labels */}
-      <div className="flex justify-between text-xs text-gray-600 mt-8">
+      <div className="flex justify-between text-xs text-zinc-600 mt-8">
         <span>Beginner</span>
         <span>Expert</span>
       </div>

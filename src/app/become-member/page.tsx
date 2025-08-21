@@ -37,16 +37,16 @@ export default function BecomeMemberPage() {
     <AppLayout title="Become a Member">
       <div className="space-y-8">
         <section className="">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl font-bold text-zinc-900 mb-6">
             Great that you want to join!
           </h1>
           
           <div className="text-left space-y-4">
-            <p className="text-xl font-medium text-gray-900">
+            <p className="text-xl font-medium text-zinc-900">
               For €4/month, you get:
             </p>
             
-            <ul className="space-y-2 text-gray-700">
+            <ul className="space-y-2 text-zinc-700">
               <li>• unlimited access to the BK space</li>
               <li>• join monthly workshops</li>
               <li>• join monthly community borrels</li>
@@ -57,8 +57,8 @@ export default function BecomeMemberPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900">How to join:</h2>
-          <ol className="space-y-2 text-gray-700">
+          <h2 className="text-xl font-semibold text-zinc-900">How to join:</h2>
+          <ol className="space-y-2 text-zinc-700">
             <li>1. go to "Join the Community" </li>
             <li>2. choose 'I donate → monthly' → €4 (or more)</li>
             <li>3. fill in your details</li>
@@ -73,9 +73,9 @@ export default function BecomeMemberPage() {
             rel="noopener noreferrer"
             className="
         bg-white 
-        text-gray-700 
+        text-zinc-700 
         border 
-        border-gray-200 
+        border-zinc-200 
         rounded-lg 
         font-medium 
         flex 
@@ -83,8 +83,8 @@ export default function BecomeMemberPage() {
         justify-center 
         gap-2
         transition-colors
-        hover:bg-gray-50 
-        disabled:bg-gray-100 
+        hover:bg-zinc-50 
+        disabled:bg-zinc-100 
         disabled:cursor-not-allowed
         min-h-[44px]
         px-6 py-3 text-base

@@ -170,7 +170,7 @@ export default function ShiftCalendarPage() {
       <div className="space-y-6">
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-4xl font-bold text-gray-900">Shift Calendar</h2>
+            <h2 className="text-4xl font-bold text-zinc-900">Shift Calendar</h2>
             <button
               onClick={() => setIsEditMode(!isEditMode)}
               className="px-4 py-2 text-purple-600 font-medium hover:bg-purple-50 rounded-lg transition-colors"
@@ -181,7 +181,7 @@ export default function ShiftCalendarPage() {
           </div>
           
           <div className="mb-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-zinc-600">
               Your shifts are highlighted. Click Edit to sign up for shifts.
             </p>
           </div>
@@ -192,23 +192,23 @@ export default function ShiftCalendarPage() {
         </section>
 
         <section>
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Your upcoming shifts:</h3>
+          <h3 className="text-xl font-semibold text-zinc-900 mb-4">Your upcoming shifts:</h3>
           {userShifts.length === 0 ? (
-            <p className="text-gray-500">You haven't signed up for any shifts yet.</p>
+            <p className="text-zinc-500">You haven't signed up for any shifts yet.</p>
           ) : (
             <div className="space-y-2">
               {userShifts.map((shift) => (
                 <button
                   key={shift.id}
                   onClick={() => handleShiftClick(shift)}
-                  className="w-full p-3 bg-white border border-gray-200 rounded-lg text-left hover:bg-gray-50 transition-colors"
+                  className="w-full p-3 bg-white border border-zinc-200 rounded-lg text-left hover:bg-zinc-50 transition-colors"
                 >
                   <div className="flex justify-between items-center">
                     <div>
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-zinc-900">
                         {format(new Date(shift.date), 'EEEE, MMM d')}
                       </span>
-                      <span className="text-sm text-gray-500 ml-2">
+                      <span className="text-sm text-zinc-500 ml-2">
                         {shift.start_time.slice(0, 5)} - {shift.end_time.slice(0, 5)}
                       </span>
                     </div>
@@ -235,13 +235,13 @@ export default function ShiftCalendarPage() {
           <section className="space-y-4">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
-                Click on shifts to sign up or remove yourself. Green means you're signed up, gray means you're not.
+                Click on shifts to sign up or remove yourself. Green means you're signed up, zinc means you're not.
               </p>
             </div>
 
             {canSignUpAsMechanic && (
               <div>
-                <h4 className="font-medium text-gray-900 mb-3">
+                <h4 className="font-medium text-zinc-900 mb-3">
                   Sign up as Mechanic:
                 </h4>
                 <div className="space-y-2">
@@ -262,7 +262,7 @@ export default function ShiftCalendarPage() {
                               : 'bg-green-50 border-green-300'
                             : hasPending
                               ? 'bg-red-100 border-red-400'
-                              : 'bg-gray-50 border-gray-200'
+                              : 'bg-zinc-50 border-zinc-200'
                           }
                           hover:scale-[1.02]
                         `}
@@ -272,11 +272,11 @@ export default function ShiftCalendarPage() {
                             <span className="font-medium">
                               {format(new Date(shift.date), 'EEE, MMM d')}
                             </span>
-                            <span className="text-sm text-gray-600 ml-2">
+                            <span className="text-sm text-zinc-600 ml-2">
                               {shift.start_time.slice(0, 5)} - {shift.end_time.slice(0, 5)}
                             </span>
                             {shift.mechanics && shift.mechanics.length > 0 && (
-                              <span className="text-xs text-gray-500 ml-2">
+                              <span className="text-xs text-zinc-500 ml-2">
                                 ({shift.mechanics.length} mechanic{shift.mechanics.length !== 1 ? 's' : ''})
                               </span>
                             )}
@@ -307,7 +307,7 @@ export default function ShiftCalendarPage() {
 
             {canSignUpAsHost && (
               <div>
-                <h4 className="font-medium text-gray-900 mb-3">
+                <h4 className="font-medium text-zinc-900 mb-3">
                   Sign up as Host:
                 </h4>
                 <div className="space-y-2">
@@ -328,7 +328,7 @@ export default function ShiftCalendarPage() {
                               : 'bg-green-50 border-green-300'
                             : hasPending
                               ? 'bg-red-100 border-red-400'
-                              : 'bg-gray-50 border-gray-200'
+                              : 'bg-zinc-50 border-zinc-200'
                           }
                           hover:scale-[1.02]
                         `}
@@ -338,11 +338,11 @@ export default function ShiftCalendarPage() {
                             <span className="font-medium">
                               {format(new Date(shift.date), 'EEE, MMM d')}
                             </span>
-                            <span className="text-sm text-gray-600 ml-2">
+                            <span className="text-sm text-zinc-600 ml-2">
                               {shift.start_time.slice(0, 5)} - {shift.end_time.slice(0, 5)}
                             </span>
                             {shift.hosts && shift.hosts.length > 0 && (
-                              <span className="text-xs text-gray-500 ml-2">
+                              <span className="text-xs text-zinc-500 ml-2">
                                 ({shift.hosts.length} host{shift.hosts.length !== 1 ? 's' : ''})
                               </span>
                             )}
@@ -400,7 +400,7 @@ export default function ShiftCalendarPage() {
                   setIsEditMode(false);
                   setPendingChanges({ toToggle: [] });
                 }}
-                className="px-6 py-2 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                className="px-6 py-2 border-2 border-zinc-300 rounded-lg text-zinc-700 font-medium hover:bg-zinc-50 transition-colors"
               >
                 Cancel
               </button>
@@ -422,17 +422,17 @@ export default function ShiftCalendarPage() {
         {selectedShift && (
           <div className="space-y-4">
             <div>
-              <span className="text-sm text-gray-600">Date:</span>
+              <span className="text-sm text-zinc-600">Date:</span>
               <p className="font-medium">{format(new Date(selectedShift.date), 'EEEE, MMMM d, yyyy')}</p>
             </div>
             <div>
-              <span className="text-sm text-gray-600">Time:</span>
+              <span className="text-sm text-zinc-600">Time:</span>
               <p className="font-medium">
                 {selectedShift.start_time.slice(0, 5)} - {selectedShift.end_time.slice(0, 5)}
               </p>
             </div>
             <div>
-              <span className="text-sm text-gray-600">Mechanics ({selectedShift.mechanics?.length || 0}):</span>
+              <span className="text-sm text-zinc-600">Mechanics ({selectedShift.mechanics?.length || 0}):</span>
               <div className="flex flex-wrap gap-2 mt-1">
                 {selectedShift.mechanics?.length ? (
                   selectedShift.mechanics.map((mechanic) => (
@@ -448,12 +448,12 @@ export default function ShiftCalendarPage() {
                     </span>
                   ))
                 ) : (
-                  <span className="text-gray-400">No mechanics signed up</span>
+                  <span className="text-zinc-400">No mechanics signed up</span>
                 )}
               </div>
             </div>
             <div>
-              <span className="text-sm text-gray-600">Hosts ({selectedShift.hosts?.length || 0}):</span>
+              <span className="text-sm text-zinc-600">Hosts ({selectedShift.hosts?.length || 0}):</span>
               <div className="flex flex-wrap gap-2 mt-1">
                 {selectedShift.hosts?.length ? (
                   selectedShift.hosts.map((host) => (
@@ -469,7 +469,7 @@ export default function ShiftCalendarPage() {
                     </span>
                   ))
                 ) : (
-                  <span className="text-gray-400">No hosts signed up</span>
+                  <span className="text-zinc-400">No hosts signed up</span>
                 )}
               </div>
             </div>

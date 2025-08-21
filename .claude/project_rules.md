@@ -46,7 +46,7 @@
 - Primary: Purple (#8b5cf6)
 - Success: Green (#10b981)
 - Error: Red/Pink (#ef4444)
-- Neutral: Gray scale
+- Neutral: zinc scale
 
 ## User Roles
 - Guest: Can book appointments only

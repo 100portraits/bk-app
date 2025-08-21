@@ -37,24 +37,24 @@ export default function QuickLinkCard({
   // Determine variant classes based on edit mode
   const getVariantClasses = () => {
     if (editMode) {
-      // In edit mode, all cards get dashed gray border
-      return 'bg-white text-gray-700 border-2 border-dashed border-gray-400';
+      // In edit mode, all cards get dashed zinc border
+      return 'bg-white text-zinc-700 border-2 border-dashed border-zinc-400';
     }
     
     // Normal mode - use the action's variant
     const variant = action.variant || 'secondary';
     const variantClasses = {
       primary: 'bg-purple-500 text-white',
-      secondary: 'bg-white text-gray-700 border border-gray-200',
-      border: 'bg-purple-50 text-gray-700 border-2 border-purple-500'
+      secondary: 'bg-white text-zinc-700 border border-zinc-200',
+      border: 'bg-purple-50 text-zinc-700 border-2 border-purple-500'
     };
     
     return variantClasses[variant];
   };
   
   const iconColor = editMode 
-    ? 'text-gray-400' 
-    : (action.variant === 'primary' ? 'text-purple-200' : 'text-gray-400');
+    ? 'text-zinc-400' 
+    : (action.variant === 'primary' ? 'text-purple-200' : 'text-zinc-400');
 
   const Container = editMode ? 'div' : 'button';
   
@@ -73,7 +73,7 @@ export default function QuickLinkCard({
         min-h-[80px]
         ${getVariantClasses()}
         ${!editMode && action.variant === 'primary' ? 'hover:bg-purple-600' : ''}
-        ${!editMode && action.variant !== 'primary' ? 'hover:bg-gray-50' : ''}
+        ${!editMode && action.variant !== 'primary' ? 'hover:bg-zinc-50' : ''}
         ${editMode ? 'cursor-default' : 'cursor-pointer'}
       `}
     >
@@ -83,7 +83,7 @@ export default function QuickLinkCard({
       
       <div className="flex-1">
         <div className="font-medium text-base">{action.title}</div>
-        <div className={`text-sm ${action.variant === 'primary' && !editMode ? 'text-purple-100' : 'text-gray-500'}`}>
+        <div className={`text-sm ${action.variant === 'primary' && !editMode ? 'text-purple-100' : 'text-zinc-500'}`}>
           {action.subtitle}
         </div>
       </div>
@@ -102,7 +102,7 @@ export default function QuickLinkCard({
       ) : (
         <IconChevronRight 
           size={20} 
-          className={action.variant === 'primary' ? 'text-purple-200' : 'text-gray-400'} 
+          className={action.variant === 'primary' ? 'text-purple-200' : 'text-zinc-400'} 
         />
       )}
     </Container>

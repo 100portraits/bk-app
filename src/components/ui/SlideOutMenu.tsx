@@ -99,7 +99,7 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
           left-0 
           h-full 
           w-80 
-          bg-gray-50
+          bg-zinc-50
           rounded-r-2xl
           z-50 
           transform 
@@ -111,20 +111,20 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
       >
         <div className="p-4 pr-8 h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-4xl font-semibold text-gray-900">Menu</h2>
+            <h2 className="text-4xl font-semibold text-zinc-900">Menu</h2>
             <div className="flex items-center gap-2">
               <button 
                 onClick={closeMenu}
                 className="p-2 -mr-4 rounded-lg hover:bg-purple-200 transition-colors"
               >
-                <IconX size={24} className="text-gray-700" />
+                <IconX size={24} className="text-zinc-700" />
               </button>
             </div>
           </div>
           
           {/* Accessible items */}
           {accessibleItems.length > 0 && (
-            <div className="space-y-3 mb-6 border-t border-gray-200 pt-4">
+            <div className="space-y-3 mb-6 border-t border-zinc-200 pt-4">
               {accessibleItems.map((item) => {
                 // Check if current path matches exactly or starts with the item path
                 const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
@@ -143,7 +143,7 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
                       min-h-[56px]
                       ${isActive 
                         ? 'bg-purple-500 text-white border border-purple-600 hover:bg-purple-600' 
-                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                        : 'bg-white text-zinc-700 hover:bg-zinc-50 border border-zinc-200'
                       }
                     `}
                   >
@@ -157,8 +157,8 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
           {/* Inaccessible items */}
           {inaccessibleItems.length > 0 && (
             <>
-              <div className="border-t border-gray-200 pt-4 mb-3">
-                <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold flex items-center gap-1">
+              <div className="border-t border-zinc-200 pt-4 mb-3">
+                <p className="text-xs text-zinc-500 uppercase tracking-wider font-semibold flex items-center gap-1">
                   <IconLock size={14} />
                   Restricted Access
                 </p>
@@ -197,7 +197,7 @@ const SlideOutMenu = ({ isOpen, currentPath }: SlideOutMenuProps) => {
                         relative
                         ${isActive 
                           ? 'bg-purple-300 text-purple-900 opacity-75' 
-                          : 'bg-white text-gray-900 hover:bg-gray-100 opacity-60 border border-gray-200'
+                          : 'bg-white text-zinc-900 hover:bg-zinc-100 opacity-60 border border-zinc-200'
                         }
                       `}
                     >

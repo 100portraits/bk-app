@@ -43,7 +43,7 @@ const PrimaryButton = ({
         gap-2
         transition-colors
         hover:bg-purple-600 
-        disabled:bg-gray-300 
+        disabled:bg-zinc-300 
         disabled:cursor-not-allowed
         min-h-[44px]
         ${sizeClasses[size]}

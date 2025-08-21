@@ -55,8 +55,8 @@ const RepairTypeSelector = ({
               ${isSelected 
                 ? 'bg-purple-500 text-white' 
                 : disabled
-                ? 'bg-gray-100 text-gray-500 border border-gray-200'
-                : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                ? 'bg-zinc-100 text-zinc-500 border border-zinc-200'
+                : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
               }
             `}
           >

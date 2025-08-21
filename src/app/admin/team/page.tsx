@@ -85,14 +85,14 @@ export default function ManageTeamPage() {
     <AppLayout title="Manage Team">
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">Manage Team</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 mb-6">Manage Team</h2>
           
           {loading ? (
             <div className="flex items-center justify-center h-32">
               <IconLoader2 className="animate-spin" size={24} />
             </div>
           ) : teamMembers.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-zinc-500">
               <p>No team members found.</p>
               <p className="text-sm mt-2">Team members are users with assigned roles (admin, mechanic, or host).</p>
             </div>
@@ -100,7 +100,7 @@ export default function ManageTeamPage() {
             <div className="space-y-6">
               {admins.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
+                  <h3 className="font-semibold text-zinc-900 mb-3">
                     Admins ({admins.length}):
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -118,7 +118,7 @@ export default function ManageTeamPage() {
 
               {mechanics.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
+                  <h3 className="font-semibold text-zinc-900 mb-3">
                     Mechanics ({mechanics.length}):
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -136,7 +136,7 @@ export default function ManageTeamPage() {
 
               {hosts.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
+                  <h3 className="font-semibold text-zinc-900 mb-3">
                     Hosts ({hosts.length}):
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -171,17 +171,17 @@ export default function ManageTeamPage() {
         {selectedUser && (
           <div className="space-y-6">
             <div className="">
-              <h3 className="text-xl font-semibold text-gray-900">{selectedUser.email}</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold text-zinc-900">{selectedUser.email}</h3>
+              <p className="text-zinc-600">
                 Current Role: {selectedUser.role ? selectedUser.role.charAt(0).toUpperCase() + selectedUser.role.slice(1) : 'None'}
               </p>
-              <p className="text-gray-500 text-sm">
+              <p className="text-zinc-500 text-sm">
                 Member Status: {selectedUser.member ? 'Member' : 'Non-Member'}
               </p>
             </div>
 
             <div>
-              <h4 className="font-medium text-gray-900 mb-3">Change Role To:</h4>
+              <h4 className="font-medium text-zinc-900 mb-3">Change Role To:</h4>
               <div className="flex flex-wrap gap-2">
                 {(['admin', 'mechanic', 'host'] as const).map((role) => (
                   <PillButton

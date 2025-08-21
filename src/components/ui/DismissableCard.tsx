@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { IconX } from '@tabler/icons-react';
 
-type ColorTheme = 'purple' | 'green' | 'blue' | 'slate' | 'gray' | 'yellow' | 'red';
+type ColorTheme = 'purple' | 'green' | 'blue' | 'slate' | 'zinc' | 'yellow' | 'red';
 
 interface DismissableCardProps {
   id: string; // Unique ID for localStorage persistence
@@ -49,12 +49,12 @@ const colorStyles: Record<ColorTheme, {
     buttonText: 'text-slate-400',
     buttonHover: 'hover:text-slate-600'
   },
-  gray: {
-    background: 'bg-gray-50',
-    border: 'border-gray-200',
-    text: 'text-gray-900',
-    buttonText: 'text-gray-400',
-    buttonHover: 'hover:text-gray-600'
+  zinc: {
+    background: 'bg-zinc-50',
+    border: 'border-zinc-200',
+    text: 'text-zinc-900',
+    buttonText: 'text-zinc-400',
+    buttonHover: 'hover:text-zinc-600'
   },
   yellow: {
     background: 'bg-yellow-50',
@@ -108,7 +108,7 @@ export default function DismissableCard({
       </button>
       
       {title && (
-        <h3 className="text-4xl font-semibold text-gray-900 mb-3 pr-8">
+        <h3 className="text-4xl font-semibold text-zinc-900 mb-3 pr-8">
           {title}
         </h3>
       )}

@@ -72,7 +72,7 @@ export default function HomePage() {
         )}
 
         <section>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">My Roles</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 mb-4">My Roles</h2>
           <div className="flex flex-wrap gap-2">
             {profile?.member ? (
               <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
@@ -89,7 +89,7 @@ export default function HomePage() {
               </span>
             )}
             {!profile?.role && (
-              <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
+              <span className="px-3 py-1 bg-zinc-100 text-zinc-600 rounded-full text-sm">
                 No roles assigned
               </span>
             )}
@@ -98,7 +98,7 @@ export default function HomePage() {
 
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-4xl font-bold text-gray-900">Quick Links</h2>
+            <h2 className="text-4xl font-bold text-zinc-900">Quick Links</h2>
             {quickLinks.length > 0 && (
               <button
                 onClick={() => setEditMode(!editMode)}
@@ -111,10 +111,10 @@ export default function HomePage() {
           
           {quickLinks.length === 0 ? (
             <div className="space-y-3">
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
-                <IconInfoCircle size={32} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-gray-600 mb-3">No quick links added yet</p>
-                <p className="text-sm text-gray-500 mb-4">
+              <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-6 text-center">
+                <IconInfoCircle size={32} className="mx-auto text-zinc-400 mb-2" />
+                <p className="text-zinc-600 mb-3">No quick links added yet</p>
+                <p className="text-sm text-zinc-500 mb-4">
                   Add your favorite actions for quick access from the homepage
                 </p>
               </div>
@@ -173,7 +173,7 @@ export default function HomePage() {
           {/* Booking Actions */}
           {availableByCategory.booking.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Booking</h3>
+              <h3 className="text-sm font-semibold text-zinc-700 mb-2">Booking</h3>
               <div className="space-y-2">
                 {availableByCategory.booking.map((action) => {
                   const Icon = action.icon;
@@ -200,7 +200,7 @@ export default function HomePage() {
           {/* Host Actions */}
           {availableByCategory.host.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Host Tools</h3>
+              <h3 className="text-sm font-semibold text-zinc-700 mb-2">Host Tools</h3>
               <div className="space-y-2">
                 {availableByCategory.host.map((action) => {
                   const Icon = action.icon;
@@ -227,7 +227,7 @@ export default function HomePage() {
           {/* Admin Actions */}
           {availableByCategory.admin.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Admin</h3>
+              <h3 className="text-sm font-semibold text-zinc-700 mb-2">Admin</h3>
               <div className="space-y-2">
                 {availableByCategory.admin.map((action) => {
                   const Icon = action.icon;
@@ -254,7 +254,7 @@ export default function HomePage() {
           {/* Membership Actions */}
           {availableByCategory.membership.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Membership</h3>
+              <h3 className="text-sm font-semibold text-zinc-700 mb-2">Membership</h3>
               <div className="space-y-2">
                 {availableByCategory.membership.map((action) => {
                   const Icon = action.icon;
@@ -280,7 +280,7 @@ export default function HomePage() {
           
           {/* Show message if no actions available */}
           {Object.values(availableByCategory).every(category => category.length === 0) && (
-            <div className="text-center py-6 text-gray-500">
+            <div className="text-center py-6 text-zinc-500">
               <p>All available actions have been added to quick links.</p>
             </div>
           )}

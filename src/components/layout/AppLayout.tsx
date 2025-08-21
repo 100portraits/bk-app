@@ -23,7 +23,7 @@ const AppLayout = ({
   const { openMenu } = useMenu();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
       <TopNavigationBar
         title={title}
         onMenuClick={openMenu}
@@ -32,8 +32,8 @@ const AppLayout = ({
       
       <main className="pb-20">
         {showUserRoles && userRoles.length > 0 && (
-          <div className="px-6 py-3 bg-white border-b border-gray-200">
-            <div className="text-sm text-gray-600 mb-2">Connected roles:</div>
+          <div className="px-6 py-3 bg-white dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700">
+            <div className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">Connected roles:</div>
             <div className="flex flex-wrap gap-2">
               {userRoles.map((role) => (
                 <RoleBadge key={role} role={role} />

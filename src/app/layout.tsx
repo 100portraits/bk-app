@@ -7,6 +7,8 @@ import { MenuProvider } from '@/contexts/MenuContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { DialogProvider } from '@/contexts/DialogContext';
 import { HelpMessagesProvider } from '@/contexts/HelpMessagesContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { ThemeCustomizer } from '@/components/ui/ThemeCustomizer';
 import GlobalMenu from '@/components/layout/GlobalMenu';
 import "./globals.css";
 import '@mantine/core/styles.css';
@@ -40,7 +42,8 @@ export default function RootLayout({
         className={`${inter.variable} antialiased font-inter`}
         style={{ '--mantine-font-family': 'var(--font-inter), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif' } as React.CSSProperties}
       >
-        <AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
           <HelpMessagesProvider>
             <MenuProvider>
               <DialogProvider>
@@ -48,13 +51,15 @@ export default function RootLayout({
                   <ModalsProvider>
                     <Notifications />
                     <GlobalMenu />
+                    <ThemeCustomizer />
                     {children}
                   </ModalsProvider>
                 </MantineProvider>
               </DialogProvider>
             </MenuProvider>
           </HelpMessagesProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
