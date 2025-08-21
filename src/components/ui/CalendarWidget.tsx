@@ -72,22 +72,22 @@ const CalendarWidget = ({
   const days = getDaysInMonth(currentMonth);
 
   return (
-    <div className={`bg-white rounded-lg border border-zinc-200 p-4 ${className}`}>
+    <div className={`bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-4 ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <button 
           onClick={() => navigateMonth('prev')}
-          className="p-1 rounded hover:bg-zinc-100"
+          className="p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700"
         >
           <IconChevronLeft size={20} />
         </button>
         
-        <h3 className="font-semibold text-zinc-900">
+        <h3 className="font-semibold text-zinc-900 dark:text-white">
           {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
         </h3>
         
         <button 
           onClick={() => navigateMonth('next')}
-          className="p-1 rounded hover:bg-zinc-100"
+          className="p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700"
         >
           <IconChevronRight size={20} />
         </button>
@@ -95,7 +95,7 @@ const CalendarWidget = ({
 
       <div className="grid grid-cols-7 gap-1 mb-2">
         {weekDays.map((day, index) => (
-          <div key={`weekday-${index}`} className="text-center text-sm font-medium text-zinc-500 py-2">
+          <div key={`weekday-${index}`} className="text-center text-sm font-medium text-zinc-500 dark:text-zinc-400 py-2">
             {day}
           </div>
         ))}
@@ -122,16 +122,16 @@ const CalendarWidget = ({
                 font-medium 
                 transition-colors
                 ${!inCurrentMonth 
-                  ? 'text-zinc-300 cursor-not-allowed' 
+                  ? 'text-zinc-300 dark:text-zinc-600 cursor-not-allowed' 
                   : isSelected
-                    ? 'bg-purple-500 text-white'
+                    ? 'bg-accent-500 text-white'
                     : isHighlighted
-                      ? 'bg-purple-100 text-purple-700 border-2 border-purple-500'
+                      ? 'bg-accent-100 dark:bg-accent-900 text-accent-700 dark:text-accent-300 border-2 border-accent-500'
                       : todayDate
-                        ? 'bg-purple-50 text-purple-600 border border-purple-200'
+                        ? 'bg-accent-50 dark:bg-accent-950 text-accent-600 dark:text-accent-400 border border-accent-200 dark:border-accent-700'
                         : isAvailable
-                          ? 'text-zinc-700 hover:bg-zinc-100'
-                          : 'text-zinc-300 cursor-not-allowed'
+                          ? 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'
+                          : 'text-zinc-300 dark:text-zinc-600 cursor-not-allowed'
                 }
               `}
             >

@@ -33,12 +33,12 @@ const StatusIndicator = ({ status, size = 'md', className = '' }: StatusIndicato
         };
       case 'pending':
         return {
-          bgColor: 'bg-purple-500',
+          bgColor: 'bg-accent-500',
           icon: <IconUser size={iconSizes[size]} />
         };
       case 'active':
         return {
-          bgColor: 'bg-purple-400',
+          bgColor: 'bg-accent-400',
           icon: <IconUser size={iconSizes[size]} />
         };
       default:

@@ -23,8 +23,8 @@ const ToggleSelector = ({ options, value, onChange, className = '' }: ToggleSele
               transition-colors
               min-h-[44px]
               ${isSelected 
-                ? 'bg-purple-500 text-white' 
-                : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
+                ? 'bg-accent-500 text-white' 
+                : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700'
               }
             `}
           >

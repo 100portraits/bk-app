@@ -23,8 +23,8 @@ const PillButton = ({
   };
 
   const stateClasses = selected 
-    ? 'bg-purple-500 text-white' 
-    : 'bg-white text-zinc-700 border border-zinc-200';
+    ? 'bg-accent-500 text-white' 
+    : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700';
 
   return (
     <button
@@ -37,7 +37,7 @@ const PillButton = ({
         min-h-[36px]
         ${sizeClasses[size]}
         ${stateClasses}
-        ${selected ? 'hover:bg-purple-600' : 'hover:bg-zinc-50'}
+        ${selected ? 'hover:bg-accent-600' : 'hover:bg-zinc-50 dark:hover:bg-zinc-700'}
         disabled:opacity-50 
         disabled:cursor-not-allowed
         ${className}

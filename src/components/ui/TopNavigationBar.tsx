@@ -32,7 +32,7 @@ const TopNavigationBar = ({
   const getRoleIcon = () => {
     switch (role) {
       case 'admin':
-        return <IconShieldCheck size={16} className="text-purple-600" />;
+        return <IconShieldCheck size={16} className="text-accent-600 dark:text-accent-400" />;
       case 'mechanic':
         return <IconTool size={16} className="text-blue-600" />;
       case 'host':
@@ -76,9 +76,9 @@ const TopNavigationBar = ({
   return (
     <header 
       className={`
-        bg-purple-50 
+        bg-accent-50 dark:bg-accent-950 
         border-b 
-        border-purple-100 
+        border-accent-100 dark:border-accent-800 
         px-4 
         py-3 
         flex 
@@ -94,10 +94,10 @@ const TopNavigationBar = ({
       `}
     >
       {shouldShowBackButton ?
-       (<button className='hover:bg-purple-100 rounded-lg transition-colors p-2'>
+       (<button className='hover:bg-accent-100 dark:hover:bg-accent-900 rounded-lg transition-colors p-2'>
         <IconArrowLeft 
           size={24} 
-          className="text-zinc-700 " 
+          className="text-zinc-700 dark:text-zinc-300 " 
           onClick={() => router.back()}
        />
        </button>  
@@ -106,47 +106,47 @@ const TopNavigationBar = ({
        : 
        (<button 
         onClick={onMenuClick}
-        className="p-2 -ml-2 rounded-lg hover:bg-purple-100 transition-colors"
+        className="p-2 -ml-2 rounded-lg hover:bg-accent-100 dark:hover:bg-accent-900 transition-colors"
       >
-        <IconMenu2 size={24} className="text-zinc-700" />
+        <IconMenu2 size={24} className="text-zinc-700 dark:text-zinc-300" />
       </button>
       )}
 
       
-      <h1 className="text-xl font-semibold text-zinc-900 flex-1 text-center">
+      <h1 className="text-xl font-semibold text-zinc-900 dark:text-white flex-1 text-center">
         {title}
       </h1>
       
       <div className="flex items-center gap-2">
         {showSearchIcon && (
           <button 
-            className="p-2 rounded-lg hover:bg-purple-100 transition-colors"
+            className="p-2 rounded-lg hover:bg-accent-100 dark:hover:bg-accent-900 transition-colors"
           >
-            <IconSearch size={24} className="text-zinc-700" />
+            <IconSearch size={24} className="text-zinc-700 dark:text-zinc-300" />
           </button>
         )}
         {showUserIcon && (
           <div className="relative" ref={dropdownRef}>
             <button 
               onClick={toggleDropdown}
-              className="p-2 -mr-2 rounded-lg hover:bg-purple-100 transition-colors"
+              className="p-2 -mr-2 rounded-lg hover:bg-accent-100 dark:hover:bg-accent-900 transition-colors"
             >
-              <IconUser size={24} className="text-zinc-700" />
+              <IconUser size={24} className="text-zinc-700 dark:text-zinc-300" />
             </button>
             
             {showDropdown && user && (
-              <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg border border-zinc-200 z-50">
-                <div className="p-4 border-b border-zinc-100">
-                  <p className="text-sm text-zinc-500">Signed in as</p>
-                  <p className="text-sm font-medium text-zinc-900 truncate">
+              <div className="absolute right-0 top-full mt-2 w-72 bg-white dark:bg-zinc-800 rounded-lg shadow-lg border border-zinc-200 dark:border-zinc-700 z-50">
+                <div className="p-4 border-b border-zinc-100 dark:border-zinc-700">
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">Signed in as</p>
+                  <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">
                     {profile?.name || user.email}
                   </p>
-                  <p className="text-xs text-zinc-500 truncate mt-0.5">{user.email}</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate mt-0.5">{user.email}</p>
                   
                   <div className="mt-3 flex items-center gap-3">
                     <div className="flex items-center gap-1.5">
                       <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                        isMember ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-600'
+                        isMember ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400'
                       }`}>
                         {isMember ? 'Member' : 'Non-member'}
                       </span>
@@ -155,7 +155,7 @@ const TopNavigationBar = ({
                     {role && (
                       <div className="flex items-center gap-1.5">
                         {getRoleIcon()}
-                        <span className="text-xs font-medium text-zinc-700 capitalize">
+                        <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 capitalize">
                           {role}
                         </span>
                       </div>
@@ -169,7 +169,7 @@ const TopNavigationBar = ({
                       setShowDropdown(false);
                       setShowMessagesDialog(true);
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition-colors"
                   >
                     <IconMessage size={18} />
                     <span>Messages</span>
@@ -177,7 +177,7 @@ const TopNavigationBar = ({
                   
                   <button
                     onClick={handleSignOut}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100 rounded-md transition-colors"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-md transition-colors"
                   >
                     <IconLogout size={18} />
                     <span>Sign out</span>

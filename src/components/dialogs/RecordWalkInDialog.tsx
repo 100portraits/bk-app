@@ -77,8 +77,8 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
           <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-green-100 rounded-full">
             <IconCheck size={32} className="text-green-600" />
           </div>
-          <h3 className="text-lg font-semibold text-zinc-900">Walk-in Recorded!</h3>
-          <p className="mt-2 text-sm text-zinc-600">
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Walk-in Recorded!</h3>
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             {isCommunityMember === 'Yes'
               ? 'Community member visit recorded'
               : `Payment of €${amountPaid} recorded`}
@@ -88,14 +88,14 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
         <div className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 Date of Walk-in
               </label>
               <input
                 type="date"
                 value={recordDate}
                 onChange={(e) => setRecordDate(e.target.value)}
-                className="w-full p-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full p-3 border border-zinc-200 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                 onClick={(e) => {
                   // Force the date picker to show on click
                   if (e.currentTarget.showPicker) {
@@ -103,13 +103,13 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
                   }
                 }}
               />
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
                 Defaults to today. You can select a past date if needed.
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-3">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3">
                 Community Member?
               </label>
               <ToggleSelector
@@ -124,7 +124,7 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
 
             {isCommunityMember === 'No' && (
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Amount paid (€)
                 </label>
                 <TextInput
@@ -138,11 +138,11 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
             )}
 
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 Notes (optional)
               </label>
               <textarea
-                className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
+                className="w-full p-3 border border-zinc-200 dark:border-zinc-700 rounded-lg resize-none bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white"
                 rows={3}
                 placeholder="Any additional information..."
                 value={notes}

@@ -22,53 +22,53 @@ const colorStyles: Record<ColorTheme, {
   buttonHover: string;
 }> = {
   purple: {
-    background: 'bg-purple-50',
-    border: 'border-purple-200',
-    text: 'text-purple-900',
-    buttonText: 'text-purple-400',
-    buttonHover: 'hover:text-purple-600'
+    background: 'bg-accent-50 dark:bg-accent-950',
+    border: 'border-accent-200 dark:border-accent-700',
+    text: 'text-accent-900 dark:text-accent-100',
+    buttonText: 'text-accent-400 dark:text-accent-500',
+    buttonHover: 'hover:text-accent-600 dark:hover:text-accent-300'
   },
   green: {
-    background: 'bg-green-50',
-    border: 'border-green-200',
-    text: 'text-green-900',
-    buttonText: 'text-green-400',
-    buttonHover: 'hover:text-green-600'
+    background: 'bg-green-50 dark:bg-green-950',
+    border: 'border-green-200 dark:border-green-700',
+    text: 'text-green-900 dark:text-green-100',
+    buttonText: 'text-green-400 dark:text-green-500',
+    buttonHover: 'hover:text-green-600 dark:hover:text-green-300'
   },
   blue: {
-    background: 'bg-blue-50',
-    border: 'border-blue-200',
-    text: 'text-blue-900',
-    buttonText: 'text-blue-400',
-    buttonHover: 'hover:text-blue-600'
+    background: 'bg-blue-50 dark:bg-blue-950',
+    border: 'border-blue-200 dark:border-blue-700',
+    text: 'text-blue-900 dark:text-blue-100',
+    buttonText: 'text-blue-400 dark:text-blue-500',
+    buttonHover: 'hover:text-blue-600 dark:hover:text-blue-300'
   },
   slate: {
-    background: 'bg-slate-50',
-    border: 'border-slate-200',
-    text: 'text-slate-900',
-    buttonText: 'text-slate-400',
-    buttonHover: 'hover:text-slate-600'
+    background: 'bg-slate-50 dark:bg-slate-950',
+    border: 'border-slate-200 dark:border-slate-700',
+    text: 'text-slate-900 dark:text-slate-100',
+    buttonText: 'text-slate-400 dark:text-slate-500',
+    buttonHover: 'hover:text-slate-600 dark:hover:text-slate-300'
   },
   zinc: {
-    background: 'bg-zinc-50',
-    border: 'border-zinc-200',
-    text: 'text-zinc-900',
-    buttonText: 'text-zinc-400',
-    buttonHover: 'hover:text-zinc-600'
+    background: 'bg-zinc-50 dark:bg-zinc-900',
+    border: 'border-zinc-200 dark:border-zinc-700',
+    text: 'text-zinc-900 dark:text-zinc-100',
+    buttonText: 'text-zinc-400 dark:text-zinc-500',
+    buttonHover: 'hover:text-zinc-600 dark:hover:text-zinc-300'
   },
   yellow: {
-    background: 'bg-yellow-50',
-    border: 'border-yellow-200',
-    text: 'text-yellow-900',
-    buttonText: 'text-yellow-400',
-    buttonHover: 'hover:text-yellow-600'
+    background: 'bg-yellow-50 dark:bg-yellow-950',
+    border: 'border-yellow-200 dark:border-yellow-700',
+    text: 'text-yellow-900 dark:text-yellow-100',
+    buttonText: 'text-yellow-400 dark:text-yellow-500',
+    buttonHover: 'hover:text-yellow-600 dark:hover:text-yellow-300'
   },
   red: {
-    background: 'bg-red-50',
-    border: 'border-red-200',
-    text: 'text-red-900',
-    buttonText: 'text-red-400',
-    buttonHover: 'hover:text-red-600'
+    background: 'bg-red-50 dark:bg-red-950',
+    border: 'border-red-200 dark:border-red-700',
+    text: 'text-red-900 dark:text-red-100',
+    buttonText: 'text-red-400 dark:text-red-500',
+    buttonHover: 'hover:text-red-600 dark:hover:text-red-300'
   }
 };
 
@@ -108,7 +108,7 @@ export default function DismissableCard({
       </button>
       
       {title && (
-        <h3 className="text-4xl font-semibold text-zinc-900 mb-3 pr-8">
+        <h3 className="text-4xl font-semibold text-zinc-900 dark:text-white mb-3 pr-8">
           {title}
         </h3>
       )}

@@ -12,8 +12,8 @@ const Avatar = ({ variant = 'primary', size = 'md', className = '' }: AvatarProp
   };
 
   const variantClasses = {
-    primary: 'bg-purple-500 text-white',
-    secondary: 'bg-purple-100 text-purple-500'
+    primary: 'bg-accent-500 text-white',
+    secondary: 'bg-accent-100 dark:bg-accent-900 text-accent-500 dark:text-accent-400'
   };
 
   return (

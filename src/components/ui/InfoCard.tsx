@@ -33,8 +33,8 @@ const InfoCard = ({
         transition-colors
         border
         ${isActive 
-          ? 'bg-purple-500 text-white border-purple-500' 
-          : 'bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-50'
+          ? 'bg-accent-500 text-white border-accent-500' 
+          : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700'
         }
         ${className}
       `}
@@ -47,11 +47,11 @@ const InfoCard = ({
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             <span className="font-medium">{name}</span>
-            <span className={`text-sm ${isActive ? 'text-purple-100' : 'text-zinc-500'}`}>
+            <span className={`text-sm ${isActive ? 'text-accent-100' : 'text-zinc-500 dark:text-zinc-400'}`}>
               {time}
             </span>
           </div>
-          <div className={`text-sm ${isActive ? 'text-purple-100' : 'text-zinc-600'}`}>
+          <div className={`text-sm ${isActive ? 'text-accent-100' : 'text-zinc-600 dark:text-zinc-400'}`}>
             {details}
           </div>
         </div>

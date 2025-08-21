@@ -16,13 +16,13 @@ const HelpButton = ({ text, onClick, className = '' }: HelpButtonProps) => {
         gap-3 
         w-full 
         p-4 
-        bg-white 
+        bg-white dark:bg-zinc-800 
         border 
-        border-zinc-200 
+        border-zinc-200 dark:border-zinc-700 
         rounded-lg 
-        text-zinc-700 
+        text-zinc-700 dark:text-zinc-300 
         font-medium
-        hover:bg-zinc-50
+        hover:bg-zinc-50 dark:hover:bg-zinc-700
         transition-colors
         min-h-[44px]
         ${className}

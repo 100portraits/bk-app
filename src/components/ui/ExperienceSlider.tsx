@@ -25,7 +25,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
   return (
     <div className={`${className}`}>
       <div 
-        className={`relative h-12 bg-zinc-100 rounded-lg select-none ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        className={`relative h-12 bg-zinc-100 dark:bg-zinc-700 rounded-lg select-none ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         style={{
           '--thumb-width': '12px',
           '--thumb-offset': '4px'
@@ -34,7 +34,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
       >
         {/* Filled track */}
         <div
-          className="absolute top-0 left-0 h-full bg-purple-500 rounded-l-lg flex items-center justify-center"
+          className="absolute top-0 left-0 h-full bg-accent-500 rounded-l-lg flex items-center justify-center"
           style={{
             width: `calc(${normalizedValue * 100}% `,
           }}
@@ -50,7 +50,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
 
         {/* Empty track */}
         <div
-          className="absolute top-0 right-0 h-full bg-zinc-100 rounded-r-lg flex items-center justify-center"
+          className="absolute top-0 right-0 h-full bg-zinc-100 dark:bg-zinc-700 rounded-r-lg flex items-center justify-center"
           style={{
             width: `calc(${(1 - normalizedValue) * 100}% - var(--thumb-width) / 2 - var(--thumb-offset) / 2)`,
           }}
@@ -60,21 +60,21 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
 
         {/* Thumb */}
         <div
-          className={`absolute top-0 w-4 h-12 bg-white border-2 border-purple-500 rounded-lg flex items-center justify-center shadow-lg transition-shadow ${disabled ? '' : 'hover:shadow-xl cursor-grab active:cursor-grabbing'}`}
+          className={`absolute top-0 w-4 h-12 bg-white dark:bg-zinc-800 border-2 border-accent-500 rounded-lg flex items-center justify-center shadow-lg transition-shadow ${disabled ? '' : 'hover:shadow-xl cursor-grab active:cursor-grabbing'}`}
           style={{ 
             left: `calc(${normalizedValue * 100}% - var(--thumb-width) / 2)` 
           }}
         >
           {labelFloating && (
-            <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white text-xs font-medium px-2 py-1 rounded">
+            <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-accent-500 text-white text-xs font-medium px-2 py-1 rounded">
               {value}
             </span>
           )}
-          <IconGripVertical size={16} className="text-purple-500" stroke={1.5} />
+          <IconGripVertical size={16} className="text-accent-500" stroke={1.5} />
         </div>
 
         {/* Step indicators */}
-        <div className="absolute top-full mt-2 w-full flex justify-between text-xs text-zinc-500">
+        <div className="absolute top-full mt-2 w-full flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
           {[1, 2, 3, 4, 5].map((step) => (
             <span key={step} className="text-center">
               {step}
@@ -84,7 +84,7 @@ const ExperienceSlider = ({ value = 1, onChange, className = '', disabled = fals
       </div>
       
       {/* Labels */}
-      <div className="flex justify-between text-xs text-zinc-600 mt-8">
+      <div className="flex justify-between text-xs text-zinc-600 dark:text-zinc-400 mt-8">
         <span>Beginner</span>
         <span>Expert</span>
       </div>

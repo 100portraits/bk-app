@@ -33,10 +33,10 @@ const SecondaryButton = ({
       onClick={onClick}
       disabled={disabled}
       className={`
-        bg-white 
-        text-zinc-700 
+        bg-white dark:bg-zinc-800 
+        text-zinc-700 dark:text-zinc-300 
         border 
-        border-zinc-200 
+        border-zinc-200 dark:border-zinc-700 
         rounded-lg 
         font-medium 
         flex 
@@ -44,8 +44,8 @@ const SecondaryButton = ({
         justify-center 
         gap-2
         transition-colors
-        hover:bg-zinc-50 
-        disabled:bg-zinc-100 
+        hover:bg-zinc-50 dark:hover:bg-zinc-700 
+        disabled:bg-zinc-100 dark:disabled:bg-zinc-900 
         disabled:cursor-not-allowed
         min-h-[44px]
         ${sizeClasses[size]}

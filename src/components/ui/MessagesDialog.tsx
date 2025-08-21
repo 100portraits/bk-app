@@ -47,9 +47,9 @@ export default function MessagesDialog({ isOpen, onClose }: MessagesDialogProps)
           </div>
         ) : messages.length === 0 ? (
           <div className="text-center py-12">
-            <IconMessage size={48} className="mx-auto text-zinc-400 mb-3" />
-            <p className="text-zinc-500">No messages yet</p>
-            <p className="text-sm text-zinc-400 mt-1">
+            <IconMessage size={48} className="mx-auto text-zinc-400 dark:text-zinc-500 mb-3" />
+            <p className="text-zinc-500 dark:text-zinc-400">No messages yet</p>
+            <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-1">
               Messages you send through help dialogs will appear here
             </p>
           </div>
@@ -58,14 +58,14 @@ export default function MessagesDialog({ isOpen, onClose }: MessagesDialogProps)
             {messages.map((message) => (
               <div
                 key={message.id}
-                className="p-4 bg-white border border-zinc-200 rounded-lg"
+                className="p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <p className="text-sm font-medium text-zinc-900">
+                    <p className="text-sm font-medium text-zinc-900 dark:text-white">
                       {message.page_name}
                     </p>
-                    <p className="text-xs text-zinc-500">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
                       {formatDate(message.created_at)}
                     </p>
                   </div>
@@ -75,25 +75,25 @@ export default function MessagesDialog({ isOpen, onClose }: MessagesDialogProps)
                       Responded
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1 text-xs text-zinc-400">
+                    <span className="flex items-center gap-1 text-xs text-zinc-400 dark:text-zinc-500">
                       <IconClock size={14} />
                       Pending
                     </span>
                   )}
                 </div>
                 
-                <p className="text-sm text-zinc-700 mb-2">
+                <p className="text-sm text-zinc-700 dark:text-zinc-300 mb-2">
                   {message.message}
                 </p>
                 
                 {message.response && (
-                  <div className="mt-3 p-3 bg-purple-50 rounded-md border border-purple-200">
-                    <p className="text-xs font-medium text-purple-700 mb-1">Response:</p>
-                    <p className="text-sm text-purple-900">
+                  <div className="mt-3 p-3 bg-accent-50 dark:bg-accent-950 rounded-md border border-accent-200 dark:border-accent-700">
+                    <p className="text-xs font-medium text-accent-700 dark:text-accent-300 mb-1">Response:</p>
+                    <p className="text-sm text-accent-900 dark:text-accent-100">
                       {message.response}
                     </p>
                     {message.responded_at && (
-                      <p className="text-xs text-purple-600 mt-2">
+                      <p className="text-xs text-accent-600 dark:text-accent-400 mt-2">
                         {formatDate(message.responded_at)}
                       </p>
                     )}

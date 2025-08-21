@@ -19,10 +19,10 @@ const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
         content: { backgroundColor: 'transparent' }
       }}
     >
-      <div className="bg-purple-500 text-white rounded-lg p-6 relative">
+      <div className="bg-accent-500 text-white rounded-lg p-6 relative">
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-white hover:bg-purple-600 rounded-lg transition-colors"
+          className="absolute top-4 right-4 p-2 text-white hover:bg-accent-600 rounded-lg transition-colors"
         >
           <IconX size={24} />
         </button>
@@ -32,7 +32,7 @@ const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
             Welcome to the new Bike Kitchen app!
           </h2>
           
-          <div className="space-y-3 text-purple-50">
+          <div className="space-y-3 text-accent-50">
             <p>There may be bugs! Sorry, I'm a team of one :)</p>
             
             <p>

@@ -33,7 +33,7 @@ const PrimaryButton = ({
       onClick={onClick}
       disabled={disabled}
       className={`
-        bg-purple-500 
+        bg-accent-500 
         text-white 
         rounded-lg 
         font-medium 
@@ -42,8 +42,8 @@ const PrimaryButton = ({
         justify-center 
         gap-2
         transition-colors
-        hover:bg-purple-600 
-        disabled:bg-zinc-300 
+        hover:bg-accent-600 
+        disabled:bg-zinc-300 dark:disabled:bg-zinc-700 
         disabled:cursor-not-allowed
         min-h-[44px]
         ${sizeClasses[size]}

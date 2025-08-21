@@ -70,19 +70,19 @@ export default function HelpDialog({
           <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-green-100 rounded-full">
             <IconCheck size={32} className="text-green-600" />
           </div>
-          <h3 className="text-lg font-semibold text-zinc-900">Message Sent!</h3>
-          <p className="mt-2 text-sm text-zinc-600">
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Message Sent!</h3>
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Thank you for your feedback. I'll look into it.
           </p>
-          <p className='text-zinc-500'>- sahir</p>
+          <p className='text-zinc-500 dark:text-zinc-400'>- sahir</p>
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-zinc-600">
+          <p className="text-zinc-600 dark:text-zinc-400">
             Need help with {pageName.toLowerCase()}? Describe any issues or questions you have:
           </p>
           <textarea
-            className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
+            className="w-full p-3 border border-zinc-200 dark:border-zinc-600 rounded-lg resize-none bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white"
             rows={4}
             placeholder="Write your message here..."
             value={message}

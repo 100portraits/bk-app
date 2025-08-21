@@ -38,15 +38,15 @@ export default function QuickLinkCard({
   const getVariantClasses = () => {
     if (editMode) {
       // In edit mode, all cards get dashed zinc border
-      return 'bg-white text-zinc-700 border-2 border-dashed border-zinc-400';
+      return 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-2 border-dashed border-zinc-400 dark:border-zinc-600';
     }
     
     // Normal mode - use the action's variant
     const variant = action.variant || 'secondary';
     const variantClasses = {
-      primary: 'bg-purple-500 text-white',
-      secondary: 'bg-white text-zinc-700 border border-zinc-200',
-      border: 'bg-purple-50 text-zinc-700 border-2 border-purple-500'
+      primary: 'bg-accent-500 text-white',
+      secondary: 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700',
+      border: 'bg-accent-50 dark:bg-accent-950 text-zinc-700 dark:text-zinc-300 border-2 border-accent-500'
     };
     
     return variantClasses[variant];
@@ -54,7 +54,7 @@ export default function QuickLinkCard({
   
   const iconColor = editMode 
     ? 'text-zinc-400' 
-    : (action.variant === 'primary' ? 'text-purple-200' : 'text-zinc-400');
+    : (action.variant === 'primary' ? 'text-accent-200' : 'text-zinc-400 dark:text-zinc-500');
 
   const Container = editMode ? 'div' : 'button';
   
@@ -72,8 +72,8 @@ export default function QuickLinkCard({
         transition-colors
         min-h-[80px]
         ${getVariantClasses()}
-        ${!editMode && action.variant === 'primary' ? 'hover:bg-purple-600' : ''}
-        ${!editMode && action.variant !== 'primary' ? 'hover:bg-zinc-50' : ''}
+        ${!editMode && action.variant === 'primary' ? 'hover:bg-accent-600' : ''}
+        ${!editMode && action.variant !== 'primary' ? 'hover:bg-zinc-50 dark:hover:bg-zinc-700' : ''}
         ${editMode ? 'cursor-default' : 'cursor-pointer'}
       `}
     >
@@ -83,7 +83,7 @@ export default function QuickLinkCard({
       
       <div className="flex-1">
         <div className="font-medium text-base">{action.title}</div>
-        <div className={`text-sm ${action.variant === 'primary' && !editMode ? 'text-purple-100' : 'text-zinc-500'}`}>
+        <div className={`text-sm ${action.variant === 'primary' && !editMode ? 'text-accent-100' : 'text-zinc-500 dark:text-zinc-400'}`}>
           {action.subtitle}
         </div>
       </div>
@@ -94,15 +94,15 @@ export default function QuickLinkCard({
             e.stopPropagation();
             onRemove();
           }}
-          className="p-2 bg-red-50 rounded-full border border-red-200 hover:bg-red-100 transition-colors"
+          className="p-2 bg-red-50 dark:bg-red-950 rounded-full border border-red-200 dark:border-red-700 hover:bg-red-100 dark:hover:bg-red-900 transition-colors"
           aria-label={`Remove ${action.title} from quick links`}
         >
-          <IconX size={18} className="text-red-600" />
+          <IconX size={18} className="text-red-600 dark:text-red-400" />
         </button>
       ) : (
         <IconChevronRight 
           size={20} 
-          className={action.variant === 'primary' ? 'text-purple-200' : 'text-zinc-400'} 
+          className={action.variant === 'primary' ? 'text-accent-200' : 'text-zinc-400 dark:text-zinc-500'} 
         />
       )}
     </Container>

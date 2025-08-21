@@ -53,10 +53,10 @@ const RepairTypeSelector = ({
               min-h-[44px]
               ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}
               ${isSelected 
-                ? 'bg-purple-500 text-white' 
+                ? 'bg-accent-500 text-white' 
                 : disabled
-                ? 'bg-zinc-100 text-zinc-500 border border-zinc-200'
-                : 'bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50'
+                ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700'
+                : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700'
               }
             `}
           >

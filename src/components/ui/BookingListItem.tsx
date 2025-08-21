@@ -32,8 +32,8 @@ const BookingListItem = ({
         transition-colors
         border
         ${isActive 
-          ? 'bg-purple-500 text-white border-purple-500' 
-          : 'bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-50'
+          ? 'bg-accent-500 text-white border-accent-500' 
+          : 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700'
         }
         ${className}
       `}
@@ -45,18 +45,18 @@ const BookingListItem = ({
             {isMember && (
               <span className={`px-2 py-0.5 text-xs rounded-full font-medium ${
                 isActive 
-                  ? 'bg-purple-400 text-white' 
-                  : 'bg-purple-100 text-purple-700'
+                  ? 'bg-accent-400 text-white' 
+                  : 'bg-accent-100 dark:bg-accent-900 text-accent-700 dark:text-accent-300'
               }`}>
                 Member
               </span>
             )}
 
           </div>
-          <div className={`text-sm ${isActive ? 'text-purple-100' : 'text-zinc-600'}`}>
+          <div className={`text-sm ${isActive ? 'text-accent-100' : 'text-zinc-600 dark:text-zinc-400'}`}>
             {repairDetails}
           </div>
-                      <span className={`text-lg ${isActive ? 'text-purple-100' : 'text-zinc-500'}`}>
+                      <span className={`text-lg ${isActive ? 'text-accent-100' : 'text-zinc-500 dark:text-zinc-400'}`}>
               {time}
             </span>
         </div>
