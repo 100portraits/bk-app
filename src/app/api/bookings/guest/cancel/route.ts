@@ -40,21 +40,16 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Verify this is a guest booking
-    if (booking.user_id !== null) {
-      return NextResponse.json(
-        { error: 'This is not a guest booking' },
-        { status: 403 }
-      );
-    }
-    
-    // Verify email matches
+    // Verify email matches (for both guest and registered users)
     if (booking.email.toLowerCase() !== email.toLowerCase()) {
       return NextResponse.json(
         { error: 'Email does not match booking' },
         { status: 403 }
       );
     }
+    
+    // Determine if this is a guest or registered user booking
+    const isGuestBooking = booking.user_id === null;
     
     // Check if already cancelled
     if (booking.status === 'cancelled') {
@@ -93,7 +88,7 @@ export async function POST(request: NextRequest) {
         time: booking.slot_time.substring(0, 5),
         repairType: repairTypeDisplay,
         cancelledBy: 'user',
-        reason: 'Cancelled by guest'
+        reason: isGuestBooking ? 'Cancelled by guest' : 'Cancelled by user'
       });
       
       const emailResult = await sendBookingCancellationEmail({
@@ -102,7 +97,7 @@ export async function POST(request: NextRequest) {
         time: booking.slot_time.substring(0, 5),  
         repairType: repairTypeDisplay,
         cancelledBy: 'user',
-        reason: 'Cancelled by guest'
+        reason: isGuestBooking ? 'Cancelled by guest' : 'Cancelled by user'
       });
       
       console.log('Cancellation email result:', emailResult);

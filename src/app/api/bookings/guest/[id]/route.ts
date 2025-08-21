@@ -42,14 +42,7 @@ export async function GET(
       );
     }
     
-    // Verify this is a guest booking and email matches
-    if (booking.user_id !== null) {
-      return NextResponse.json(
-        { error: 'This is not a guest booking' },
-        { status: 403 }
-      );
-    }
-    
+    // Verify email matches (for both guest and registered users)
     if (booking.email.toLowerCase() !== email.toLowerCase()) {
       return NextResponse.json(
         { error: 'Email does not match booking' },

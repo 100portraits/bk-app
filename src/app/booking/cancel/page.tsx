@@ -10,7 +10,7 @@ import { IconLoader2, IconCalendarEvent, IconClock, IconAlertCircle, IconCheck, 
 import { Booking } from '@/types/bookings';
 import { format, parseISO } from 'date-fns';
 
-function GuestCancelBookingContent() {
+function CancelBookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -148,7 +148,7 @@ function GuestCancelBookingContent() {
               <PrimaryButton onClick={() => router.push('/')}>
                 Back to Home
               </PrimaryButton>
-              <SecondaryButton onClick={() => router.push('/booking/guest')}>
+              <SecondaryButton onClick={() => router.push(booking?.user_id ? '/booking' : '/booking/guest')}>
                 Book New Appointment
               </SecondaryButton>
             </div>
@@ -314,7 +314,7 @@ function GuestCancelBookingContent() {
   );
 }
 
-export default function GuestCancelBookingPage() {
+export default function CancelBookingPage() {
   return (
     <Suspense fallback={
       <AppLayout title="Cancel Booking">
@@ -323,7 +323,7 @@ export default function GuestCancelBookingPage() {
         </div>
       </AppLayout>
     }>
-      <GuestCancelBookingContent />
+      <CancelBookingContent />
     </Suspense>
   );
 }

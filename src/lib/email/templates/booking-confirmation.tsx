@@ -84,16 +84,33 @@ export const BookingConfirmationEmail: React.FC<BookingConfirmationEmailProps> =
                   borderRadius: '6px',
                   textDecoration: 'none',
                   display: 'inline-block',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
+                  marginRight: '10px'
                 }}
               >
-                Manage Your Booking
+                Manage Your Bookings
+              </a>
+              
+              <a
+                href={`https://bikekitchen.nl/booking/cancel?id=${bookingId}&email=${encodeURIComponent(email || '')}`}
+                style={{
+                  backgroundColor: '#ef4444',
+                  color: 'white',
+                  padding: '12px 30px',
+                  borderRadius: '6px',
+                  textDecoration: 'none',
+                  display: 'inline-block',
+                  fontWeight: 'bold',
+                  marginLeft: '10px'
+                }}
+              >
+                Cancel This Booking
               </a>
             </div>
             
             <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '1px solid #e5e7eb' }}>
               <p style={{ color: '#6b7280', fontSize: '14px', margin: '5px 0' }}>
-                Need to cancel? Use the above link.
+                You can manage all your bookings or cancel this specific booking using the buttons above.
               </p>
             </div>
           </>

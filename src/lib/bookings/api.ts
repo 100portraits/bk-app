@@ -225,7 +225,8 @@ export class BookingsAPI {
           repairType: repairTypeDisplay,
           duration: booking.duration_minutes.toString(),
           isGuest,
-          bookingId: booking.id
+          bookingId: booking.id,
+          userEmail: email // Pass email for cancellation link
         })
       });
     } catch (error) {
