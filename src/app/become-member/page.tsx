@@ -15,9 +15,6 @@ export default function BecomeMemberPage() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleJoinCommunity = () => {
-    window.open('https://doneren.auf.nl/bike-kitchen', '_blank');
-  };
 
   const handleAlreadyMember = () => {
     setShowConfirmDialog(true);
@@ -70,15 +67,34 @@ export default function BecomeMemberPage() {
         </section>
 
         <section className="space-y-4">
-          <SecondaryButton
-            onClick={handleJoinCommunity}
-            fullWidth
-            
+          <a 
+            href="https://doneren.auf.nl/bike-kitchen"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+        bg-white 
+        text-gray-700 
+        border 
+        border-gray-200 
+        rounded-lg 
+        font-medium 
+        flex 
+        items-center 
+        justify-center 
+        gap-2
+        transition-colors
+        hover:bg-gray-50 
+        disabled:bg-gray-100 
+        disabled:cursor-not-allowed
+        min-h-[44px]
+        px-6 py-3 text-base
+        w-full
+      "
           >
             <span className="font-medium">Join the community</span>
               <IconExternalLink className="inline -mt-1" size={16} />
 
-          </SecondaryButton>
+          </a >
           
           <PrimaryButton
             onClick={handleAlreadyMember}
