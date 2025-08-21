@@ -116,13 +116,7 @@ export default function ManageBookingsPage() {
               <IconBike size={48} className="mx-auto text-gray-400 mb-2" />
               <p className="text-gray-500">No upcoming bookings</p>
               <p className="text-sm text-gray-400 mt-2">Ready to fix your bike?</p>
-              <PrimaryButton
-                onClick={() => router.push('/booking/new')}
-                size="sm"
-                className="mt-4"
-              >
-                Book an Appointment
-              </PrimaryButton>
+
             </div>
           ) : (
             <div className="space-y-3">

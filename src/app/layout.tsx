@@ -6,6 +6,7 @@ import { Notifications } from '@mantine/notifications';
 import { MenuProvider } from '@/contexts/MenuContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { DialogProvider } from '@/contexts/DialogContext';
+import { HelpMessagesProvider } from '@/contexts/HelpMessagesContext';
 import GlobalMenu from '@/components/layout/GlobalMenu';
 import "./globals.css";
 import '@mantine/core/styles.css';
@@ -40,17 +41,19 @@ export default function RootLayout({
         style={{ '--mantine-font-family': 'var(--font-inter), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif' } as React.CSSProperties}
       >
         <AuthProvider>
-          <MenuProvider>
-            <DialogProvider>
-              <MantineProvider theme={theme}>
-                <ModalsProvider>
-                  <Notifications />
-                  <GlobalMenu />
-                  {children}
-                </ModalsProvider>
-              </MantineProvider>
-            </DialogProvider>
-          </MenuProvider>
+          <HelpMessagesProvider>
+            <MenuProvider>
+              <DialogProvider>
+                <MantineProvider theme={theme}>
+                  <ModalsProvider>
+                    <Notifications />
+                    <GlobalMenu />
+                    {children}
+                  </ModalsProvider>
+                </MantineProvider>
+              </DialogProvider>
+            </MenuProvider>
+          </HelpMessagesProvider>
         </AuthProvider>
       </body>
     </html>
