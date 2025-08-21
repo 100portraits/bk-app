@@ -42,7 +42,7 @@ export const AdminResponseEmail: React.FC<AdminResponseEmailProps> = ({
         
         <div style={{ backgroundColor: '#ede9fe', padding: '20px', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid #7c3aed' }}>
           <h3 style={{ color: '#5b21b6', fontSize: '16px', marginTop: 0 }}>
-            My Response:
+            Response:
           </h3>
           <p style={{ color: '#374151', fontSize: '15px', margin: '10px 0', whiteSpace: 'pre-wrap' }}>
             {adminResponse}
@@ -51,7 +51,7 @@ export const AdminResponseEmail: React.FC<AdminResponseEmailProps> = ({
         
         <div style={{ backgroundColor: '#dbeafe', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
           <p style={{ color: '#1e40af', margin: 0, fontSize: '14px' }}>
-            <strong>Still have a question?</strong> WhatsApp me (sahir) or come by the BK and ask!
+            <strong>Still have a question?</strong> WhatsApp me or come by the BK and ask!
           </p>
         </div>
         
