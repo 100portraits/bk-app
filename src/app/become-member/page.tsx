@@ -76,9 +76,8 @@ export default function BecomeMemberPage() {
             
           >
             <span className="font-medium">Join the community</span>
-            <a href='https://doneren.auf.nl/bike-kitchen' target='_blank' rel='noopener noreferrer'>
               <IconExternalLink className="inline -mt-1" size={16} />
-            </a>
+
           </SecondaryButton>
           
           <PrimaryButton
