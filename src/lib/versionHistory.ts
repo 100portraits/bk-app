@@ -7,6 +7,15 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.7.2',
+    date: '2025-08-21',
+    changes: [
+      'Refactored admin panel titles and improved navigation',
+      'Implemented smooth scrolling to end of booking form on section change'
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.7.1',
     date: '2025-08-21',
     changes: [
