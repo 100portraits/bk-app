@@ -167,10 +167,10 @@ export default function ManageTimeslotsPage() {
       <div className="space-y-6">
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-4xl font-bold text-zinc-900">Manage Timeslots</h2>
+            <h2 className="text-4xl font-bold text-zinc-900 dark:text-white">Manage Timeslots</h2>
             <button
               onClick={() => setIsEditMode(!isEditMode)}
-              className="px-4 py-2 text-purple-600 font-medium hover:bg-purple-50 rounded-lg transition-colors"
+              className="px-4 py-2 text-accent-600 dark:text-accent-400 font-medium hover:bg-accent-50 dark:hover:bg-accent-950 rounded-lg transition-colors"
               disabled={loading}
             >
               {isEditMode ? 'Cancel' : 'Edit'}
@@ -178,10 +178,10 @@ export default function ManageTimeslotsPage() {
           </div>
           
           <div className="mb-4">
-            <p className="text-sm text-zinc-600">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">
               Workshop Schedule: Monday 14:00-18:00 | Wednesday 12:00-16:00 | Thursday 16:00-20:00
             </p>
-            <p className="text-xs text-zinc-500 mt-1">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
               Showing dates from today to 4 weeks ahead
             </p>
           </div>
@@ -200,7 +200,7 @@ export default function ManageTimeslotsPage() {
             </div>
 
             <div>
-              <h4 className="font-medium text-zinc-900 mb-3">
+              <h4 className="font-medium text-zinc-900 dark:text-white mb-3">
                 Available Workshop Days (Next 4 Weeks):
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -221,7 +221,7 @@ export default function ManageTimeslotsPage() {
                             : 'bg-green-50 border-green-300 text-green-700'
                           : willToggle
                             ? 'bg-red-100 border-red-400 text-red-800'
-                            : 'bg-zinc-50 border-zinc-300 text-zinc-600'
+                            : 'bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-600 text-zinc-600 dark:text-zinc-400'
                         }
                         hover:scale-105
                       `}
@@ -269,7 +269,7 @@ export default function ManageTimeslotsPage() {
                   setIsEditMode(false);
                   setPendingChanges({ toToggle: [] });
                 }}
-                className="px-6 py-2 border-2 border-zinc-300 rounded-lg text-zinc-700 font-medium hover:bg-zinc-50 transition-colors"
+                className="px-6 py-2 border-2 border-zinc-300 dark:border-zinc-600 rounded-lg text-zinc-700 dark:text-zinc-300 font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
               >
                 Cancel
               </button>

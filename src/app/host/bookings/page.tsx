@@ -181,7 +181,7 @@ export default function UpcomingBookingsPage() {
             </button>
             
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-zinc-900">
+              <h3 className="text-xl font-semibold text-zinc-900 dark:text-white">
                 {format(currentDate, 'EEE, MMM do')}
                 {isToday(currentDate) && (
                   <span className="ml-2 text-green-600">Today</span>
@@ -248,19 +248,19 @@ export default function UpcomingBookingsPage() {
         {selectedBooking && (
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold text-zinc-900">
+              <h3 className="text-xl font-semibold text-zinc-900 dark:text-white">
                 {selectedBooking.slot_time.slice(0, 5)} - {getRepairTypeDisplay(selectedBooking.repair_type)}
               </h3>
               <div className="flex items-center gap-2 mt-2 text-sm text-zinc-600">
                 <IconUser size={16} />
                 <div className="flex flex-col">
                   {selectedBooking.name && (
-                    <span className="font-medium text-zinc-900">{selectedBooking.name}</span>
+                    <span className="font-medium text-zinc-900 dark:text-white">{selectedBooking.name}</span>
                   )}
                   <span>{selectedBooking.user?.email || selectedBooking.email}</span>
                 </div>
                 {selectedBooking.is_member && (
-                  <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
+                  <span className="px-2 py-0.5 bg-accent-100 dark:bg-accent-900 text-accent-700 dark:text-accent-300 text-xs rounded-full">
                     Member
                   </span>
                 )}
@@ -272,8 +272,8 @@ export default function UpcomingBookingsPage() {
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-medium text-zinc-900">Repair Details:</h4>
-              <div className="p-3 bg-zinc-50 rounded-lg text-sm">
+              <h4 className="font-medium text-zinc-900 dark:text-white">Repair Details:</h4>
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg text-sm">
                 <p><span className="font-medium">Type:</span> {getRepairTypeDisplay(selectedBooking.repair_type)}</p>
                 {selectedBooking.repair_details?.bikeType && (
                   <p><span className="font-medium">Bike:</span> {selectedBooking.repair_details.bikeType === 'city' ? 'City bike' : 'Road/Mountain/Touring'}</p>
@@ -287,8 +287,8 @@ export default function UpcomingBookingsPage() {
               </div>
               
               {selectedBooking.notes && (
-                <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                  <p className="text-sm text-amber-800">
+                <div className="p-3 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg">
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
                     <span className="font-medium">Notes:</span> {selectedBooking.notes}
                   </p>
                 </div>
@@ -305,7 +305,7 @@ export default function UpcomingBookingsPage() {
                       setEditingStatus(true);
                       setEditStatus(selectedBooking.status as 'completed' | 'no_show');
                     }}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 rounded-lg transition-colors"
                     title="Edit status"
                   >
                     <IconEdit size={18} />
@@ -314,12 +314,12 @@ export default function UpcomingBookingsPage() {
               </div>
 
               {editingStatus && (
-                <div className="space-y-2 p-3 bg-blue-50 rounded-lg">
-                  <label className="block text-sm font-medium text-zinc-700">Change Status:</label>
+                <div className="space-y-2 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Change Status:</label>
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value as 'confirmed' | 'completed' | 'no_show')}
-                    className="w-full p-2 border border-zinc-200 rounded-lg"
+                    className="w-full p-2 border border-zinc-200 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white"
                   >
                     <option value="confirmed">Confirmed</option>
                     <option value="completed">Completed</option>
@@ -378,7 +378,7 @@ export default function UpcomingBookingsPage() {
                   onClick={() => handleStatusChange(selectedBooking.id, 'no_show')}
                   fullWidth
                   disabled={updatingStatus}
-                  className="text-red-600 border-red-200 hover:bg-red-50"
+                  className="text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-950"
                 >
                   No-show
                 </SecondaryButton>

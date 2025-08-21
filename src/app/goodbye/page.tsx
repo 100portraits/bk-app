@@ -15,10 +15,10 @@ function GoodbyeContent() {
     <AppLayout title="Membership">
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8">
         <div className="space-y-4">
-          <h1 className="text-3xl font-bold text-zinc-900">
+          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white">
             Sorry to see you go
           </h1>
-          <p className="text-zinc-600">
+          <p className="text-zinc-600 dark:text-zinc-400">
             Your membership has been cancelled
           </p>
         </div>

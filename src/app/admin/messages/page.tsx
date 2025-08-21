@@ -130,7 +130,7 @@ export default function AdminMessagesPage() {
     <AppLayout title="Messages">
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-zinc-900 mb-6">User Messages</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-6">User Messages</h2>
           
           {/* Filter Tabs */}
           <div className="flex gap-2 mb-4">
@@ -138,8 +138,8 @@ export default function AdminMessagesPage() {
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filter === 'all' 
-                  ? 'bg-purple-500 text-white' 
-                  : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                  ? 'bg-accent-500 text-white' 
+                  : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
               }`}
             >
               All ({messages.length})
@@ -148,8 +148,8 @@ export default function AdminMessagesPage() {
               onClick={() => setFilter('unread')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filter === 'unread' 
-                  ? 'bg-purple-500 text-white' 
-                  : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                  ? 'bg-accent-500 text-white' 
+                  : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
               }`}
             >
               Unread ({messages.filter(m => !m.responded_at).length})
@@ -158,8 +158,8 @@ export default function AdminMessagesPage() {
               onClick={() => setFilter('responded')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filter === 'responded' 
-                  ? 'bg-purple-500 text-white' 
-                  : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                  ? 'bg-accent-500 text-white' 
+                  : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
               }`}
             >
               Responded ({messages.filter(m => !!m.responded_at).length})
@@ -172,9 +172,9 @@ export default function AdminMessagesPage() {
               <IconLoader2 className="animate-spin" size={24} />
             </div>
           ) : sortedMessages.length === 0 ? (
-            <div className="text-center py-12 bg-zinc-50 rounded-lg">
-              <IconMessage size={48} className="mx-auto text-zinc-400 mb-2" />
-              <p className="text-zinc-500">
+            <div className="text-center py-12 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+              <IconMessage size={48} className="mx-auto text-zinc-400 dark:text-zinc-500 mb-2" />
+              <p className="text-zinc-500 dark:text-zinc-400">
                 {filter === 'unread' 
                   ? 'No unread messages' 
                   : filter === 'responded'
@@ -188,35 +188,35 @@ export default function AdminMessagesPage() {
                 <button
                   key={message.id}
                   onClick={() => handleMessageClick(message)}
-                  className={`w-full p-4 bg-white border rounded-lg text-left hover:shadow-md transition-all ${
+                  className={`w-full p-4 bg-white dark:bg-zinc-800 border rounded-lg text-left hover:shadow-md dark:hover:shadow-zinc-700/30 transition-all ${
                     !message.responded_at 
-                      ? 'border-purple-200 bg-purple-50' 
-                      : 'border-zinc-200'
+                      ? 'border-accent-200 dark:border-accent-700 bg-accent-50 dark:bg-accent-950' 
+                      : 'border-zinc-200 dark:border-zinc-700'
                   }`}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <IconUser size={16} className="text-zinc-600" />
-                      <span className="text-sm font-medium text-zinc-900">
+                      <IconUser size={16} className="text-zinc-600 dark:text-zinc-400" />
+                      <span className="text-sm font-medium text-zinc-900 dark:text-white">
                         {message.user_name || (message.user_id ? 'Registered User' : 'Anonymous')}
                       </span>
                       {!message.responded_at && (
-                        <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
+                        <span className="px-2 py-0.5 bg-accent-100 dark:bg-accent-900 text-accent-700 dark:text-accent-300 text-xs rounded-full">
                           New
                         </span>
                       )}
                     </div>
-                    <span className="text-xs text-zinc-500">
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
                       {formatDate(message.created_at)}
                     </span>
                   </div>
                   
                   <div className="mb-2">
-                    <span className="text-xs text-zinc-500">From: </span>
-                    <span className="text-xs font-medium text-zinc-700">{message.page_name}</span>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">From: </span>
+                    <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">{message.page_name}</span>
                   </div>
                   
-                  <p className="text-sm text-zinc-700 line-clamp-2">
+                  <p className="text-sm text-zinc-700 dark:text-zinc-300 line-clamp-2">
                     {message.message}
                   </p>
                   
@@ -242,36 +242,36 @@ export default function AdminMessagesPage() {
         {selectedMessage && (
           <div className="space-y-4">
             <div>
-              <span className="text-sm text-zinc-600">User:</span>
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">User:</span>
               <p className="font-medium">
                 {selectedMessage.user_name || (selectedMessage.user_id ? 'Registered User' : 'Anonymous')}
               </p>
             </div>
             
             <div>
-              <span className="text-sm text-zinc-600">Page:</span>
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">Page:</span>
               <p className="font-medium">{selectedMessage.page_name}</p>
             </div>
             
             <div>
-              <span className="text-sm text-zinc-600">Received:</span>
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">Received:</span>
               <p className="font-medium">{formatDate(selectedMessage.created_at)}</p>
             </div>
             
             <div>
-              <span className="text-sm text-zinc-600">Message:</span>
-              <div className="mt-2 p-3 bg-zinc-50 rounded-lg">
-                <p className="text-sm text-zinc-700 whitespace-pre-wrap">{selectedMessage.message}</p>
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">Message:</span>
+              <div className="mt-2 p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+                <p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">{selectedMessage.message}</p>
               </div>
             </div>
             
             {selectedMessage.response && (
               <div>
-                <span className="text-sm text-zinc-600">Your Response:</span>
-                <div className="mt-2 p-3 bg-purple-50 rounded-lg">
-                  <p className="text-sm text-purple-900 whitespace-pre-wrap">{selectedMessage.response}</p>
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">Your Response:</span>
+                <div className="mt-2 p-3 bg-accent-50 dark:bg-accent-950 rounded-lg">
+                  <p className="text-sm text-accent-900 dark:text-accent-100 whitespace-pre-wrap">{selectedMessage.response}</p>
                   {selectedMessage.responded_at && (
-                    <p className="text-xs text-purple-600 mt-2">
+                    <p className="text-xs text-accent-600 dark:text-accent-400 mt-2">
                       Sent {formatDate(selectedMessage.responded_at)}
                     </p>
                   )}
@@ -309,17 +309,17 @@ export default function AdminMessagesPage() {
         <div className="space-y-4">
           {selectedMessage && (
             <>
-              <div className="p-3 bg-zinc-50 rounded-lg">
-                <p className="text-xs text-zinc-600 mb-1">Original Message:</p>
-                <p className="text-sm text-zinc-700">{selectedMessage.message}</p>
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-1">Original Message:</p>
+                <p className="text-sm text-zinc-700 dark:text-zinc-300">{selectedMessage.message}</p>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Your Response:
                 </label>
                 <textarea
-                  className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg resize-none"
                   rows={6}
                   placeholder="Type your response here..."
                   value={responseText}

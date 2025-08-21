@@ -72,14 +72,14 @@ export default function HomePage() {
         )}
 
         <section>
-          <h2 className="text-4xl font-bold text-zinc-900 mb-4">My Roles</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">My Roles</h2>
           <div className="flex flex-wrap gap-2">
             {profile?.member ? (
               <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
                 Member
               </span>
             ) : (
-              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+              <span className="px-3 py-1 bg-accent-100 dark:bg-accent-900 text-accent-700 dark:text-accent-300 rounded-full text-sm font-medium">
                 Non-Member
               </span>
             )}
@@ -89,7 +89,7 @@ export default function HomePage() {
               </span>
             )}
             {!profile?.role && (
-              <span className="px-3 py-1 bg-zinc-100 text-zinc-600 rounded-full text-sm">
+              <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-full text-sm">
                 No roles assigned
               </span>
             )}
@@ -98,11 +98,11 @@ export default function HomePage() {
 
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-4xl font-bold text-zinc-900">Quick Links</h2>
+            <h2 className="text-4xl font-bold text-zinc-900 dark:text-white">Quick Links</h2>
             {quickLinks.length > 0 && (
               <button
                 onClick={() => setEditMode(!editMode)}
-                className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                className="text-sm text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 font-medium"
               >
                 {editMode ? 'Done' : 'Edit'}
               </button>
@@ -111,18 +111,18 @@ export default function HomePage() {
           
           {quickLinks.length === 0 ? (
             <div className="space-y-3">
-              <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-6 text-center">
-                <IconInfoCircle size={32} className="mx-auto text-zinc-400 mb-2" />
-                <p className="text-zinc-600 mb-3">No quick links added yet</p>
-                <p className="text-sm text-zinc-500 mb-4">
+              <div className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-6 text-center">
+                <IconInfoCircle size={32} className="mx-auto text-zinc-400 dark:text-zinc-500 mb-2" />
+                <p className="text-zinc-600 dark:text-zinc-400 mb-3">No quick links added yet</p>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
                   Add your favorite actions for quick access from the homepage
                 </p>
               </div>
               <button
                 onClick={() => setShowQuickLinksDialog(true)}
-                className="w-full h-24 bg-purple-50 border-2 border-dashed border-purple-200 rounded-lg flex items-center justify-center hover:bg-purple-100 transition-colors"
+                className="w-full h-24 bg-accent-50 dark:bg-accent-950 border-2 border-dashed border-accent-200 dark:border-accent-700 rounded-lg flex items-center justify-center hover:bg-accent-100 dark:hover:bg-accent-900 transition-colors"
               >
-                <IconPlus size={32} className="text-purple-400" />
+                <IconPlus size={32} className="text-accent-400 dark:text-accent-500" />
               </button>
             </div>
           ) : (
@@ -139,9 +139,9 @@ export default function HomePage() {
               {!hasReachedLimit && (
                 <button
                   onClick={() => setShowQuickLinksDialog(true)}
-                  className="w-full h-20 bg-purple-50 border-2 border-dashed border-purple-200 rounded-lg flex items-center justify-center hover:bg-purple-100 transition-colors"
+                  className="w-full h-20 bg-accent-50 dark:bg-accent-950 border-2 border-dashed border-accent-200 dark:border-accent-700 rounded-lg flex items-center justify-center hover:bg-accent-100 dark:hover:bg-accent-900 transition-colors"
                 >
-                  <IconPlus size={24} className="text-purple-400" />
+                  <IconPlus size={24} className="text-accent-400 dark:text-accent-500" />
                 </button>
               )}
             </div>
@@ -173,7 +173,7 @@ export default function HomePage() {
           {/* Booking Actions */}
           {availableByCategory.booking.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-zinc-700 mb-2">Booking</h3>
+              <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Booking</h3>
               <div className="space-y-2">
                 {availableByCategory.booking.map((action) => {
                   const Icon = action.icon;
@@ -200,7 +200,7 @@ export default function HomePage() {
           {/* Host Actions */}
           {availableByCategory.host.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-zinc-700 mb-2">Host Tools</h3>
+              <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Host Tools</h3>
               <div className="space-y-2">
                 {availableByCategory.host.map((action) => {
                   const Icon = action.icon;
@@ -227,7 +227,7 @@ export default function HomePage() {
           {/* Admin Actions */}
           {availableByCategory.admin.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-zinc-700 mb-2">Admin</h3>
+              <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Admin</h3>
               <div className="space-y-2">
                 {availableByCategory.admin.map((action) => {
                   const Icon = action.icon;
@@ -254,7 +254,7 @@ export default function HomePage() {
           {/* Membership Actions */}
           {availableByCategory.membership.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-zinc-700 mb-2">Membership</h3>
+              <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Membership</h3>
               <div className="space-y-2">
                 {availableByCategory.membership.map((action) => {
                   const Icon = action.icon;
@@ -280,7 +280,7 @@ export default function HomePage() {
           
           {/* Show message if no actions available */}
           {Object.values(availableByCategory).every(category => category.length === 0) && (
-            <div className="text-center py-6 text-zinc-500">
+            <div className="text-center py-6 text-zinc-500 dark:text-zinc-400">
               <p>All available actions have been added to quick links.</p>
             </div>
           )}

@@ -196,20 +196,20 @@ export default function WalkInsPage() {
     <AppLayout title="Walk-ins">
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-zinc-900 mb-6">Walk-ins</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-6">Walk-ins</h2>
           
           {/* Date Navigation */}
-          <div className="flex items-center justify-between mb-6 p-4 bg-white border border-zinc-200 rounded-lg">
+          <div className="flex items-center justify-between mb-6 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg">
             <button
               onClick={() => navigateShift('prev')}
-              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
               <IconChevronLeft size={20} />
             </button>
             
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-zinc-900">
+              <h3 className="text-xl font-semibold text-zinc-900 dark:text-white">
                 {format(currentDate, 'EEE, MMM do')}
                 {format(currentDate, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') && (
                   <span className="ml-2 text-green-600">Today</span>
@@ -219,7 +219,7 @@ export default function WalkInsPage() {
             
             <button
               onClick={() => navigateShift('next')}
-              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
               <IconChevronRight size={20} />
@@ -228,27 +228,27 @@ export default function WalkInsPage() {
 
           {/* Stats */}
           <div className="grid grid-cols-2 gap-3 mb-6">
-            <div className="p-4 bg-purple-50 rounded-lg">
-              <div className="flex items-center gap-2 text-purple-600 mb-1">
+            <div className="p-4 bg-accent-50 dark:bg-accent-950 rounded-lg">
+              <div className="flex items-center gap-2 text-accent-600 dark:text-accent-400 mb-1">
                 <IconUsers size={20} />
                 <span className="text-sm font-medium">Community</span>
               </div>
-              <p className="text-2xl font-bold text-purple-900">{stats.communityMembers}</p>
+              <p className="text-2xl font-bold text-accent-900 dark:text-accent-100">{stats.communityMembers}</p>
             </div>
-            <div className="p-4 bg-green-50 rounded-lg">
-              <div className="flex items-center gap-2 text-green-600 mb-1">
+            <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg">
+              <div className="flex items-center gap-2 text-green-600 dark:text-green-400 mb-1">
                 <IconCurrencyEuro size={20} />
                 <span className="text-sm font-medium">Revenue</span>
               </div>
-              <p className="text-2xl font-bold text-green-900">€{stats.totalRevenue.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-green-900 dark:text-green-100">€{stats.totalRevenue.toFixed(2)}</p>
             </div>
           </div>
 
           {/* Walk-ins List */}
           {walkIns.length === 0 ? (
-            <div className="text-center py-12 bg-zinc-50 rounded-lg">
+            <div className="text-center py-12 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
               <IconUsers size={48} className="mx-auto text-zinc-400 mb-2" />
-              <p className="text-zinc-500">No walk-ins recorded for this date</p>
+              <p className="text-zinc-500 dark:text-zinc-400">No walk-ins recorded for this date</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -256,15 +256,15 @@ export default function WalkInsPage() {
                 <button
                   key={walkIn.id}
                   onClick={() => handleWalkInClick(walkIn)}
-                  className="w-full p-4 bg-white border border-zinc-200 rounded-lg text-left hover:bg-zinc-50 transition-colors"
+                  className="w-full p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-left hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-zinc-900">
+                      <div className="font-medium text-zinc-900 dark:text-white">
                         {walkIn.is_community_member ? (
                           <span className="flex items-center gap-2">
                             Community Member
-                            <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full">
+                            <span className="px-2 py-0.5 bg-accent-100 dark:bg-accent-900 text-accent-700 dark:text-accent-300 text-xs rounded-full">
                               Free
                             </span>
                           </span>
@@ -272,14 +272,14 @@ export default function WalkInsPage() {
                           <span className="text-lg">€{walkIn.amount_paid?.toFixed(2)}</span>
                         )}
                       </div>
-                      <div className="text-sm text-zinc-600 mt-1">
+                      <div className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
                         Recorded at {format(parseISO(walkIn.created_at), 'HH:mm')}
                         {walkIn.notes && (
-                          <span className="ml-2 text-zinc-500">• Has notes</span>
+                          <span className="ml-2 text-zinc-500 dark:text-zinc-400">• Has notes</span>
                         )}
                       </div>
                     </div>
-                    <div className="text-sm text-zinc-500">
+                    <div className="text-sm text-zinc-500 dark:text-zinc-400">
                       by {walkIn.creator?.email?.split('@')[0] || 'Unknown'}
                     </div>
                   </div>
@@ -305,31 +305,31 @@ export default function WalkInsPage() {
           <div className="space-y-6">
             <div className="space-y-3">
               <div>
-                <span className="text-sm text-zinc-600">Type:</span>
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">Type:</span>
                 <p className="font-medium">
                   {selectedWalkIn.is_community_member ? 'Community Member' : 'Paid Customer'}
                 </p>
               </div>
               {!selectedWalkIn.is_community_member && (
                 <div>
-                  <span className="text-sm text-zinc-600">Payment Amount:</span>
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Payment Amount:</span>
                   <p className="font-medium">€{selectedWalkIn.amount_paid?.toFixed(2)}</p>
                 </div>
               )}
               <div>
-                <span className="text-sm text-zinc-600">Recorded:</span>
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">Recorded:</span>
                 <p className="font-medium">
                   {format(parseISO(selectedWalkIn.created_at), 'MMM d, yyyy at HH:mm')}
                 </p>
               </div>
               {selectedWalkIn.notes && (
                 <div>
-                  <span className="text-sm text-zinc-600">Notes:</span>
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Notes:</span>
                   <p className="font-medium">{selectedWalkIn.notes}</p>
                 </div>
               )}
               <div>
-                <span className="text-sm text-zinc-600">Recorded by:</span>
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">Recorded by:</span>
                 <p className="font-medium">{selectedWalkIn.creator?.email || 'Unknown'}</p>
               </div>
             </div>
@@ -350,7 +350,7 @@ export default function WalkInsPage() {
                     setShowDeleteDialog(true);
                   }}
                   fullWidth
-                  className="text-red-600 border-red-200 hover:bg-red-50"
+                  className="text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-950"
                 >
                   Delete
                 </SecondaryButton>
@@ -369,7 +369,7 @@ export default function WalkInsPage() {
         <div className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-3">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3">
                 Community Member?
               </label>
               <ToggleSelector
@@ -384,7 +384,7 @@ export default function WalkInsPage() {
 
             {editIsMember === 'No' && (
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Amount paid (€)
                 </label>
                 <TextInput
@@ -402,7 +402,7 @@ export default function WalkInsPage() {
                 Notes
               </label>
               <textarea
-                className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
+                className="w-full p-3 border border-zinc-200 dark:border-zinc-700 rounded-lg resize-none bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white"
                 rows={3}
                 value={editNotes}
                 onChange={(e) => setEditNotes(e.target.value)}
@@ -435,12 +435,12 @@ export default function WalkInsPage() {
         title="Delete Walk-In"
       >
         <div className="space-y-4">
-          <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div className="p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg">
             <div className="flex items-start gap-2">
               <IconAlertCircle className="text-red-600 mt-0.5" size={20} />
               <div>
-                <p className="text-red-900 font-medium">Are you sure you want to delete this walk-in?</p>
-                <p className="text-red-700 text-sm mt-1">
+                <p className="text-red-900 dark:text-red-100 font-medium">Are you sure you want to delete this walk-in?</p>
+                <p className="text-red-700 dark:text-red-300 text-sm mt-1">
                   This action cannot be undone.
                 </p>
               </div>

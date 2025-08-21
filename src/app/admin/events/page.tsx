@@ -252,7 +252,7 @@ export default function ManageEventsPage() {
       <div className="space-y-6">
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-4xl font-bold text-zinc-900">Manage Events</h2>
+            <h2 className="text-4xl font-bold text-zinc-900 dark:text-white">Manage Events</h2>
           </div>
             <PrimaryButton
               onClick={() => setShowCreateDialog(true)}
@@ -268,14 +268,14 @@ export default function ManageEventsPage() {
             <IconLoader2 className="animate-spin" size={24} />
           </div>
         ) : events.length === 0 ? (
-          <div className="text-center py-8 text-zinc-500">
+          <div className="text-center py-8 text-zinc-500 dark:text-zinc-400">
             <p>No events created yet.</p>
             <p className="text-sm mt-2">Click "Create new event" to add your first event.</p>
           </div>
         ) : (
           Object.entries(eventsByMonth).map(([month, monthEvents]) => (
             <section key={month}>
-              <h3 className="text-xl font-semibold text-zinc-900 mb-2">{month}</h3>
+              <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">{month}</h3>
               
               <div className="space-y-4">
                 {monthEvents.map((event) => (
@@ -294,7 +294,7 @@ export default function ManageEventsPage() {
                       className={`absolute top-2 right-2 p-2 rounded-lg transition-colors ${
                         event.is_published 
                           ? 'bg-green-100 hover:bg-green-200 text-green-700' 
-                          : 'bg-zinc-100 hover:bg-zinc-200 text-zinc-500'
+                          : 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 dark:text-zinc-400'
                       }`}
                       title={event.is_published ? 'Published' : 'Draft'}
                     >
@@ -323,7 +323,7 @@ export default function ManageEventsPage() {
         <div className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 <IconCalendarEvent size={16} className="inline mr-1" />
                 Event Title *
               </label>
@@ -336,9 +336,9 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">Description</label>
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Description</label>
               <textarea
-                className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
+                className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg resize-none"
                 rows={3}
                 placeholder="Event details..."
                 value={eventForm.description}
@@ -348,13 +348,13 @@ export default function ManageEventsPage() {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   <IconCalendarEvent size={16} className="inline mr-1" />
                   Date *
                 </label>
                 <input
                   type="date"
-                  className="w-full p-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   value={eventForm.event_date}
                   onChange={(e) => setEventForm(prev => ({ ...prev, event_date: e.target.value }))}
                   onClick={(e) => {
@@ -366,13 +366,13 @@ export default function ManageEventsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   <IconClock size={16} className="inline mr-1" />
                   Start Time *
                 </label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   value={eventForm.start_time}
                   onChange={(e) => setEventForm(prev => ({ ...prev, start_time: e.target.value }))}
                   onClick={(e) => {
@@ -386,13 +386,13 @@ export default function ManageEventsPage() {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   <IconClock size={16} className="inline mr-1" />
                   End Time
                 </label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   value={eventForm.end_time}
                   onChange={(e) => setEventForm(prev => ({ ...prev, end_time: e.target.value }))}
                   onClick={(e) => {
@@ -404,13 +404,13 @@ export default function ManageEventsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   <IconUsers size={16} className="inline mr-1" />
                   Max Capacity
                 </label>
                 <input
                   type="number"
-                  className="w-full p-3 border border-zinc-200 rounded-lg"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg"
                   placeholder="No limit"
                   value={eventForm.max_capacity || ''}
                   onChange={(e) => setEventForm(prev => ({ ...prev, max_capacity: e.target.value ? parseInt(e.target.value) : undefined }))}
@@ -419,7 +419,7 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 <IconMapPin size={16} className="inline mr-1" />
                 Location
               </label>
@@ -432,7 +432,7 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 <IconBrandWhatsapp size={16} className="inline mr-1" />
                 WhatsApp Group Link
               </label>
@@ -445,16 +445,16 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 <IconPhoto size={16} className="inline mr-1" />
                 Event Poster
               </label>
               
               {!posterPreview && !eventForm.poster_url ? (
-                <label className="w-full p-8 border-2 border-dashed border-zinc-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 transition-colors">
-                  <IconUpload size={32} className="text-zinc-400 mb-2" />
-                  <span className="text-sm text-zinc-600">Click to upload poster</span>
-                  <span className="text-xs text-zinc-500 mt-1">JPEG, PNG, WebP (max 5MB)</span>
+                <label className="w-full p-8 border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-accent-400 dark:hover:border-accent-500 transition-colors">
+                  <IconUpload size={32} className="text-zinc-400 dark:text-zinc-500 mb-2" />
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Click to upload poster</span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">JPEG, PNG, WebP (max 5MB)</span>
                   <input
                     type="file"
                     className="hidden"
@@ -464,7 +464,7 @@ export default function ManageEventsPage() {
                 </label>
               ) : (
                 <div className="space-y-2">
-                  <div className="relative w-full bg-zinc-50 rounded-lg p-2">
+                  <div className="relative w-full bg-zinc-50 dark:bg-zinc-800 rounded-lg p-2">
                     <div className="relative w-full max-w-sm mx-auto" style={{ aspectRatio: '17/22', maxHeight: '400px' }}>
                       <Image 
                         src={posterPreview || eventForm.poster_url || ''} 
@@ -481,7 +481,7 @@ export default function ManageEventsPage() {
                       <IconX size={16} />
                     </button>
                   </div>
-                  <p className="text-xs text-zinc-600">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     {posterFile ? `New file: ${posterFile.name}` : 'Current poster'}
                   </p>
                 </div>
@@ -494,9 +494,9 @@ export default function ManageEventsPage() {
                 id="publish"
                 checked={eventForm.is_published}
                 onChange={(e) => setEventForm(prev => ({ ...prev, is_published: e.target.checked }))}
-                className="w-4 h-4 text-purple-600 border-zinc-300 rounded focus:ring-purple-500"
+                className="w-4 h-4 text-accent-600 border-zinc-300 dark:border-zinc-600 rounded focus:ring-accent-500"
               />
-              <label htmlFor="publish" className="text-sm font-medium text-zinc-700">
+              <label htmlFor="publish" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 Publish immediately (visible to members)
               </label>
             </div>
@@ -529,7 +529,7 @@ export default function ManageEventsPage() {
         <div className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 <IconCalendarEvent size={16} className="inline mr-1" />
                 Event Title *
               </label>
@@ -542,9 +542,9 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">Description</label>
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Description</label>
               <textarea
-                className="w-full p-3 border border-zinc-200 rounded-lg resize-none"
+                className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg resize-none"
                 rows={3}
                 placeholder="Event details..."
                 value={eventForm.description}
@@ -554,13 +554,13 @@ export default function ManageEventsPage() {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   <IconCalendarEvent size={16} className="inline mr-1" />
                   Date *
                 </label>
                 <input
                   type="date"
-                  className="w-full p-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   value={eventForm.event_date}
                   onChange={(e) => setEventForm(prev => ({ ...prev, event_date: e.target.value }))}
                   onClick={(e) => {
@@ -572,13 +572,13 @@ export default function ManageEventsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   <IconClock size={16} className="inline mr-1" />
                   Start Time *
                 </label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   value={eventForm.start_time}
                   onChange={(e) => setEventForm(prev => ({ ...prev, start_time: e.target.value }))}
                   onClick={(e) => {
@@ -592,13 +592,13 @@ export default function ManageEventsPage() {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   <IconClock size={16} className="inline mr-1" />
                   End Time
                 </label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
                   value={eventForm.end_time}
                   onChange={(e) => setEventForm(prev => ({ ...prev, end_time: e.target.value }))}
                   onClick={(e) => {
@@ -610,13 +610,13 @@ export default function ManageEventsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   <IconUsers size={16} className="inline mr-1" />
                   Max Capacity
                 </label>
                 <input
                   type="number"
-                  className="w-full p-3 border border-zinc-200 rounded-lg"
+                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg"
                   placeholder="No limit"
                   value={eventForm.max_capacity || ''}
                   onChange={(e) => setEventForm(prev => ({ ...prev, max_capacity: e.target.value ? parseInt(e.target.value) : undefined }))}
@@ -625,7 +625,7 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 <IconMapPin size={16} className="inline mr-1" />
                 Location
               </label>
@@ -638,7 +638,7 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 <IconBrandWhatsapp size={16} className="inline mr-1" />
                 WhatsApp Group Link
               </label>
@@ -651,16 +651,16 @@ export default function ManageEventsPage() {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 <IconPhoto size={16} className="inline mr-1" />
                 Event Poster
               </label>
               
               {!posterPreview && !eventForm.poster_url ? (
-                <label className="w-full p-8 border-2 border-dashed border-zinc-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 transition-colors">
-                  <IconUpload size={32} className="text-zinc-400 mb-2" />
-                  <span className="text-sm text-zinc-600">Click to upload poster</span>
-                  <span className="text-xs text-zinc-500 mt-1">JPEG, PNG, WebP (max 5MB)</span>
+                <label className="w-full p-8 border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-accent-400 dark:hover:border-accent-500 transition-colors">
+                  <IconUpload size={32} className="text-zinc-400 dark:text-zinc-500 mb-2" />
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Click to upload poster</span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">JPEG, PNG, WebP (max 5MB)</span>
                   <input
                     type="file"
                     className="hidden"
@@ -670,7 +670,7 @@ export default function ManageEventsPage() {
                 </label>
               ) : (
                 <div className="space-y-2">
-                  <div className="relative w-full bg-zinc-50 rounded-lg p-2">
+                  <div className="relative w-full bg-zinc-50 dark:bg-zinc-800 rounded-lg p-2">
                     <div className="relative w-full max-w-sm mx-auto" style={{ aspectRatio: '17/22', maxHeight: '400px' }}>
                       <Image 
                         src={posterPreview || eventForm.poster_url || ''} 
@@ -687,7 +687,7 @@ export default function ManageEventsPage() {
                       <IconX size={16} />
                     </button>
                   </div>
-                  <p className="text-xs text-zinc-600">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     {posterFile ? `New file: ${posterFile.name}` : 'Current poster'}
                   </p>
                 </div>
@@ -700,9 +700,9 @@ export default function ManageEventsPage() {
                 id="publish-edit"
                 checked={eventForm.is_published}
                 onChange={(e) => setEventForm(prev => ({ ...prev, is_published: e.target.checked }))}
-                className="w-4 h-4 text-purple-600 border-zinc-300 rounded focus:ring-purple-500"
+                className="w-4 h-4 text-accent-600 border-zinc-300 dark:border-zinc-600 rounded focus:ring-accent-500"
               />
-              <label htmlFor="publish-edit" className="text-sm font-medium text-zinc-700">
+              <label htmlFor="publish-edit" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 Published (visible to members)
               </label>
             </div>
@@ -746,30 +746,30 @@ export default function ManageEventsPage() {
         {selectedEvent && (
           <div className="space-y-6">
             <div className="">
-              <h3 className="text-2xl font-bold text-zinc-900 mb-2">
+              <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
                 {selectedEvent.title}
               </h3>
               {selectedEvent.description && (
-                <p className="text-zinc-600 mb-2">{selectedEvent.description}</p>
+                <p className="text-zinc-600 dark:text-zinc-400 mb-2">{selectedEvent.description}</p>
               )}
               <div className="space-y-1 text-sm">
-                <p className="text-zinc-600">
+                <p className="text-zinc-600 dark:text-zinc-400">
                   <IconCalendarEvent size={16} className="inline mr-1" />
                   {format(parseISO(selectedEvent.event_date), 'EEEE, MMMM d, yyyy')}
                 </p>
-                <p className="text-zinc-600">
+                <p className="text-zinc-600 dark:text-zinc-400">
                   <IconClock size={16} className="inline mr-1" />
                   {selectedEvent.start_time.slice(0, 5)}
                   {selectedEvent.end_time && ` - ${selectedEvent.end_time.slice(0, 5)}`}
                 </p>
                 {selectedEvent.location && (
-                  <p className="text-zinc-600">
+                  <p className="text-zinc-600 dark:text-zinc-400">
                     <IconMapPin size={16} className="inline mr-1" />
                     {selectedEvent.location}
                   </p>
                 )}
                 {selectedEvent.max_capacity && (
-                  <p className="text-zinc-600">
+                  <p className="text-zinc-600 dark:text-zinc-400">
                     <IconUsers size={16} className="inline mr-1" />
                     Max capacity: {selectedEvent.max_capacity}
                   </p>
@@ -779,7 +779,7 @@ export default function ManageEventsPage() {
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                   selectedEvent.is_published 
                     ? 'bg-green-100 text-green-800' 
-                    : 'bg-zinc-100 text-zinc-800'
+                    : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200'
                 }`}>
                   {selectedEvent.is_published ? 'Published' : 'Draft'}
                 </span>
@@ -787,8 +787,8 @@ export default function ManageEventsPage() {
             </div>
 
             {selectedEvent.poster_url && (
-              <div className="bg-zinc-50 p-4 rounded-lg">
-                <p className="text-sm text-zinc-600 mb-2">Event Poster:</p>
+              <div className="bg-zinc-50 dark:bg-zinc-800 p-4 rounded-lg">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">Event Poster:</p>
                 <div className="relative w-full max-w-md mx-auto" style={{ aspectRatio: '17/22', maxHeight: '500px' }}>
                   <Image 
                     src={selectedEvent.poster_url} 

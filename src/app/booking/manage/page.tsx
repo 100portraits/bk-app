@@ -86,7 +86,7 @@ export default function ManageBookingsPage() {
       <AppLayout title="My Bookings">
         <div className="flex flex-col items-center justify-center h-64">
           <IconAlertCircle size={48} className="text-red-500 mb-4" />
-          <p className="text-zinc-600">Failed to load bookings</p>
+          <p className="text-zinc-600 dark:text-zinc-400">Failed to load bookings</p>
           <PrimaryButton onClick={refresh} size="sm" className="mt-4">
             Try Again
           </PrimaryButton>
@@ -99,7 +99,7 @@ export default function ManageBookingsPage() {
     <AppLayout title="My Bookings">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-4xl font-bold text-zinc-900">My Bookings</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 dark:text-white">My Bookings</h2>
           <PrimaryButton
             onClick={() => router.push('/booking/new')}
             size="sm"
@@ -110,12 +110,12 @@ export default function ManageBookingsPage() {
 
         {/* Upcoming Bookings */}
         <section>
-          <h3 className="text-xl font-semibold text-zinc-900 mb-4">Upcoming</h3>
+          <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-4">Upcoming</h3>
           {upcomingBookings.length === 0 ? (
-            <div className="text-center py-8 bg-zinc-50 rounded-lg">
-              <IconBike size={48} className="mx-auto text-zinc-400 mb-2" />
-              <p className="text-zinc-500">No upcoming bookings</p>
-              <p className="text-sm text-zinc-400 mt-2">Ready to fix your bike?</p>
+            <div className="text-center py-8 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+              <IconBike size={48} className="mx-auto text-zinc-400 dark:text-zinc-500 mb-2" />
+              <p className="text-zinc-500 dark:text-zinc-400">No upcoming bookings</p>
+              <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-2">Ready to fix your bike?</p>
 
             </div>
           ) : (
@@ -123,13 +123,13 @@ export default function ManageBookingsPage() {
               {upcomingBookings.map((booking) => (
                 <div
                   key={booking.id}
-                  className="p-4 bg-white border border-zinc-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+                  className="p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:shadow-md dark:hover:shadow-zinc-700/30 transition-shadow cursor-pointer"
                   onClick={() => setSelectedBooking(booking)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-zinc-900">
+                        <h4 className="font-semibold text-zinc-900 dark:text-white">
                           {getRepairTypeDisplay(booking.repair_type)} Repair
                         </h4>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
@@ -137,7 +137,7 @@ export default function ManageBookingsPage() {
                         </span>
                       </div>
                       
-                      <div className="space-y-1 text-sm text-zinc-600">
+                      <div className="space-y-1 text-sm text-zinc-600 dark:text-zinc-400">
                         <div className="flex items-center gap-2">
                           <IconCalendarEvent size={16} />
                           <span>
@@ -173,16 +173,16 @@ export default function ManageBookingsPage() {
         {/* Past Bookings */}
         {pastBookings.length > 0 && (
           <section>
-            <h3 className="text-xl font-semibold text-zinc-900 mb-4">Past Bookings</h3>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-4">Past Bookings</h3>
             <div className="space-y-3">
               {pastBookings.map((booking) => (
                 <div
                   key={booking.id}
-                  className="p-4 bg-zinc-50 border border-zinc-200 rounded-lg opacity-75"
+                  className="p-4 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg opacity-75"
                 >
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <h4 className="font-semibold text-zinc-700">
+                      <h4 className="font-semibold text-zinc-700 dark:text-zinc-300">
                         {getRepairTypeDisplay(booking.repair_type)} Repair
                       </h4>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
@@ -190,7 +190,7 @@ export default function ManageBookingsPage() {
                       </span>
                     </div>
                     
-                    <div className="space-y-1 text-sm text-zinc-500">
+                    <div className="space-y-1 text-sm text-zinc-500 dark:text-zinc-400">
                       <div className="flex items-center gap-2">
                         <IconCalendarEvent size={16} />
                         <span>
@@ -221,7 +221,7 @@ export default function ManageBookingsPage() {
         {selectedBooking && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-xl font-semibold text-zinc-900 mb-2">
+              <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
                 {getRepairTypeDisplay(selectedBooking.repair_type)} Repair
               </h3>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(selectedBooking.status)}`}>
@@ -230,19 +230,19 @@ export default function ManageBookingsPage() {
             </div>
 
             <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2 text-zinc-600">
+              <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
                 <IconCalendarEvent size={16} />
                 <span>
                   {selectedBooking.shift && format(parseISO(selectedBooking.shift.date), 'EEEE, MMMM d, yyyy')}
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-zinc-600">
+              <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
                 <IconClock size={16} />
                 <span>
                   {selectedBooking.slot_time.slice(0, 5)} - Duration: {selectedBooking.duration_minutes} minutes
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-zinc-600">
+              <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
                 <IconMapPin size={16} />
                 <span>
                   Bike Kitchen UvA, Roeterseiland Campus
@@ -251,8 +251,8 @@ export default function ManageBookingsPage() {
             </div>
 
             {selectedBooking.notes && (
-              <div className="p-3 bg-zinc-50 rounded-lg">
-                <p className="text-sm text-zinc-600">{selectedBooking.notes}</p>
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">{selectedBooking.notes}</p>
               </div>
             )}
 
@@ -289,8 +289,8 @@ export default function ManageBookingsPage() {
           </div>
 
           {selectedBooking && (
-            <div className="p-3 bg-zinc-50 rounded-lg text-sm text-zinc-600">
-              <p className="font-medium text-zinc-900 mb-1">
+            <div className="p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg text-sm text-zinc-600 dark:text-zinc-400">
+              <p className="font-medium text-zinc-900 dark:text-white mb-1">
                 {getRepairTypeDisplay(selectedBooking.repair_type)} Repair
               </p>
               <p>

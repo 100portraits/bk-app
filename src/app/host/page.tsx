@@ -22,7 +22,7 @@ export default function HostPage() {
     >
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-zinc-900 mb-4">Links</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">Links</h2>
           <div className="space-y-3">
             <NavigationCard
               title="Today's Bookings"

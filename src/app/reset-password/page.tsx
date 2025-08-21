@@ -83,26 +83,26 @@ export default function ResetPasswordPage() {
 
   if (checkingToken) {
     return (
-      <div className="min-h-screen bg-zinc-50 flex items-center justify-center">
+      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-          <p className="mt-4 text-zinc-600">Verifying reset link...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-600 dark:border-accent-400 mx-auto"></div>
+          <p className="mt-4 text-zinc-600 dark:text-zinc-400">Verifying reset link...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-2xl font-bold text-zinc-900 mb-6">
+        <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-lg p-8">
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6">
             Reset Your Password
           </h1>
 
           {!isValidToken ? (
             <div className="space-y-4">
-              <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg flex items-start gap-3">
+              <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 p-4 rounded-lg flex items-start gap-3">
                 <IconX className="text-red-500 mt-0.5" size={20} />
                 <div>
                   <p className="font-medium">Invalid Reset Link</p>
@@ -119,7 +119,7 @@ export default function ResetPasswordPage() {
             </div>
           ) : success ? (
             <div className="space-y-4">
-              <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg flex items-start gap-3">
+              <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 p-4 rounded-lg flex items-start gap-3">
                 <IconCheck className="text-green-500 mt-0.5" size={20} />
                 <div>
                   <p className="font-medium">Password Reset Successful!</p>
@@ -129,19 +129,19 @@ export default function ResetPasswordPage() {
             </div>
           ) : (
             <div className="space-y-6">
-              <p className="text-zinc-600">
+              <p className="text-zinc-600 dark:text-zinc-400">
                 Enter your new password below. Make sure it's at least 6 characters long.
               </p>
 
               {error && (
-                <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+                <div className="bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 p-3 rounded-md text-sm">
                   {error}
                 </div>
               )}
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-700 mb-2">
+                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                     New Password
                   </label>
                   <TextInput
@@ -155,7 +155,7 @@ export default function ResetPasswordPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-zinc-700 mb-2">
+                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                     Confirm New Password
                   </label>
                   <TextInput
@@ -180,7 +180,7 @@ export default function ResetPasswordPage() {
                 <div className="text-center">
                   <button
                     onClick={() => router.push('/')}
-                    className="text-sm text-zinc-600 underline hover:text-zinc-800"
+                    className="text-sm text-zinc-600 dark:text-zinc-400 underline hover:text-zinc-800 dark:hover:text-zinc-200"
                   >
                     Cancel
                   </button>

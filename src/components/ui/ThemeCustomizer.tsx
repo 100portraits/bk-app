@@ -52,7 +52,7 @@ export function ThemeCustomizer() {
                       flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all
                       ${theme.mode === value 
                         ? 'border-accent-500 bg-accent-50 dark:bg-accent-950 text-accent-700 dark:text-accent-300' 
-                        : 'border-zinc-200 dark:border-zinc-700 hover:border-accent-300 dark:hover:border-accent-700'
+                        : 'border-zinc-200 dark:border-zinc-700 hover:border-accent-300 dark:hover:border-accent-700 text-zinc-700 dark:text-gray-300'
                       }
                     `}
                   >
