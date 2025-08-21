@@ -32,7 +32,7 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
         notes: notes.trim() || undefined,
         date: recordDate // Pass the date in YYYY-MM-DD format
       });
-      
+
       // Show success state
       setShowSuccess(true);
       setTimeout(() => {
@@ -76,8 +76,8 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
           </div>
           <h3 className="text-lg font-semibold text-gray-900">Walk-in Recorded!</h3>
           <p className="mt-2 text-sm text-gray-600">
-            {isCommunityMember === 'Yes' 
-              ? 'Community member visit recorded' 
+            {isCommunityMember === 'Yes'
+              ? 'Community member visit recorded'
               : `Payment of €${amountPaid} recorded`}
           </p>
         </div>
@@ -94,9 +94,8 @@ export default function RecordWalkInDialog({ isOpen, onClose }: RecordWalkInDial
                   value={recordDate}
                   onChange={(e) => setRecordDate(e.target.value)}
                   max={format(new Date(), 'yyyy-MM-dd')}
-                  className="w-full p-3 pr-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
-                <IconCalendar className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
               </div>
               <p className="text-xs text-gray-500 mt-1">
                 Defaults to today. You can select a past date if needed.
