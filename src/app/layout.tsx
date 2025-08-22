@@ -29,6 +29,11 @@ const theme = createTheme({
 export const metadata: Metadata = {
   title: "Bike Kitchen UvA",
   description: "Community bike repair workshop app",
+  icons: {
+    icon: '/bklogo.png',
+    shortcut: '/bklogo.png',
+    apple: '/bklogo.png',
+  },
 };
 
 export default function RootLayout({
