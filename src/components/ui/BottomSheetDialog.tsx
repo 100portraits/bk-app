@@ -21,7 +21,12 @@ const BottomSheetDialog = ({
   maxHeight = '80vh'
 }: BottomSheetDialogProps) => {
   return (
-    <Drawer.Root open={isOpen} onOpenChange={onClose}>
+    <Drawer.Root 
+      open={isOpen} 
+      onOpenChange={onClose}
+      snapPoints={[1]}
+      modal
+    >
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
         <Drawer.Content
@@ -30,8 +35,6 @@ const BottomSheetDialog = ({
                    flex 
                    flex-col 
                    rounded-t-[10px] 
-                   h-fit 
-                   mt-24 
                    fixed 
                    bottom-0 
                    left-0 
@@ -41,7 +44,12 @@ const BottomSheetDialog = ({
                    ${scrollable ? '' : ''}
                    ${className}
                  `}
-          style={scrollable ? { maxHeight } : {}}
+          style={{
+            maxHeight: scrollable ? maxHeight : 'calc(100vh - 6rem)',
+            height: 'auto',
+            WebkitTransform: 'translate3d(0, 0, 0)',
+            transform: 'translate3d(0, 0, 0)'
+          }}
         >
           <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-600 mb-4 mt-4" />
 
@@ -55,8 +63,12 @@ const BottomSheetDialog = ({
 
           <div className={`
             px-6 pb-12 flex-1 bg-white dark:bg-zinc-800 ${scrollable ? 'pt-6' : 'pt-2'}
-            ${scrollable ? 'overflow-y-auto overflow-x-hidden' : 'overflow-auto'}
-          `}>
+            ${scrollable ? 'overflow-y-auto overflow-x-hidden -webkit-overflow-scrolling-touch' : 'overflow-auto'}
+          `}
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'contain'
+          }}>
             <div>
               {children}
             </div>
