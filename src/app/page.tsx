@@ -374,7 +374,7 @@ export default function Home() {
           <div className="border-t border-zinc-100 dark:border-zinc-700 pt-6 space-y-4">
             <div className="bg-gradient-to-r from-accent-50 to-indigo-50 dark:from-accent-950 dark:to-indigo-950 rounded-xl p-5 border border-accent-100 dark:border-accent-800">
               <p className="text-zinc-700 dark:text-zinc-300 font-medium">
-                Bookings made with an account can be managed easily through the app.
+                Bookings made with an account can be managed easily through the new webpage.
               </p>
             </div>
 
