@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
@@ -89,6 +89,8 @@ export default function GuestBookingPage() {
       console.error('Error loading available slots:', error);
     } finally {
       setLoadingSlots(false);
+      scrollToEnd();
+
     }
   };
 
@@ -298,6 +300,16 @@ export default function GuestBookingPage() {
     }
   };
 
+
+  const pageEndRef = useRef<HTMLDivElement>(null);
+  const scrollToEnd = () => {
+    pageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  useEffect(() => {
+    scrollToEnd();
+  }, [currentSection]);
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
       <div className="max-w-2xl mx-auto px-4 py-6">
@@ -375,7 +387,7 @@ export default function GuestBookingPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <span className="text-zinc-700 dark:text-zinc-300">Which part of your bike needs repair?</span>
-                  
+
                   {repairLocked && (
                     <span className="text-xs text-green-600 font-medium">(Confirmed)</span>
                   )}
@@ -423,7 +435,7 @@ export default function GuestBookingPage() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-2">
                       <span className="text-zinc-700 dark:text-zinc-300">Is it the front or rear tire/tube?</span>
-                      
+
                     </div>
                     <ToggleSelector
                       options={[
@@ -438,7 +450,7 @@ export default function GuestBookingPage() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-2">
                       <span className="text-zinc-700 dark:text-zinc-300">Is it a city bike or a road/mountain/touring bike?</span>
-                      
+
                     </div>
                     <ToggleSelector
                       options={[
@@ -457,7 +469,7 @@ export default function GuestBookingPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <span className="text-zinc-700">Is it a city bike or a road/mountain/touring bike?</span>
-                    
+
                   </div>
                   <ToggleSelector
                     options={[
@@ -475,7 +487,7 @@ export default function GuestBookingPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <span className="text-zinc-700 dark:text-zinc-300">What type of brakes does your bike have?</span>
-                    
+
                   </div>
                   <ToggleSelector
                     options={[
@@ -494,7 +506,7 @@ export default function GuestBookingPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <span className="text-zinc-700">Is it a city bike or a road/mountain/touring bike?</span>
-                    
+
                   </div>
                   <ToggleSelector
                     options={[
@@ -506,17 +518,17 @@ export default function GuestBookingPage() {
                   />
                 </div>
               )}
-              <div className="p-4 bg-blue-50 rounded-lg">
+              <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <IconClock size={16} className="text-blue-500" />
-                  <span className="text-sm text-blue-700">Your repair will take around {getEstimatedTime()}.</span>
+                  <IconClock size={16} className="text-blue-500 dark:text-blue-400" />
+                  <span className="text-sm text-blue-700 dark:text-blue-300">Your repair will take around {getEstimatedTime()}.</span>
                 </div>
               </div>
 
-              <div className="p-4 bg-orange-50 rounded-lg">
+              <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <IconInfoCircle size={16} className="text-orange-500" />
-                  <span className="text-sm text-orange-700">Why these questions?</span>
+                  <IconInfoCircle size={16} className="text-orange-500 dark:text-orange-400" />
+                  <span className="text-sm text-orange-700 dark:text-orange-300">Why these questions?</span>
                 </div>
                 <p className="text-sm text-zinc-700 dark:text-zinc-300 mb-2">
                   Repairing city bikes often takes longer, especially when dealing with the rear wheel. Taking apart brakes, shifters and chain guards can take most of the time.
@@ -664,11 +676,11 @@ export default function GuestBookingPage() {
                     placeholder="your.email@example.com"
                   />
                 </div>
-                <p className="text-sm text-zinc-600">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
                   We'll send your booking confirmation to this email address.
                 </p>
-                <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                  <p className="text-sm text-amber-800">
+                <div className="p-3 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg">
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
                     <strong>Note:</strong> You're booking as a guest.
                   </p>
                 </div>
@@ -698,10 +710,10 @@ export default function GuestBookingPage() {
               <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">5. Booking Confirmed!</h2>
 
               <div className="space-y-4">
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="p-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
-                    <IconCheck className="text-green-600" size={24} />
-                    <span className="font-semibold text-green-900">Your booking is confirmed!</span>
+                    <IconCheck className="text-green-600 dark:text-green-400" size={24} />
+                    <span className="font-semibold text-green-900 dark:text-green-100">Your booking is confirmed!</span>
                   </div>
                   <p className="text-sm text-zinc-700 dark:text-zinc-300">
                     {formatBookingSummary()}
@@ -713,21 +725,21 @@ export default function GuestBookingPage() {
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={handleGoogleCalendar}
-                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors text-zinc-700 dark:text-zinc-200"
                     >
                       <IconBrandGoogle size={18} />
                       <span>Google Calendar</span>
                     </button>
                     <button
                       onClick={handleOutlookCalendar}
-                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors text-zinc-700 dark:text-zinc-200"
                     >
                       <IconBrandWindows size={18} />
                       <span>Outlook</span>
                     </button>
                     <button
                       onClick={handleAppleCalendar}
-                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors text-zinc-700 dark:text-zinc-200"
                     >
                       <IconBrandApple size={18} />
                       <span>Apple Calendar</span>
@@ -774,6 +786,8 @@ export default function GuestBookingPage() {
               </div>
             </section>
           )}
+                  <div ref={pageEndRef} className="pb-10"></div>
+
         </div>
 
         <BottomSheetDialog

@@ -499,17 +499,17 @@ export default function BookingFormPage() {
               </div>
             )}
 
-            <div className="p-4 bg-blue-50 rounded-lg">
+            <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <IconClock size={16} className="text-blue-500" />
-                <span className="text-sm text-blue-700">Your repair will take around {getEstimatedTime()}.</span>
+                <IconClock size={16} className="text-blue-500 dark:text-blue-400" />
+                <span className="text-sm text-blue-700 dark:text-blue-300">Your repair will take around {getEstimatedTime()}.</span>
               </div>
             </div>
 
-            <div className="p-4 bg-orange-50 rounded-lg">
+            <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
-                <IconInfoCircle size={16} className="text-orange-500" />
-                <span className="text-sm text-orange-700">Why these questions?</span>
+                <IconInfoCircle size={16} className="text-orange-500 dark:text-orange-400" />
+                <span className="text-sm text-orange-700 dark:text-orange-300">Why these questions?</span>
               </div>
               <p className="text-sm text-zinc-700 dark:text-zinc-300 mb-2">
                 Repairing city bikes often takes longer, especially when dealing with the rear wheel. Taking apart brakes, shifters and chain guards can take most of the time.
@@ -695,10 +695,10 @@ export default function BookingFormPage() {
             <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">5. Booking Confirmed!</h2>
 
             <div className="space-y-4">
-              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+              <div className="p-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <IconCheck className="text-green-600" size={24} />
-                  <span className="font-semibold text-green-900">Your booking is confirmed!</span>
+                  <IconCheck className="text-green-600 dark:text-green-400" size={24} />
+                  <span className="font-semibold text-green-900 dark:text-green-100">Your booking is confirmed!</span>
                 </div>
                 <p className="text-sm text-zinc-700 dark:text-zinc-300">
                   {formatBookingSummary()}
@@ -710,21 +710,21 @@ export default function BookingFormPage() {
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={handleGoogleCalendar}
-                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors text-zinc-700 dark:text-zinc-200"
                   >
                     <IconBrandGoogle size={18} />
                     <span>Google Calendar</span>
                   </button>
                   <button
                     onClick={handleOutlookCalendar}
-                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors text-zinc-700 dark:text-zinc-200"
                   >
                     <IconBrandWindows size={18} />
                     <span>Outlook</span>
                   </button>
                   <button
                     onClick={handleAppleCalendar}
-                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors text-zinc-700 dark:text-zinc-200"
                   >
                     <IconBrandApple size={18} />
                     <span>Apple Calendar</span>
