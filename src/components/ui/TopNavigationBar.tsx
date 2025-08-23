@@ -94,11 +94,11 @@ const TopNavigationBar = ({
       `}
     >
       {shouldShowBackButton ?
-       (<button className='hover:bg-accent-100 dark:hover:bg-accent-900 rounded-lg transition-colors p-2'>
+       (<button className='hover:bg-accent-100 dark:hover:bg-accent-900 rounded-lg transition-colors p-2' onClick={() => router.back()}>
         <IconArrowLeft 
           size={24} 
           className="text-zinc-700 dark:text-zinc-300 " 
-          onClick={() => router.back()}
+          
        />
        </button>  
 
