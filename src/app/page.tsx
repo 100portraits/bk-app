@@ -40,7 +40,8 @@ export default function Home() {
     setShowBookingOptions(true);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setError('');
     setLoading(true);
 
@@ -72,7 +73,8 @@ export default function Home() {
     }
   };
 
-  const handleForgotPassword = async () => {
+  const handleForgotPassword = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setError('');
     setSuccess('');
     setLoading(true);
@@ -99,7 +101,8 @@ export default function Home() {
     }
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setError('');
 
     if (password !== confirmPassword) {
@@ -179,7 +182,7 @@ export default function Home() {
         isOpen={showLogin}
         onClose={() => setShowLogin(false)}
       >
-        <div className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-6">
 
 
           <div className="space-y-4">
@@ -216,7 +219,7 @@ export default function Home() {
             </div>
 
             <PrimaryButton
-              onClick={handleLogin}
+              type="submit"
               fullWidth
               className="bg-zinc-900 dark:bg-zinc-700 hover:bg-zinc-800 dark:hover:bg-zinc-600"
               disabled={loading || !email || !password}
@@ -255,7 +258,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </BottomSheetDialog>
 
       <BottomSheetDialog
@@ -263,7 +266,7 @@ export default function Home() {
         isOpen={showRegister}
         onClose={() => setShowRegister(false)}
       >
-        <div className="space-y-6">
+        <form onSubmit={handleRegister} className="space-y-6">
 
 
           <div className="space-y-4">
@@ -326,7 +329,7 @@ export default function Home() {
             </div>
 
             <PrimaryButton
-              onClick={handleRegister}
+              type="submit"
               fullWidth
               className="bg-zinc-900 dark:bg-zinc-700 hover:bg-zinc-800 dark:hover:bg-zinc-600"
               disabled={loading || !email || !password || !confirmPassword}
@@ -334,7 +337,7 @@ export default function Home() {
               {loading ? 'Signing Up...' : 'Sign Up'}
             </PrimaryButton>
           </div>
-        </div>
+        </form>
       </BottomSheetDialog>
 
       <BottomSheetDialog
@@ -405,7 +408,7 @@ export default function Home() {
           setSuccess('');
         }}
       >
-        <div className="space-y-6">
+        <form onSubmit={handleForgotPassword} className="space-y-6">
           <p className="text-zinc-600 dark:text-zinc-400">
             Enter your email address and we'll send you a link to reset your password.
           </p>
@@ -438,7 +441,7 @@ export default function Home() {
             </div>
 
             <PrimaryButton
-              onClick={handleForgotPassword}
+              type="submit"
               fullWidth
               className="bg-zinc-900 dark:bg-zinc-700 hover:bg-zinc-800 dark:hover:bg-zinc-600"
               disabled={loading || !resetEmail || !!success}
@@ -460,7 +463,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </BottomSheetDialog>
 
       <BottomSheetDialog
