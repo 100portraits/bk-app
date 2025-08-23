@@ -168,47 +168,47 @@ export default function UpcomingBookingsPage() {
     <AppLayout title="Upcoming Bookings">
       <div className="space-y-6">
         <section>
-          <h2 className="text-4xl font-bold text-zinc-900 mb-6">Upcoming Bookings</h2>
+          <h2 className="text-4xl font-bold text-zinc-900 dark:text-white mb-6">Upcoming Bookings</h2>
           
           {/* Date Navigation */}
-          <div className="flex items-center justify-between mb-6 p-4 bg-white border border-zinc-200 rounded-lg">
+          <div className="flex items-center justify-between mb-6 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg">
             <button
               onClick={() => navigateShift('prev')}
-              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
-              <IconChevronLeft size={20} />
+              <IconChevronLeft size={20} className='text-zinc-500 dark:text-zinc-400' />
             </button>
             
             <div className="text-center">
               <h3 className="text-xl font-semibold text-zinc-900 dark:text-white">
                 {format(currentDate, 'EEE, MMM do')}
                 {isToday(currentDate) && (
-                  <span className="ml-2 text-green-600">Today</span>
+                  <span className="ml-2 text-green-600 dark:text-green-400">Today</span>
                 )}
               </h3>
             </div>
             
             <button
               onClick={() => navigateShift('next')}
-              className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
-              <IconChevronRight size={20} />
+              <IconChevronRight size={20} className='text-zinc-500 dark:text-zinc-400' />
             </button>
           </div>
 
           {!currentShift ? (
-            <div className="text-center py-12 bg-zinc-50 rounded-lg">
+            <div className="text-center py-12 bg-zinc-50 rounded-lg dark:bg-zinc-800">
               <IconCalendarEvent size={48} className="mx-auto text-zinc-400 mb-2" />
               <p className="text-zinc-500">No upcoming shifts scheduled</p>
               <p className="text-sm text-zinc-400 mt-2">Check back later for new shifts</p>
             </div>
           ) : bookings.length === 0 ? (
-            <div className="text-center py-12 bg-zinc-50 rounded-lg">
-              <IconTools size={48} className="mx-auto text-zinc-400 mb-2" />
-              <p className="text-zinc-500">No bookings for this date</p>
-              <p className="text-sm text-zinc-400 mt-2">Enjoy a quieter shift!</p>
+            <div className="text-center py-12 bg-zinc-50 rounded-lg dark:bg-zinc-800">
+              <IconTools size={48} className="mx-auto text-zinc-500 mb-2 dark:text-zinc-400" />
+              <p className="text-zinc-500 dark:text-zinc-400">No bookings for this date</p>
+              <p className="text-sm text-zinc-500 mt-2 dark:text-zinc-400">Enjoy a quieter shift!</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -257,7 +257,7 @@ export default function UpcomingBookingsPage() {
                   {selectedBooking.name && (
                     <span className="font-medium text-zinc-900 dark:text-white">{selectedBooking.name}</span>
                   )}
-                  <span>{selectedBooking.user?.email || selectedBooking.email}</span>
+                  <span className="text-zinc-500 dark:text-zinc-400">{selectedBooking.user?.email || selectedBooking.email}</span>
                 </div>
                 {selectedBooking.is_member && (
                   <span className="px-2 py-0.5 bg-accent-100 dark:bg-accent-900 text-accent-700 dark:text-accent-300 text-xs rounded-full">
@@ -265,15 +265,15 @@ export default function UpcomingBookingsPage() {
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-2 mt-1 text-sm text-zinc-600">
+              <div className="flex items-center gap-2 mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                 <IconClock size={16} />
-                <span>Duration: {selectedBooking.duration_minutes} minutes</span>
+                <span >Duration: {selectedBooking.duration_minutes} minutes</span>
               </div>
             </div>
 
             <div className="space-y-3">
               <h4 className="font-medium text-zinc-900 dark:text-white">Repair Details:</h4>
-              <div className="p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg text-sm">
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-900 rounded-lg text-sm text-zinc-600 dark:text-zinc-300">
                 <p><span className="font-medium">Type:</span> {getRepairTypeDisplay(selectedBooking.repair_type)}</p>
                 {selectedBooking.repair_details?.bikeType && (
                   <p><span className="font-medium">Bike:</span> {selectedBooking.repair_details.bikeType === 'city' ? 'City bike' : 'Road/Mountain/Touring'}</p>
@@ -296,8 +296,8 @@ export default function UpcomingBookingsPage() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-sm text-zinc-600">Current Status:</span>
-                  <p className="font-medium capitalize">{selectedBooking.status}</p>
+                  <span className="text-sm text-zinc-600 dark:text-zinc-300">Current Status:</span>
+                  <p className="font-medium capitalize text-zinc-900 dark:text-zinc-100">{selectedBooking.status}</p>
                 </div>
                 {(selectedBooking.status === 'completed' || selectedBooking.status === 'no_show') && !editingStatus && (
                   <button
@@ -305,7 +305,7 @@ export default function UpcomingBookingsPage() {
                       setEditingStatus(true);
                       setEditStatus(selectedBooking.status as 'completed' | 'no_show');
                     }}
-                    className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 rounded-lg transition-colors"
+                    className="p-2 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-950 rounded-lg transition-colors"
                     title="Edit status"
                   >
                     <IconEdit size={18} />
@@ -314,7 +314,7 @@ export default function UpcomingBookingsPage() {
               </div>
 
               {editingStatus && (
-                <div className="space-y-2 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                <div className="space-y-2 p-3 bg-zinc-50 dark:bg-zinc-950 rounded-lg">
                   <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Change Status:</label>
                   <select
                     value={editStatus}

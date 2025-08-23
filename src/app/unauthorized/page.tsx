@@ -48,11 +48,11 @@ function UnauthorizedContent() {
           <div className="bg-zinc-100 dark:bg-zinc-800 rounded-lg p-4 mb-6 text-left">
             <p className="text-sm text-zinc-600 dark:text-zinc-400">Your current status:</p>
             <ul className="mt-2 space-y-1">
-              <li className="text-sm">
-                <span className="font-medium">Member:</span> {isMember ? 'Yes' : 'No'}
+              <li className="text-sm text-zinc-800 dark:text-zinc-100">
+                <span className="font-medium text-zinc-700 dark:text-zinc-300">Member:</span> {isMember ? 'Yes' : 'No'}
               </li>
-              <li className="text-sm">
-                <span className="font-medium">Role:</span> {role || 'None'}
+              <li className="text-sm text-zinc-800 dark:text-zinc-100">
+                <span className="font-medium text-zinc-700 dark:text-zinc-300">Role:</span> {role || 'None'}
               </li>
             </ul>
           </div>
