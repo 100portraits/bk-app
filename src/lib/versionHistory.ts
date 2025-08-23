@@ -7,6 +7,17 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.7.5',
+    date: '2025-08-23',
+    changes: [
+      'Fixed onclick handler on calendar widget buttons',
+      'Updated icon colors in CalendarWidget for better visibility in dark mode',
+      'Fixed form handling in Home component to properly prevent default events',
+      'Improved dark mode styling across additional components'
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.7.4',
     date: '2025-08-21',
     changes: [
