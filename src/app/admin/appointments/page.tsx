@@ -203,7 +203,7 @@ export default function ManageAppointmentsPage() {
               className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
-              <IconChevronLeft size={20} />
+              <IconChevronLeft size={20} className='text-zinc-500 dark:text-zinc-400' />
             </button>
             
             <div className="text-center">
@@ -228,7 +228,7 @@ export default function ManageAppointmentsPage() {
               className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
-              <IconChevronRight size={20} />
+              <IconChevronRight size={20} className='text-zinc-500 dark:text-zinc-400' />
             </button>
           </div>
 

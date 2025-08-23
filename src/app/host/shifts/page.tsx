@@ -423,11 +423,11 @@ export default function ShiftCalendarPage() {
           <div className="space-y-4">
             <div>
               <span className="text-sm text-zinc-600 dark:text-zinc-400">Date:</span>
-              <p className="font-medium">{format(new Date(selectedShift.date), 'EEEE, MMMM d, yyyy')}</p>
+              <p className="font-medium text-zinc-800 dark:text-zinc-100">{format(new Date(selectedShift.date), 'EEEE, MMMM d, yyyy')}</p>
             </div>
             <div>
               <span className="text-sm text-zinc-600 dark:text-zinc-400">Time:</span>
-              <p className="font-medium">
+              <p className="font-medium text-zinc-800 dark:text-zinc-100">
                 {selectedShift.start_time.slice(0, 5)} - {selectedShift.end_time.slice(0, 5)}
               </p>
             </div>

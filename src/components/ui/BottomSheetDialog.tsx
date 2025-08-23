@@ -24,14 +24,13 @@ const BottomSheetDialog = ({
     <Drawer.Root 
       open={isOpen} 
       onOpenChange={onClose}
-      snapPoints={[1]}
       modal
     >
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
         <Drawer.Content
           className={`
-                   ${scrollable ? 'bg-zinc-50 dark:bg-zinc-900' : 'bg-white dark:bg-zinc-800'}
+                  bg-zinc-50 dark:bg-zinc-900
                    flex 
                    flex-col 
                    rounded-t-[10px] 
@@ -41,11 +40,10 @@ const BottomSheetDialog = ({
                    right-0 
                    z-50
                    outline-none
-                   ${scrollable ? '' : ''}
                    ${className}
                  `}
           style={{
-            maxHeight: scrollable ? maxHeight : 'calc(100vh - 6rem)',
+            maxHeight: '80vh',
             height: 'auto',
             WebkitTransform: 'translate3d(0, 0, 0)',
             transform: 'translate3d(0, 0, 0)'
@@ -54,7 +52,7 @@ const BottomSheetDialog = ({
           <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-600 mb-4 mt-4" />
 
           {title && (
-            <div className={`px-6  ${scrollable ? 'pb-6 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900' : 'pb-2'}`}>
+            <div className={`px-6  pb-6 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900`}>
               <Drawer.Title className="text-4xl font-semibold text-zinc-900 dark:text-white">
                 {title}
               </Drawer.Title>
@@ -62,8 +60,8 @@ const BottomSheetDialog = ({
           )}
 
           <div className={`
-            px-6 pb-12 flex-1 bg-white dark:bg-zinc-800 ${scrollable ? 'pt-6' : 'pt-2'}
-            ${scrollable ? 'overflow-y-auto overflow-x-hidden -webkit-overflow-scrolling-touch' : 'overflow-auto'}
+            px-6 pb-12 flex-1 bg-white dark:bg-zinc-800 pt-6
+            overflow-y-auto overflow-x-hidden -webkit-overflow-scrolling-touch
           `}
           style={{
             WebkitOverflowScrolling: 'touch',

@@ -23,14 +23,16 @@ const CalendarWidget = ({
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ];
 
-  const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
     const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - firstDay.getDay());
+    const dayOfWeek = firstDay.getDay();
+    const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    startDate.setDate(startDate.getDate() - mondayOffset);
 
     const days = [];
     const current = new Date(startDate);
@@ -78,7 +80,7 @@ const CalendarWidget = ({
           onClick={() => navigateMonth('prev')}
           className="p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700"
         >
-          <IconChevronLeft size={20} />
+          <IconChevronLeft size={20} className='text-zinc-500 dark:text-zinc-400' />
         </button>
         
         <h3 className="font-semibold text-zinc-900 dark:text-white">
@@ -89,7 +91,7 @@ const CalendarWidget = ({
           onClick={() => navigateMonth('next')}
           className="p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700"
         >
-          <IconChevronRight size={20} />
+          <IconChevronRight size={20} className='text-zinc-500 dark:text-zinc-400' />
         </button>
       </div>
 
