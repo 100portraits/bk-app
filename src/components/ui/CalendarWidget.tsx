@@ -80,7 +80,7 @@ const CalendarWidget = ({
           onClick={() => navigateMonth('prev')}
           className="p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700"
         >
-          <IconChevronLeft size={20} />
+          <IconChevronLeft size={20} className='text-zinc-500 dark:text-zinc-400' />
         </button>
         
         <h3 className="font-semibold text-zinc-900 dark:text-white">
@@ -91,7 +91,7 @@ const CalendarWidget = ({
           onClick={() => navigateMonth('next')}
           className="p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-700"
         >
-          <IconChevronRight size={20} />
+          <IconChevronRight size={20} className='text-zinc-500 dark:text-zinc-400' />
         </button>
       </div>
 
