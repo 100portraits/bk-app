@@ -131,12 +131,6 @@ export default function EventCalendarPage() {
                     {selectedEvent.location}
                   </p>
                 )}
-                {selectedEvent.max_capacity && (
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    <IconUsers size={16} className="inline mr-2" />
-                    Max capacity: {selectedEvent.max_capacity} people
-                  </p>
-                )}
               </div>
             </div>
 

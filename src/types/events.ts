@@ -8,7 +8,6 @@ export interface Event {
   location?: string;
   whatsapp_link?: string;
   poster_url?: string;
-  max_capacity?: number;
   is_published: boolean;
   created_by?: string;
   created_at?: string;
@@ -24,7 +23,6 @@ export interface CreateEventInput {
   location?: string;
   whatsapp_link?: string;
   poster_url?: string;
-  max_capacity?: number;
   is_published?: boolean;
 }
 

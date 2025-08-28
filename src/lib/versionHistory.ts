@@ -7,6 +7,23 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.8.0',
+    date: '2025-08-28',
+    changes: [
+      'Implemented flexible timeslot system supporting any day and time',
+      'Added custom timeslot creation UI in admin panel',
+      'Removed hardcoded Monday/Wednesday/Thursday restrictions',
+      'Created database migration for flexible day_of_week support',
+      'Enhanced admin timeslot manager with add, edit, and delete functionality',
+      'Extended timeslot view to 8 weeks ahead',
+      'Removed unused capacity tracking from shifts and events',
+      'Replaced modals with BottomSheetDialog component for better UX',
+      'Added delete confirmation dialog for timeslot removal',
+      'Updated all booking flows to work with flexible timeslots'
+    ],
+    type: 'minor'
+  },
+  {
     version: '0.7.5',
     date: '2025-08-23',
     changes: [

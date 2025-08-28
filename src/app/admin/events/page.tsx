@@ -46,7 +46,6 @@ export default function ManageEventsPage() {
     location: '',
     whatsapp_link: '',
     poster_url: '',
-    max_capacity: undefined,
     is_published: false
   });
 
@@ -68,7 +67,6 @@ export default function ManageEventsPage() {
       location: event.location || '',
       whatsapp_link: event.whatsapp_link || '',
       poster_url: event.poster_url || '',
-      max_capacity: event.max_capacity,
       is_published: event.is_published
     });
     // Reset poster file state when editing
@@ -87,7 +85,6 @@ export default function ManageEventsPage() {
       location: '',
       whatsapp_link: '',
       poster_url: '',
-      max_capacity: undefined,
       is_published: false
     });
     setPosterFile(null);
@@ -403,19 +400,6 @@ export default function ManageEventsPage() {
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-                  <IconUsers size={16} className="inline mr-1" />
-                  Max Capacity
-                </label>
-                <input
-                  type="number"
-                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg"
-                  placeholder="No limit"
-                  value={eventForm.max_capacity || ''}
-                  onChange={(e) => setEventForm(prev => ({ ...prev, max_capacity: e.target.value ? parseInt(e.target.value) : undefined }))}
-                />
-              </div>
             </div>
             
             <div>
@@ -609,19 +593,6 @@ export default function ManageEventsPage() {
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-                  <IconUsers size={16} className="inline mr-1" />
-                  Max Capacity
-                </label>
-                <input
-                  type="number"
-                  className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg"
-                  placeholder="No limit"
-                  value={eventForm.max_capacity || ''}
-                  onChange={(e) => setEventForm(prev => ({ ...prev, max_capacity: e.target.value ? parseInt(e.target.value) : undefined }))}
-                />
-              </div>
             </div>
             
             <div>
@@ -766,12 +737,6 @@ export default function ManageEventsPage() {
                   <p className="text-zinc-600 dark:text-zinc-400">
                     <IconMapPin size={16} className="inline mr-1" />
                     {selectedEvent.location}
-                  </p>
-                )}
-                {selectedEvent.max_capacity && (
-                  <p className="text-zinc-600 dark:text-zinc-400">
-                    <IconUsers size={16} className="inline mr-1" />
-                    Max capacity: {selectedEvent.max_capacity}
                   </p>
                 )}
               </div>

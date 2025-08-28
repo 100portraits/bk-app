@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client';
-import { Shift, DayOfWeek } from '@/types/shifts';
-import { startOfWeek, endOfWeek, format } from 'date-fns';
+import { Shift, DayOfWeek, DAY_NAMES } from '@/types/shifts';
+import { startOfWeek, endOfWeek, format, getDay } from 'date-fns';
 
 export class ShiftsAPI {
   private supabase = createClient();
@@ -61,34 +61,27 @@ export class ShiftsAPI {
         throw error;
       }
     } else {
-      // Create new shift based on day
-      let endTime = '18:00:00';
-      if (dayOfWeek === 'monday') {
-        startTime = '14:00:00';
-        endTime = '18:00:00';
-      } else if (dayOfWeek === 'wednesday') {
-        startTime = '12:00:00';
-        endTime = '16:00:00';
-      } else if (dayOfWeek === 'thursday') {
-        startTime = '16:00:00';
-        endTime = '20:00:00';
-      }
-
-      const { error } = await this.supabase
-        .from('shifts')
-        .insert({
-          date: dateStr,
-          day_of_week: dayOfWeek,
-          start_time: startTime,
-          end_time: endTime,
-          is_open: true,
-        });
-
-      if (error) {
-        console.error('Error creating shift:', error);
-        throw error;
-      }
+      // Don't auto-create shifts anymore - must be explicitly created
+      throw new Error('Shift does not exist. Please create it first.');
     }
+  }
+
+  /**
+   * Create a new shift
+   */
+  async createShift(shift: Partial<Shift> & { date: string; day_of_week: DayOfWeek; start_time: string; end_time: string }): Promise<Shift> {
+    const { data, error } = await this.supabase
+      .from('shifts')
+      .insert(shift)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating shift:', error);
+      throw error;
+    }
+
+    return data;
   }
 
 
@@ -105,6 +98,27 @@ export class ShiftsAPI {
       console.error('Error deleting shift:', error);
       throw error;
     }
+  }
+
+  /**
+   * Get shifts for a specific day of the week
+   */
+  async getShiftsByDayOfWeek(dayOfWeek: DayOfWeek, startDate: Date, endDate: Date): Promise<Shift[]> {
+    const { data, error } = await this.supabase
+      .from('shifts')
+      .select('*')
+      .eq('day_of_week', dayOfWeek)
+      .gte('date', format(startDate, 'yyyy-MM-dd'))
+      .lte('date', format(endDate, 'yyyy-MM-dd'))
+      .order('date', { ascending: true })
+      .order('start_time', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching shifts by day:', error);
+      throw error;
+    }
+
+    return data || [];
   }
 
   /**
