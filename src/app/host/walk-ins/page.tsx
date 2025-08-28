@@ -205,7 +205,7 @@ export default function WalkInsPage() {
               className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
-              <IconChevronLeft size={20} />
+              <IconChevronLeft size={20} className="text-zinc-500 dark:text-zinc-400" />
             </button>
             
             <div className="text-center">
@@ -222,7 +222,7 @@ export default function WalkInsPage() {
               className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
               disabled={availableShifts.length === 0}
             >
-              <IconChevronRight size={20} />
+              <IconChevronRight size={20} className="text-zinc-500 dark:text-zinc-400" />
             </button>
           </div>
 
@@ -306,31 +306,31 @@ export default function WalkInsPage() {
             <div className="space-y-3">
               <div>
                 <span className="text-sm text-zinc-600 dark:text-zinc-400">Type:</span>
-                <p className="font-medium">
+                <p className="font-medium text-zinc-900 dark:text-white">
                   {selectedWalkIn.is_community_member ? 'Community Member' : 'Paid Customer'}
                 </p>
               </div>
               {!selectedWalkIn.is_community_member && (
                 <div>
                   <span className="text-sm text-zinc-600 dark:text-zinc-400">Payment Amount:</span>
-                  <p className="font-medium">€{selectedWalkIn.amount_paid?.toFixed(2)}</p>
+                  <p className="font-medium text-zinc-900 dark:text-white">€{selectedWalkIn.amount_paid?.toFixed(2)}</p>
                 </div>
               )}
               <div>
                 <span className="text-sm text-zinc-600 dark:text-zinc-400">Recorded:</span>
-                <p className="font-medium">
+                <p className="font-medium text-zinc-900 dark:text-white">
                   {format(parseISO(selectedWalkIn.created_at), 'MMM d, yyyy at HH:mm')}
                 </p>
               </div>
               {selectedWalkIn.notes && (
                 <div>
                   <span className="text-sm text-zinc-600 dark:text-zinc-400">Notes:</span>
-                  <p className="font-medium">{selectedWalkIn.notes}</p>
+                  <p className="font-medium text-zinc-900 dark:text-white">{selectedWalkIn.notes}</p>
                 </div>
               )}
               <div>
                 <span className="text-sm text-zinc-600 dark:text-zinc-400">Recorded by:</span>
-                <p className="font-medium">{selectedWalkIn.creator?.email || 'Unknown'}</p>
+                <p className="font-medium text-zinc-900 dark:text-white">{selectedWalkIn.creator?.email || 'Unknown'}</p>
               </div>
             </div>
 
@@ -398,7 +398,7 @@ export default function WalkInsPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                 Notes
               </label>
               <textarea

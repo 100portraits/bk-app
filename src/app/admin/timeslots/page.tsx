@@ -182,7 +182,7 @@ export default function ManageTimeslotsPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setShowAddDialog(true)}
-                className="px-4 py-2 bg-green-600 dark:bg-green-700 text-white font-medium hover:bg-green-700 dark:hover:bg-green-600 rounded-lg transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-accent-600 dark:bg-accent-700 text-white font-medium hover:bg-accent-700 dark:hover:bg-accent-600 rounded-lg transition-colors flex items-center gap-2"
                 disabled={loading}
               >
                 <IconPlus size={20} />
@@ -326,18 +326,18 @@ export default function ManageTimeslotsPage() {
                             key={shift.id}
                             className={`flex items-center justify-between p-3 rounded-lg border-2 ${
                               shift.is_open 
-                                ? 'bg-green-50 dark:bg-green-950 border-green-300 dark:border-green-700' 
+                                ? 'bg-accent-50 dark:bg-accent-950 border-accent-300 dark:border-accent-700' 
                                 : 'bg-zinc-50 dark:bg-zinc-900 border-zinc-300 dark:border-zinc-700'
                             }`}
                           >
                             <div className="flex items-center gap-4">
                               <IconClock size={20} className="text-zinc-600 dark:text-zinc-400" />
                               <div>
-                                <div className="font-medium">
+                                <div className="font-medium text-zinc-900 dark:text-white">
                                   {shift.start_time.substring(0, 5)} - {shift.end_time.substring(0, 5)}
                                 </div>
                                 <div className="text-sm text-zinc-600 dark:text-zinc-400">
-                                  Status: <span className={shift.is_open ? 'text-green-700 dark:text-green-400 font-medium' : 'text-zinc-700 dark:text-zinc-400'}>
+                                  Status: <span className={shift.is_open ? 'text-accent-700 dark:text-accent-400 font-medium' : 'text-zinc-700 dark:text-zinc-400'}>
                                     {shift.is_open ? 'OPEN' : 'CLOSED'}
                                   </span>
                                 </div>
@@ -355,7 +355,7 @@ export default function ManageTimeslotsPage() {
                                   onClick={() => handleToggleShift(shift.id)}
                                   className={`px-3 py-1 rounded-lg font-medium text-sm transition-colors ${
                                     shift.is_open
-                                      ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 hover:bg-yellow-200 dark:hover:bg-yellow-800'
+                                      ? 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-800'
                                       : 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 hover:bg-green-200 dark:hover:bg-green-800'
                                   }`}
                                   disabled={loading}

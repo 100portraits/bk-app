@@ -258,18 +258,18 @@ export default function ShiftCalendarPage() {
                           w-full p-3 rounded-lg border-2 transition-all text-left
                           ${willBeSignedUp 
                             ? hasPending 
-                              ? 'bg-green-100 border-green-400' 
-                              : 'bg-green-50 border-green-300'
+                              ? 'bg-green-100 dark:bg-green-900/50 border-green-400 dark:border-green-600' 
+                              : 'bg-green-50 dark:bg-green-950/30 border-green-300 dark:border-green-700'
                             : hasPending
-                              ? 'bg-red-100 border-red-400'
-                              : 'bg-zinc-50 border-zinc-200'
+                              ? 'bg-red-100 dark:bg-red-900/50 border-red-400 dark:border-red-600'
+                              : 'bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700'
                           }
                           hover:scale-[1.02]
                         `}
                       >
                         <div className="flex justify-between items-center">
                           <div>
-                            <span className="font-medium">
+                            <span className="font-medium text-zinc-900 dark:text-zinc-100">
                               {format(new Date(shift.date), 'EEE, MMM d')}
                             </span>
                             <span className="text-sm text-zinc-600 dark:text-zinc-400 ml-2">
@@ -285,16 +285,16 @@ export default function ShiftCalendarPage() {
                             {willBeSignedUp ? (
                               <>
                                 <IconUserMinus size={20} />
-                                <span className="text-sm font-medium">Signed up</span>
+                                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Signed up</span>
                               </>
                             ) : (
                               <>
                                 <IconUserPlus size={20} />
-                                <span className="text-sm font-medium">Sign up</span>
+                                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Sign up</span>
                               </>
                             )}
                             {hasPending && (
-                              <span className="text-xs text-yellow-600">(pending)</span>
+                              <span className="text-xs text-yellow-600 dark:text-yellow-400">(pending)</span>
                             )}
                           </div>
                         </div>
@@ -324,18 +324,18 @@ export default function ShiftCalendarPage() {
                           w-full p-3 rounded-lg border-2 transition-all text-left
                           ${willBeSignedUp 
                             ? hasPending 
-                              ? 'bg-green-100 border-green-400' 
-                              : 'bg-green-50 border-green-300'
+                              ? 'bg-green-100 dark:bg-green-900/50 border-green-400 dark:border-green-600' 
+                              : 'bg-green-50 dark:bg-green-950/30 border-green-300 dark:border-green-700'
                             : hasPending
-                              ? 'bg-red-100 border-red-400'
-                              : 'bg-zinc-50 border-zinc-200'
+                              ? 'bg-red-100 dark:bg-red-900/50 border-red-400 dark:border-red-600'
+                              : 'bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700'
                           }
                           hover:scale-[1.02]
                         `}
                       >
                         <div className="flex justify-between items-center">
                           <div>
-                            <span className="font-medium">
+                            <span className="font-medium text-zinc-900 dark:text-zinc-100">
                               {format(new Date(shift.date), 'EEE, MMM d')}
                             </span>
                             <span className="text-sm text-zinc-600 dark:text-zinc-400 ml-2">
@@ -351,16 +351,16 @@ export default function ShiftCalendarPage() {
                             {willBeSignedUp ? (
                               <>
                                 <IconUserMinus size={20} />
-                                <span className="text-sm font-medium">Signed up</span>
+                                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Signed up</span>
                               </>
                             ) : (
                               <>
                                 <IconUserPlus size={20} />
-                                <span className="text-sm font-medium">Sign up</span>
+                                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Sign up</span>
                               </>
                             )}
                             {hasPending && (
-                              <span className="text-xs text-yellow-600">(pending)</span>
+                              <span className="text-xs text-yellow-600 dark:text-yellow-400">(pending)</span>
                             )}
                           </div>
                         </div>
