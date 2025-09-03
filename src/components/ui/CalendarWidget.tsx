@@ -50,7 +50,7 @@ const CalendarWidget = ({
   };
 
   const isDateAvailable = (date: Date) => {
-    return availableDates.length === 0 || availableDates.some(d => isSameDate(d, date));
+    return availableDates.some(d => isSameDate(d, date));
   };
 
   const isDateHighlighted = (date: Date) => {
@@ -114,8 +114,8 @@ const CalendarWidget = ({
           return (
             <div key={index} className='flex justify-center items-center'>
             <button
-              onClick={() => isAvailable && inCurrentMonth && onDateSelect?.(day)}
-              disabled={!isAvailable || !inCurrentMonth}
+              onClick={() => (isAvailable || isHighlighted) && inCurrentMonth && onDateSelect?.(day)}
+              disabled={!inCurrentMonth}
               className={`
                 w-10 
                 h-10 
@@ -129,11 +129,11 @@ const CalendarWidget = ({
                     ? 'bg-accent-500 text-white'
                     : isHighlighted
                       ? 'bg-accent-100 dark:bg-accent-900 text-accent-700 dark:text-accent-300 border-2 border-accent-500'
+                      : isAvailable
+                        ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 border-2 border-dashed border-yellow-400 dark:border-yellow-600'
                       : todayDate
                         ? 'bg-accent-50 dark:bg-accent-950 text-accent-600 dark:text-accent-400 border border-accent-200 dark:border-accent-700'
-                        : isAvailable
-                          ? 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'
-                          : 'text-zinc-300 dark:text-zinc-600 cursor-not-allowed'
+                        : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700'
                 }
               `}
             >

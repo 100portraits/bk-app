@@ -160,6 +160,7 @@ export default function ShiftCalendarPage() {
   const openShifts = getOpenShifts();
   const userShifts = getUserShifts();
   const highlightedDates = userShifts.map(shift => new Date(shift.date));
+  const availableShiftDates = openShifts.map(shift => new Date(shift.date));
   
   // Determine which role section to show based on user's role
   const canSignUpAsMechanic = role === 'mechanic' || role === 'admin';
@@ -180,14 +181,25 @@ export default function ShiftCalendarPage() {
             </button>
           </div>
           
-          <div className="mb-4">
+          <div className="mb-4 space-y-2">
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Your shifts are highlighted. Click Edit to sign up for shifts.
+              Click Edit to sign up for shifts.
             </p>
+            <div className="flex gap-4 text-xs">
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full bg-accent-100 dark:bg-accent-900 border-2 border-accent-500"></span>
+                <span className="text-zinc-600 dark:text-zinc-400">Your shifts</span>
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full bg-yellow-50 dark:bg-yellow-900/20 border-2 border-dashed border-yellow-400 dark:border-yellow-600"></span>
+                <span className="text-zinc-600 dark:text-zinc-400">Available to sign up</span>
+              </span>
+            </div>
           </div>
           
           <CalendarWidget
             highlightedDates={highlightedDates}
+            availableDates={availableShiftDates}
           />
         </section>
 
@@ -284,12 +296,12 @@ export default function ShiftCalendarPage() {
                           <div className="flex items-center gap-2">
                             {willBeSignedUp ? (
                               <>
-                                <IconUserMinus size={20} />
+                                <IconUserMinus size={20} className="text-zinc-700 dark:text-zinc-200" />
                                 <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Signed up</span>
                               </>
                             ) : (
                               <>
-                                <IconUserPlus size={20} />
+                                <IconUserPlus size={20} className="text-zinc-700 dark:text-zinc-200" />
                                 <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Sign up</span>
                               </>
                             )}
@@ -350,12 +362,12 @@ export default function ShiftCalendarPage() {
                           <div className="flex items-center gap-2">
                             {willBeSignedUp ? (
                               <>
-                                <IconUserMinus size={20} />
+                                <IconUserMinus size={20} className="text-zinc-700 dark:text-zinc-200" />
                                 <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Signed up</span>
                               </>
                             ) : (
                               <>
-                                <IconUserPlus size={20} />
+                                <IconUserPlus size={20} className="text-zinc-700 dark:text-zinc-200" />
                                 <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">Sign up</span>
                               </>
                             )}
