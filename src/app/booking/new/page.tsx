@@ -785,7 +785,7 @@ export default function BookingFormPage() {
               />
             </>
           ) : (
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+            <div className="p-4 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-600 rounded-lg">
               <p className="text-zinc-700 dark:text-zinc-300">
                 {disclaimerText}
               </p>
