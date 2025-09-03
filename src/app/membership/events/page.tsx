@@ -11,7 +11,7 @@ import { useRequireMember } from '@/hooks/useAuthorization';
 import { useEvents } from '@/hooks/useEvents';
 import { Event } from '@/types/events';
 import { format, parseISO } from 'date-fns';
-import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp } from '@tabler/icons-react';
+import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconLink } from '@tabler/icons-react';
 import Image from 'next/image';
 
 export default function EventCalendarPage() {
@@ -82,6 +82,8 @@ export default function EventCalendarPage() {
                       key={event.id}
                       title={event.title}
                       subtitle={event.description}
+                      link={event.link}
+                      eventType={event.event_type}
                       date={format(parseISO(event.event_date), 'd')}
                       dayOfWeek={format(parseISO(event.event_date), 'EEE')}
                       onClick={() => handleEventClick(event)}
@@ -112,6 +114,17 @@ export default function EventCalendarPage() {
               <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
                 {selectedEvent.title}
               </h3>
+              {selectedEvent.link && (
+                <a 
+                  href={selectedEvent.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-accent-100 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300 rounded-lg hover:bg-accent-200 dark:hover:bg-accent-900/50 transition-colors font-medium"
+                >
+                  <IconLink size={20} />
+                  View Event Details
+                </a>
+              )}
               {selectedEvent.description && (
                 <p className="text-zinc-600 dark:text-zinc-400 mb-3">{selectedEvent.description}</p>
               )}

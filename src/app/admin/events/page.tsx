@@ -9,10 +9,10 @@ import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
 import TextInput from '@/components/ui/TextInput';
-import { IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff, IconUpload, IconX, IconPlus } from '@tabler/icons-react';
+import { IconTrash, IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconPhoto, IconEye, IconEyeOff, IconUpload, IconX, IconPlus, IconLink, IconCategory } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useEvents } from '@/hooks/useEvents';
-import { Event, CreateEventInput } from '@/types/events';
+import { Event, CreateEventInput, EventType } from '@/types/events';
 import { format, parseISO } from 'date-fns';
 import Image from 'next/image';
 import { uploadEventPoster, deleteEventPoster } from '@/lib/supabase/storage';
@@ -44,8 +44,10 @@ export default function ManageEventsPage() {
     start_time: '',
     end_time: '',
     location: '',
+    link: '',
     whatsapp_link: '',
     poster_url: '',
+    event_type: 'other',
     is_published: false
   });
 
@@ -65,8 +67,10 @@ export default function ManageEventsPage() {
       start_time: event.start_time.slice(0, 5), // Convert HH:MM:SS to HH:MM
       end_time: event.end_time?.slice(0, 5) || '',
       location: event.location || '',
+      link: event.link || '',
       whatsapp_link: event.whatsapp_link || '',
       poster_url: event.poster_url || '',
+      event_type: event.event_type || 'other',
       is_published: event.is_published
     });
     // Reset poster file state when editing
@@ -83,8 +87,10 @@ export default function ManageEventsPage() {
       start_time: '',
       end_time: '',
       location: '',
+      link: '',
       whatsapp_link: '',
       poster_url: '',
+      event_type: 'other',
       is_published: false
     });
     setPosterFile(null);
@@ -280,6 +286,8 @@ export default function ManageEventsPage() {
                     <EventCard
                       title={event.title}
                       subtitle={event.description}
+                      link={event.link}
+                      eventType={event.event_type}
                       date={format(parseISO(event.event_date), 'd')}
                       dayOfWeek={format(parseISO(event.event_date), 'EEE')}
                       onClick={() => handleEventClick(event)}
@@ -341,6 +349,24 @@ export default function ManageEventsPage() {
                 value={eventForm.description}
                 onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                <IconCategory size={16} className="inline mr-1" />
+                Event Type
+              </label>
+              <select
+                className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                value={eventForm.event_type}
+                onChange={(e) => setEventForm(prev => ({ ...prev, event_type: e.target.value as EventType }))}
+              >
+                <option value="ride_out">Ride Out</option>
+                <option value="workshop">Workshop</option>
+                <option value="borrel">Borrel</option>
+                <option value="upcycling">Upcycling</option>
+                <option value="other">Other</option>
+              </select>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
@@ -411,6 +437,19 @@ export default function ManageEventsPage() {
                 placeholder="e.g. Bike Kitchen, Science Park"
                 value={eventForm.location}
                 onChange={(value) => setEventForm(prev => ({ ...prev, location: value }))}
+                fullWidth
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                <IconLink size={16} className="inline mr-1" />
+                Event Link
+              </label>
+              <TextInput
+                placeholder="https://example.com/event-info"
+                value={eventForm.link}
+                onChange={(value) => setEventForm(prev => ({ ...prev, link: value }))}
                 fullWidth
               />
             </div>
@@ -535,6 +574,24 @@ export default function ManageEventsPage() {
                 onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                <IconCategory size={16} className="inline mr-1" />
+                Event Type
+              </label>
+              <select
+                className="w-full p-3 border border-zinc-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
+                value={eventForm.event_type}
+                onChange={(e) => setEventForm(prev => ({ ...prev, event_type: e.target.value as EventType }))}
+              >
+                <option value="ride_out">Ride Out</option>
+                <option value="workshop">Workshop</option>
+                <option value="borrel">Borrel</option>
+                <option value="upcycling">Upcycling</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -604,6 +661,19 @@ export default function ManageEventsPage() {
                 placeholder="e.g. Bike Kitchen, Science Park"
                 value={eventForm.location}
                 onChange={(value) => setEventForm(prev => ({ ...prev, location: value }))}
+                fullWidth
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                <IconLink size={16} className="inline mr-1" />
+                Event Link
+              </label>
+              <TextInput
+                placeholder="https://example.com/event-info"
+                value={eventForm.link}
+                onChange={(value) => setEventForm(prev => ({ ...prev, link: value }))}
                 fullWidth
               />
             </div>
@@ -720,6 +790,17 @@ export default function ManageEventsPage() {
               <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
                 {selectedEvent.title}
               </h3>
+              {selectedEvent.link && (
+                <a 
+                  href={selectedEvent.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-accent-100 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300 rounded-lg hover:bg-accent-200 dark:hover:bg-accent-900/50 transition-colors font-medium"
+                >
+                  <IconLink size={20} />
+                  View Event Details
+                </a>
+              )}
               {selectedEvent.description && (
                 <p className="text-zinc-600 dark:text-zinc-400 mb-2">{selectedEvent.description}</p>
               )}
