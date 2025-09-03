@@ -7,6 +7,23 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.0',
+    date: '2025-09-03',
+    changes: [
+      'Enhanced shift calendar with visual indicators for available shifts',
+      'Added yellow dashed border for shifts available to sign up',
+      'Added solid accent border for shifts already signed up for',
+      'Implemented event links feature with prominent display in event details',
+      'Added event type categorization (Ride Out, Workshop, Borrel, Upcycling, Other)',
+      'Dynamic event icons based on event type with color-coded backgrounds',
+      'Added event type dropdown selector in admin event management',
+      'Fixed icon color consistency in shift signup buttons',
+      'Created database migrations for event link and event_type columns',
+      'Improved visual hierarchy in event detail views'
+    ],
+    type: 'minor'
+  },
+  {
     version: '0.8.0',
     date: '2025-08-28',
     changes: [
