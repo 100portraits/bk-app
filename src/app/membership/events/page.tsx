@@ -10,8 +10,8 @@ import PrimaryButton from '@/components/ui/PrimaryButton';
 import { useRequireMember } from '@/hooks/useAuthorization';
 import { useEvents } from '@/hooks/useEvents';
 import { Event } from '@/types/events';
-import { format, parseISO } from 'date-fns';
-import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconLink } from '@tabler/icons-react';
+import { format, parseISO, isPast, isToday, isFuture } from 'date-fns';
+import { IconLoader2, IconCalendarEvent, IconClock, IconMapPin, IconUsers, IconBrandWhatsapp, IconLink, IconChevronUp, IconChevronDown } from '@tabler/icons-react';
 import Image from 'next/image';
 
 export default function EventCalendarPage() {
@@ -19,6 +19,7 @@ export default function EventCalendarPage() {
   const [showEventDetails, setShowEventDetails] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [showPastEvents, setShowPastEvents] = useState(false);
   const { 
     events, 
     loading, 
@@ -27,6 +28,20 @@ export default function EventCalendarPage() {
   // Events are loaded automatically by the hook
   // Filter to show only published events
   const publishedEvents = events.filter(event => event.is_published);
+  
+  // Separate past and upcoming events
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const pastEvents = publishedEvents.filter(event => {
+    const eventDate = parseISO(event.event_date);
+    return eventDate < today;
+  });
+  
+  const upcomingEvents = publishedEvents.filter(event => {
+    const eventDate = parseISO(event.event_date);
+    return eventDate >= today;
+  });
 
   const handleEventClick = (event: Event) => {
     setSelectedEvent(event);
@@ -48,14 +63,19 @@ export default function EventCalendarPage() {
   }
 
   // Group events by month
-  const eventsByMonth = publishedEvents.reduce((acc, event) => {
-    const monthKey = format(parseISO(event.event_date), 'MMMM yyyy');
-    if (!acc[monthKey]) {
-      acc[monthKey] = [];
-    }
-    acc[monthKey].push(event);
-    return acc;
-  }, {} as Record<string, Event[]>);
+  const groupEventsByMonth = (eventList: Event[]) => {
+    return eventList.reduce((acc, event) => {
+      const monthKey = format(parseISO(event.event_date), 'MMMM yyyy');
+      if (!acc[monthKey]) {
+        acc[monthKey] = [];
+      }
+      acc[monthKey].push(event);
+      return acc;
+    }, {} as Record<string, Event[]>);
+  };
+  
+  const upcomingEventsByMonth = groupEventsByMonth(upcomingEvents);
+  const pastEventsByMonth = groupEventsByMonth(pastEvents);
 
   return (
     <AppLayout title="Event Calendar">
@@ -67,31 +87,72 @@ export default function EventCalendarPage() {
             <div className="flex items-center justify-center h-32">
               <IconLoader2 className="animate-spin" size={24} />
             </div>
-          ) : publishedEvents.length === 0 ? (
-            <div className="text-center py-8 text-zinc-500 dark:text-zinc-400">
-              <p>No upcoming events at the moment.</p>
-              <p className="text-sm mt-2">Check back later for new events!</p>
-            </div>
           ) : (
-            Object.entries(eventsByMonth).map(([month, monthEvents]) => (
-              <div key={month} className="mb-6">
-                <h3 className="text-xl font-semibold text-zinc-700 dark:text-zinc-300 mb-3">{month}</h3>
-                <div className="space-y-4">
-                  {monthEvents.map((event) => (
-                    <EventCard
-                      key={event.id}
-                      title={event.title}
-                      subtitle={event.description}
-                      link={event.link}
-                      eventType={event.event_type}
-                      date={format(parseISO(event.event_date), 'd')}
-                      dayOfWeek={format(parseISO(event.event_date), 'EEE')}
-                      onClick={() => handleEventClick(event)}
-                    />
+            <>
+              {/* Past Events Button */}
+              {pastEvents.length > 0 && (
+                <button
+                  onClick={() => setShowPastEvents(!showPastEvents)}
+                  className="w-full mb-6 px-4 py-3 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg transition-colors flex items-center justify-between text-zinc-700 dark:text-zinc-300"
+                >
+                  <span className="font-medium">Previous Events ({pastEvents.length})</span>
+                  {showPastEvents ? <IconChevronUp size={20} /> : <IconChevronDown size={20} />}
+                </button>
+              )}
+              
+              {/* Past Events Section */}
+              {showPastEvents && pastEvents.length > 0 && (
+                <div className="mb-8 pb-8 border-b border-zinc-200 dark:border-zinc-700">
+                  {Object.entries(pastEventsByMonth).map(([month, monthEvents]) => (
+                    <div key={month} className="mb-6">
+                      <h3 className="text-xl font-semibold text-zinc-500 dark:text-zinc-500 mb-3">{month}</h3>
+                      <div className="space-y-4 opacity-75">
+                        {monthEvents.map((event) => (
+                          <EventCard
+                            key={event.id}
+                            title={event.title}
+                            subtitle={event.description}
+                            link={event.link}
+                            eventType={event.event_type}
+                            date={format(parseISO(event.event_date), 'd')}
+                            dayOfWeek={format(parseISO(event.event_date), 'EEE')}
+                            onClick={() => handleEventClick(event)}
+                          />
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
-              </div>
-            ))
+              )}
+              
+              {/* Upcoming Events Section */}
+              {upcomingEvents.length === 0 ? (
+                <div className="text-center py-8 text-zinc-500 dark:text-zinc-400">
+                  <p>No upcoming events at the moment.</p>
+                  <p className="text-sm mt-2">Check back later for new events!</p>
+                </div>
+              ) : (
+                Object.entries(upcomingEventsByMonth).map(([month, monthEvents]) => (
+                  <div key={month} className="mb-6">
+                    <h3 className="text-xl font-semibold text-zinc-700 dark:text-zinc-300 mb-3">{month}</h3>
+                    <div className="space-y-4">
+                      {monthEvents.map((event) => (
+                        <EventCard
+                          key={event.id}
+                          title={event.title}
+                          subtitle={event.description}
+                          link={event.link}
+                          eventType={event.event_type}
+                          date={format(parseISO(event.event_date), 'd')}
+                          dayOfWeek={format(parseISO(event.event_date), 'EEE')}
+                          onClick={() => handleEventClick(event)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))
+              )}
+            </>
           )}
         </section>
 

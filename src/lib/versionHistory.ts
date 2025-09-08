@@ -7,6 +7,14 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.1',
+    date: '2025-09-08',
+    changes: [
+      'Added collapsible past events section in event calendar',
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.9.0',
     date: '2025-09-03',
     changes: [
