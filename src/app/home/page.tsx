@@ -61,7 +61,7 @@ export default function HomePage() {
               <p className="mb-3 inline">
                 <button
                 onClick={() => router.push('/become-member')}
-                className="text-green-700 underline hover:text-green-800 font-medium inline"
+                className="text-green-700 underline hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 font-medium inline"
               >
                 Indicate your membership here
               </button> <br></br>and access your previous bookings and an event calendar!
