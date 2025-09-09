@@ -7,6 +7,16 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.2',
+    date: '2025-09-09',
+    changes: [
+      'Added opening hours display on landing page below booking button',
+      'Shows current week\'s shifts with loading skeleton',
+      'Displays "Today" and "Tomorrow" labels for better clarity',
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.9.1',
     date: '2025-09-08',
     changes: [
