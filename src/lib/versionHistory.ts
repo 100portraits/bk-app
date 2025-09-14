@@ -7,6 +7,14 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.3',
+    date: '2025-09-10',
+    changes: [
+      'Adjusted open hours display to show on a weekly basis upcoming shifts, with subheaders.'
+    ],
+    type: 'minor'
+  },
+  {
     version: '0.9.2',
     date: '2025-09-09',
     changes: [

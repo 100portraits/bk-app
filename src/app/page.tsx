@@ -10,7 +10,7 @@ import VersionTracker from '@/components/ui/VersionTracker';
 import { IconUser, IconPlus, IconMail, IconCheck, IconClock } from '@tabler/icons-react';
 import { supabase } from '@/lib/supabase/singleton-client';
 import { useAuth } from '@/contexts/AuthContext';
-import { format, parseISO, startOfWeek, endOfWeek, isToday, isTomorrow } from 'date-fns';
+import { format, parseISO, startOfWeek, endOfWeek, isToday, isTomorrow, isAfter, isSameDay, parse, addDays, isSameWeek } from 'date-fns';
 import { Shift } from '@/types/shifts';
 
 export default function Home() {
@@ -39,28 +39,43 @@ export default function Home() {
     }
   }, [user, router]);
 
-  // Fetch upcoming shifts for this week
+  // Fetch upcoming shifts in the next week that haven't passed yet
   useEffect(() => {
     const fetchUpcomingShifts = async () => {
       setLoadingShifts(true);
       try {
-        const today = new Date();
-        const weekStart = startOfWeek(today, { weekStartsOn: 1 }); // Start from Monday
-        const weekEnd = endOfWeek(today, { weekStartsOn: 1 });
-        
+        const now = new Date();
+        const today = format(now, 'yyyy-MM-dd');
+        const nextWeek = format(addDays(now, 7), 'yyyy-MM-dd');
+
+        // Fetch shifts from today to next 7 days
         const { data: shifts, error } = await supabase
           .from('shifts')
           .select('*')
           .eq('is_open', true)
-          .gte('date', format(weekStart, 'yyyy-MM-dd'))
-          .lte('date', format(weekEnd, 'yyyy-MM-dd'))
+          .gte('date', today)
+          .lte('date', nextWeek)
           .order('date')
           .order('start_time');
-        
+
         if (error) {
           console.error('Error fetching shifts:', error);
         } else {
-          setUpcomingShifts(shifts || []);
+          // Filter out shifts that have already passed today
+          const upcomingShifts = (shifts || []).filter(shift => {
+            const shiftDate = parseISO(shift.date);
+            const shiftEndTime = parse(shift.end_time, 'HH:mm:ss', shiftDate);
+
+            // If the shift is today, check if it has ended
+            if (isSameDay(shiftDate, now)) {
+              return isAfter(shiftEndTime, now);
+            }
+
+            // If the shift is in the future, include it
+            return isAfter(shiftDate, now);
+          });
+
+          setUpcomingShifts(upcomingShifts);
         }
       } catch (err) {
         console.error('Error fetching shifts:', err);
@@ -218,7 +233,7 @@ export default function Home() {
           <div className="flex items-center gap-2 mb-3">
             <IconClock size={18} className="text-zinc-600 dark:text-zinc-400" />
             <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-              This Week's Opening Hours
+              Upcoming Opening Hours
             </h3>
           </div>
           
@@ -232,28 +247,78 @@ export default function Home() {
               ))}
             </div>
           ) : upcomingShifts.length > 0 ? (
-            <div className="space-y-1.5">
-              {upcomingShifts.map((shift) => {
-                const date = parseISO(shift.date);
-                const dayLabel = isToday(date) ? 'Today' : isTomorrow(date) ? 'Tomorrow' : format(date, 'EEEE');
-                const startTime = shift.start_time.substring(0, 5);
-                const endTime = shift.end_time.substring(0, 5);
-                
-                return (
-                  <div key={shift.id} className="flex items-center gap-3 text-sm">
-                    <span className="text-zinc-600 dark:text-zinc-400 font-medium min-w-[80px]">
-                      {dayLabel}
-                    </span>
-                    <span className="text-zinc-700 dark:text-zinc-300">
-                      {startTime} - {endTime}
-                    </span>
-                  </div>
+            <div className="space-y-3">
+              {(() => {
+                const now = new Date();
+                const thisWeekShifts = upcomingShifts.filter(shift =>
+                  isSameWeek(parseISO(shift.date), now, { weekStartsOn: 1 })
                 );
-              })}
+                const nextWeekShifts = upcomingShifts.filter(shift =>
+                  !isSameWeek(parseISO(shift.date), now, { weekStartsOn: 1 })
+                );
+
+                return (
+                  <>
+                    {thisWeekShifts.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold text-zinc-500 dark:text-zinc-500 uppercase tracking-wide mb-2">
+                          This Week
+                        </h4>
+                        <div className="space-y-1.5">
+                          {thisWeekShifts.map((shift) => {
+                            const date = parseISO(shift.date);
+                            const dayLabel = isToday(date) ? 'Today' : isTomorrow(date) ? 'Tomorrow' : format(date, 'EEEE');
+                            const startTime = shift.start_time.substring(0, 5);
+                            const endTime = shift.end_time.substring(0, 5);
+
+                            return (
+                              <div key={shift.id} className="flex items-center gap-3 text-sm">
+                                <span className="text-zinc-600 dark:text-zinc-400 font-medium min-w-[80px]">
+                                  {dayLabel}
+                                </span>
+                                <span className="text-zinc-700 dark:text-zinc-300">
+                                  {startTime} - {endTime}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {nextWeekShifts.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold text-zinc-500 dark:text-zinc-500 uppercase tracking-wide mb-2">
+                          Next Week
+                        </h4>
+                        <div className="space-y-1.5">
+                          {nextWeekShifts.map((shift) => {
+                            const date = parseISO(shift.date);
+                            const dayLabel = format(date, 'EEEE');
+                            const startTime = shift.start_time.substring(0, 5);
+                            const endTime = shift.end_time.substring(0, 5);
+
+                            return (
+                              <div key={shift.id} className="flex items-center gap-3 text-sm">
+                                <span className="text-zinc-600 dark:text-zinc-400 font-medium min-w-[80px]">
+                                  {dayLabel}
+                                </span>
+                                <span className="text-zinc-700 dark:text-zinc-300">
+                                  {startTime} - {endTime}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           ) : (
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              No shifts scheduled this week
+              No upcoming shifts scheduled
             </p>
           )}
         </div>
