@@ -46,15 +46,15 @@ export default function Home() {
       try {
         const now = new Date();
         const today = format(now, 'yyyy-MM-dd');
-        const nextWeek = format(addDays(now, 7), 'yyyy-MM-dd');
+        const endOfNextWeek = format(endOfWeek(addDays(now, 7), { weekStartsOn: 1 }), 'yyyy-MM-dd');
 
-        // Fetch shifts from today to next 7 days
+        // Fetch shifts from today to end of next week
         const { data: shifts, error } = await supabase
           .from('shifts')
           .select('*')
           .eq('is_open', true)
           .gte('date', today)
-          .lte('date', nextWeek)
+          .lte('date', endOfNextWeek)
           .order('date')
           .order('start_time');
 
