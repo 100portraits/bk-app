@@ -88,19 +88,19 @@ export function getRepairDuration(
 ): number {
   switch(repairType) {
     case 'Tire/Tube':
-      if (details.wheelPosition === 'front') return 30;
+      if (details.wheelPosition === 'front') return 40;
       if (details.wheelPosition === 'rear' && details.bikeType === 'city') return 60;
       if (details.wheelPosition === 'rear' && details.bikeType === 'road') return 40;
       return 45;
     case 'Chain':
       if (details.bikeType === 'city') return 45;
-      if (details.bikeType === 'road') return 30;
-      return 35;
+      if (details.bikeType === 'road') return 40;
+      return 40;
     case 'Brakes':
-      if (details.brakeType === 'rim') return 30;
+      if (details.brakeType === 'rim') return 40;
       if (details.brakeType === 'coaster') return 40;
       if (details.brakeType === 'disc') return 45;
-      return 35;
+      return 40;
     case 'Gears':
       if (details.bikeType === 'city') return 60;
       if (details.bikeType === 'road') return 40;
