@@ -10,16 +10,56 @@ import HelpDialog from '@/components/ui/HelpDialog';
 import DismissableCard from '@/components/ui/DismissableCard';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import VersionTracker from '@/components/ui/VersionTracker';
-import { IconPlus, IconInfoCircle } from '@tabler/icons-react';
+import { IconPlus, IconInfoCircle, IconLoader2 } from '@tabler/icons-react';
 import { useAuth } from '@/contexts/AuthContext';
+import TextInput from '@/components/ui/TextInput';
+import PrimaryButton from '@/components/ui/PrimaryButton';
+import { validatePhone } from '@/lib/utils/phone';
 import { useQuickLinks } from '@/hooks/useQuickLinks';
 
 export default function HomePage() {
-  const { profile } = useAuth();
+  const { profile, refreshProfile } = useAuth();
   const router = useRouter();
   const [showQuickLinksDialog, setShowQuickLinksDialog] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [editMode, setEditMode] = useState(false);
+
+  // Phone number state
+  const [phoneInput, setPhoneInput] = useState('');
+  const [savingPhone, setSavingPhone] = useState(false);
+  const [phoneError, setPhoneError] = useState('');
+  const [phoneSaved, setPhoneSaved] = useState(false);
+
+  const handleSavePhone = async () => {
+    const validation = validatePhone(phoneInput);
+    if (!validation.valid) {
+      setPhoneError(validation.error || 'Invalid phone number');
+      return;
+    }
+
+    setPhoneError('');
+    setSavingPhone(true);
+
+    try {
+      const response = await fetch('/api/user/phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phoneInput })
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to save phone');
+      }
+
+      await refreshProfile();
+      setPhoneSaved(true);
+    } catch (error) {
+      setPhoneError(error instanceof Error ? error.message : 'Failed to save phone');
+    } finally {
+      setSavingPhone(false);
+    }
+  };
   const { 
     quickLinks, 
     availableByCategory, 
@@ -66,7 +106,44 @@ export default function HomePage() {
                 Indicate your membership here
               </button> <br></br>and access your previous bookings and an event calendar!
               </p>
-              
+
+            </div>
+          </DismissableCard>
+        )}
+
+        {profile && !profile.phone && !phoneSaved && (
+          <DismissableCard
+            id="phone-prompt"
+            title="Add your phone number"
+            color="blue"
+          >
+            <div className="space-y-3">
+              <p className="text-sm text-zinc-700 dark:text-zinc-300">
+                Add your phone number for faster bookings. It will be pre-filled when you make a booking.
+              </p>
+              <div className="flex gap-2">
+                <TextInput
+                  type="number"
+                  value={phoneInput}
+                  onChange={setPhoneInput}
+                  placeholder="e.g. +31612345678"
+                  fullWidth
+                />
+                <PrimaryButton
+                  onClick={handleSavePhone}
+                  disabled={savingPhone || !phoneInput.trim()}
+                  size="sm"
+                >
+                  {savingPhone ? (
+                    <IconLoader2 className="animate-spin" size={18} />
+                  ) : (
+                    'Save'
+                  )}
+                </PrimaryButton>
+              </div>
+              {phoneError && (
+                <p className="text-sm text-red-600 dark:text-red-400">{phoneError}</p>
+              )}
             </div>
           </DismissableCard>
         )}

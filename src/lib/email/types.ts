@@ -6,6 +6,7 @@ export interface BookingConfirmationEmailData {
   duration: string;
   isGuest?: boolean;
   bookingId: string;
+  phone?: string;
 }
 
 export interface BookingCancellationEmailData {

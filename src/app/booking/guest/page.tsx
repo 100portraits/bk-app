@@ -15,6 +15,7 @@ import { IconInfoCircle, IconLoader2, IconCheck, IconBrandGoogle, IconBrandWindo
 import { useAvailableSlots } from '@/hooks/useAvailableSlots';
 import { TimeSlot, toDbRepairType, getRepairDuration, RepairDetails } from '@/types/bookings';
 import { format } from 'date-fns';
+import { validatePhone } from '@/lib/utils/phone';
 
 export default function GuestBookingPage() {
   const router = useRouter();
@@ -31,6 +32,8 @@ export default function GuestBookingPage() {
   const [selectedShiftId, setSelectedShiftId] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [disclaimerText, setDisclaimerText] = useState('');
   const [repairLocked, setRepairLocked] = useState(false);
@@ -255,6 +258,14 @@ export default function GuestBookingPage() {
   const handleCreateBooking = async () => {
     if (!selectedShiftId || !selectedTime || !selectedDate || !email || !name.trim()) return;
 
+    // Validate phone
+    const phoneValidation = validatePhone(phone);
+    if (!phoneValidation.valid) {
+      setPhoneError(phoneValidation.error || 'Invalid phone number');
+      return;
+    }
+    setPhoneError('');
+
     setCreatingBooking(true);
     try {
       const booking = await createBooking({
@@ -266,7 +277,8 @@ export default function GuestBookingPage() {
         notes: disclaimerText || undefined,
         is_member: false,
         email: email, // Pass the guest's email
-        name: name.trim() // Pass the guest's name
+        name: name.trim(), // Pass the guest's name
+        phone: phoneValidation.cleaned // Pass the guest's phone
       });
 
       // Send confirmation email for guest booking
@@ -282,7 +294,8 @@ export default function GuestBookingPage() {
             repairType: selectedRepairType,
             duration: repairDuration.toString(),
             isGuest: true,
-            bookingId: booking.id
+            bookingId: booking.id,
+            phone: phoneValidation.cleaned
           })
         });
       } catch (emailError) {
@@ -666,6 +679,27 @@ export default function GuestBookingPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                    Phone number
+                  </label>
+                  <TextInput
+                    type="number"
+                    value={phone}
+                    onChange={(value) => {
+                      setPhone(value);
+                      setPhoneError('');
+                    }}
+                    fullWidth
+                    placeholder="e.g. +31612345678"
+                  />
+                  {phoneError && (
+                    <p className="text-xs text-red-600 dark:text-red-400 mt-1">{phoneError}</p>
+                  )}
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                    So we can contact you about your booking if needed.
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                     Email address
                   </label>
                   <TextInput
@@ -690,7 +724,7 @@ export default function GuestBookingPage() {
                 <PrimaryButton
                   onClick={handleCreateBooking}
                   fullWidth
-                  disabled={creatingBooking || !email || !name.trim()}
+                  disabled={creatingBooking || !email || !name.trim() || !phone.trim()}
                 >
                   {creatingBooking ? (
                     <span className="flex items-center justify-center gap-2">
@@ -775,6 +809,8 @@ export default function GuestBookingPage() {
                       setSelectedTime('');
                       setEmail('');
                       setName('');
+                      setPhone('');
+                      setPhoneError('');
                       setBookingCreated(false);
                       setRepairLocked(false);
                     }}

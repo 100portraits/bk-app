@@ -209,6 +209,7 @@ export function useAvailableSlots() {
           user_id: userId, // null for guest bookings
           email: input.email, // always save the email
           name: userName, // save name if provided
+          phone: input.phone, // save phone number
           shift_id: input.shift_id,
           slot_time: `${input.slot_time}:00`, // Convert HH:MM to HH:MM:SS
           duration_minutes: input.duration_minutes,
@@ -235,7 +236,7 @@ export function useAvailableSlots() {
       if (user && data.shift) {
         const repairTypeDisplay = getRepairTypeDisplay(input.repair_type);
         const dateStr = format(parseISO(data.shift.date), 'EEEE, MMMM d, yyyy');
-        
+
         fetch('/api/email/booking-confirmation', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -246,7 +247,8 @@ export function useAvailableSlots() {
             repairType: repairTypeDisplay,
             duration: input.duration_minutes.toString(),
             isGuest: false,
-            bookingId: data.id
+            bookingId: data.id,
+            phone: input.phone
           })
         }).catch(err => {
           console.error('Failed to send booking confirmation email:', err);

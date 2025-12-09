@@ -40,6 +40,7 @@ export async function sendBookingConfirmationEmail(
         isGuest={data.isGuest}
         bookingId={data.bookingId}
         email={data.email}
+        phone={data.phone}
       />,
     });
 

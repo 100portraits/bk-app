@@ -8,6 +8,7 @@ interface BookingConfirmationEmailProps {
   isGuest?: boolean;
   bookingId?: string;
   email?: string;
+  phone?: string;
 }
 
 export const BookingConfirmationEmail: React.FC<BookingConfirmationEmailProps> = ({
@@ -18,6 +19,7 @@ export const BookingConfirmationEmail: React.FC<BookingConfirmationEmailProps> =
   isGuest = false,
   bookingId,
   email,
+  phone,
 }) => {
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: '0 auto' }}>
@@ -51,6 +53,12 @@ export const BookingConfirmationEmail: React.FC<BookingConfirmationEmailProps> =
                 <td style={{ padding: '8px 0', color: '#6b7280' }}>Duration:</td>
                 <td style={{ padding: '8px 0', color: '#111827', fontWeight: 'bold' }}>{duration} minutes</td>
               </tr>
+              {phone && (
+                <tr>
+                  <td style={{ padding: '8px 0', color: '#6b7280' }}>Phone:</td>
+                  <td style={{ padding: '8px 0', color: '#111827', fontWeight: 'bold' }}>{phone}</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

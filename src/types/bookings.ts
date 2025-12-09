@@ -18,6 +18,7 @@ export interface Booking {
   user_id: string | null; // null for guest bookings
   email: string; // email for all bookings (required)
   name?: string; // name for guest bookings (optional)
+  phone?: string; // phone for bookings (optional for backward compat)
   shift_id: string;
   slot_time: string; // HH:MM:SS format
   duration_minutes: number;
@@ -53,6 +54,7 @@ export interface CreateBookingInput {
   is_member?: boolean;
   email: string; // Email for all bookings (required)
   name?: string; // Name for guest bookings (optional)
+  phone: string; // Phone for all bookings (required)
 }
 
 export interface TimeSlot {

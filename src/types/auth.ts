@@ -4,6 +4,7 @@ export interface UserProfile {
   id: string;
   email: string;
   name: string;
+  phone?: string;
   member: boolean;
   role: UserRole;
   created_at?: string;

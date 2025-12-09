@@ -16,10 +16,11 @@ import { IconInfoCircle, IconLoader2, IconCheck, IconPencil, IconBrandGoogle, Ic
 import { useAuth } from '@/contexts/AuthContext';
 import { useAvailableSlots } from '@/hooks/useAvailableSlots';
 import { TimeSlot, toDbRepairType, getRepairDuration, RepairDetails } from '@/types/bookings';
+import { validatePhone } from '@/lib/utils/phone';
 import { log } from 'console';
 
 export default function BookingFormPage() {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const router = useRouter();
   const { getAvailableSlots, getAvailableDates, createBooking } = useAvailableSlots();
 
@@ -34,6 +35,9 @@ export default function BookingFormPage() {
   const [selectedShiftId, setSelectedShiftId] = useState('');
   const [email, setEmail] = useState('');
   const [editingEmail, setEditingEmail] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [editingPhone, setEditingPhone] = useState(false);
+  const [phoneError, setPhoneError] = useState('');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [disclaimerText, setDisclaimerText] = useState('');
   const [repairLocked, setRepairLocked] = useState(false);
@@ -65,10 +69,13 @@ export default function BookingFormPage() {
     loadAvailableDates();
   }, []);
 
-  // Set user email when profile loads
+  // Set user email and phone when profile loads
   useEffect(() => {
     if (profile?.email) {
       setEmail(profile.email);
+    }
+    if (profile?.phone) {
+      setPhone(profile.phone);
     }
   }, [profile]);
 
@@ -266,8 +273,32 @@ export default function BookingFormPage() {
   const handleCreateBooking = async () => {
     if (!selectedShiftId || !selectedTime || !selectedDate) return;
 
+    // Validate phone
+    const phoneValidation = validatePhone(phone);
+    if (!phoneValidation.valid) {
+      setPhoneError(phoneValidation.error || 'Invalid phone number');
+      return;
+    }
+    setPhoneError('');
+
     setCreatingBooking(true);
     try {
+      // If user entered a new phone (different from profile), save it to their profile
+      if (user && phoneValidation.cleaned !== profile?.phone) {
+        try {
+          await fetch('/api/user/phone', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: phoneValidation.cleaned })
+          });
+          // Refresh profile to get updated phone
+          await refreshProfile();
+        } catch (phoneError) {
+          console.error('Failed to save phone to profile:', phoneError);
+          // Don't block booking if phone save fails
+        }
+      }
+
       await createBooking({
         shift_id: selectedShiftId,
         slot_time: selectedTime,
@@ -276,7 +307,8 @@ export default function BookingFormPage() {
         repair_details: repairDetails,
         notes: disclaimerText || undefined,
         is_member: profile?.member || false,
-        email: email // Pass the email (either profile email or edited email)
+        email: email, // Pass the email (either profile email or edited email)
+        phone: phoneValidation.cleaned // Pass the phone
       });
 
       setBookingCreated(true);
@@ -671,7 +703,67 @@ export default function BookingFormPage() {
               )}
             </div>
 
-            {currentSection === 5 && email && (
+            <div className="space-y-4">
+              <h3 className="font-medium text-zinc-800 dark:text-zinc-200">Phone number for this booking:</h3>
+              {profile?.phone && !editingPhone ? (
+                <>
+                  <div className="flex items-center justify-between p-3 bg-accent-50 dark:bg-accent-950 rounded-lg">
+                    <span className="text-accent-900 dark:text-accent-100 font-medium">{phone}</span>
+                    <button
+                      onClick={() => setEditingPhone(true)}
+                      className="p-2 hover:bg-accent-100 dark:hover:bg-accent-900 rounded-lg transition-colors"
+                      title="Edit phone"
+                    >
+                      <IconPencil size={18} className="text-accent-600 dark:text-accent-400" />
+                    </button>
+                  </div>
+                  {phone !== profile?.phone && phone && (
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                      Note: Using a different phone than your saved number ({profile?.phone})
+                    </p>
+                  )}
+                </>
+              ) : (
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <TextInput
+                      type="number"
+                      value={phone}
+                      onChange={(value) => {
+                        setPhone(value);
+                        setPhoneError('');
+                      }}
+                      fullWidth
+                      placeholder="e.g. +31612345678"
+                      autoFocus={editingPhone}
+                      onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter' && profile?.phone) {
+                          setEditingPhone(false);
+                        }
+                      }}
+                    />
+                    {profile?.phone && (
+                      <PrimaryButton
+                        onClick={() => setEditingPhone(false)}
+                        size="sm"
+                      >
+                        Save
+                      </PrimaryButton>
+                    )}
+                  </div>
+                  {phoneError && (
+                    <p className="text-sm text-red-600 dark:text-red-400">{phoneError}</p>
+                  )}
+                  {!profile?.phone && (
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      Your phone number will be saved to your profile for future bookings.
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {currentSection === 5 && email && phone && (
               <PrimaryButton
                 onClick={handleCreateBooking}
                 fullWidth
