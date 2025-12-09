@@ -48,8 +48,9 @@ export default function UpcomingBookingsPage() {
   const loadUpcomingShifts = async () => {
     setLoading(true);
     try {
-      // Get shifts for the next 30 days
+      // Get shifts for 30 days in the past and 30 days in the future
       const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 30);
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + 30);
       
@@ -92,14 +93,16 @@ export default function UpcomingBookingsPage() {
 
   const navigateShift = (direction: 'prev' | 'next') => {
     if (availableShifts.length === 0) return;
-    
+
     let newIndex;
     if (direction === 'next') {
-      newIndex = (currentShiftIndex + 1) % availableShifts.length;
+      if (currentShiftIndex >= availableShifts.length - 1) return;
+      newIndex = currentShiftIndex + 1;
     } else {
-      newIndex = currentShiftIndex === 0 ? availableShifts.length - 1 : currentShiftIndex - 1;
+      if (currentShiftIndex <= 0) return;
+      newIndex = currentShiftIndex - 1;
     }
-    
+
     const newShift = availableShifts[newIndex];
     setCurrentShiftIndex(newIndex);
     setCurrentShift(newShift);
@@ -174,8 +177,8 @@ export default function UpcomingBookingsPage() {
           <div className="flex items-center justify-between mb-6 p-4 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg">
             <button
               onClick={() => navigateShift('prev')}
-              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
-              disabled={availableShifts.length === 0}
+              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+              disabled={availableShifts.length === 0 || currentShiftIndex === 0}
             >
               <IconChevronLeft size={20} className='text-zinc-500 dark:text-zinc-400' />
             </button>
@@ -191,8 +194,8 @@ export default function UpcomingBookingsPage() {
             
             <button
               onClick={() => navigateShift('next')}
-              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
-              disabled={availableShifts.length === 0}
+              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+              disabled={availableShifts.length === 0 || currentShiftIndex === availableShifts.length - 1}
             >
               <IconChevronRight size={20} className='text-zinc-500 dark:text-zinc-400' />
             </button>
