@@ -7,6 +7,27 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.5',
+    date: '2025-12-09',
+    changes: [
+      'Security update: Updated Next.js and React packages for React Flight RCE advisory'
+    ],
+    type: 'patch'
+  },
+  {
+    version: '0.9.4',
+    date: '2025-12-09',
+    changes: [
+      'Added phone number as required field for all bookings',
+      'Phone number prompt on home page for logged-in users',
+      'Auto-save phone to profile when entered during booking',
+      'Phone validation (9+ digits, international format supported)',
+      'Phone number included in booking confirmation emails',
+      'Phone prefilled from profile for member bookings'
+    ],
+    type: 'minor'
+  },
+  {
     version: '0.9.3',
     date: '2025-09-10',
     changes: [
