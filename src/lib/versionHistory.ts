@@ -7,6 +7,15 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.6',
+    date: '2025-12-10',
+    changes: [
+      'Added phone number display in host bookings details slideout',
+      'Phone number is clickable to call directly on mobile'
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.9.5',
     date: '2025-12-09',
     changes: [
