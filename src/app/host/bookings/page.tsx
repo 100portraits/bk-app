@@ -8,7 +8,7 @@ import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import HelpDialog from '@/components/ui/HelpDialog';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
-import { IconCheck, IconX, IconLoader2, IconUser, IconClock, IconTools, IconChevronLeft, IconChevronRight, IconCalendarEvent, IconEdit } from '@tabler/icons-react';
+import { IconCheck, IconX, IconLoader2, IconUser, IconClock, IconTools, IconChevronLeft, IconChevronRight, IconCalendarEvent, IconEdit, IconPhone } from '@tabler/icons-react';
 import { useRequireRole } from '@/hooks/useAuthorization';
 import { useBookings } from '@/hooks/useBookings';
 import { useShifts } from '@/hooks/useShifts';
@@ -270,8 +270,19 @@ export default function UpcomingBookingsPage() {
               </div>
               <div className="flex items-center gap-2 mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                 <IconClock size={16} />
-                <span >Duration: {selectedBooking.duration_minutes} minutes</span>
+                <span>Duration: {selectedBooking.duration_minutes} minutes</span>
               </div>
+              {selectedBooking.phone && (
+                <div className="flex items-center gap-2 mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                  <IconPhone size={16} />
+                  <a
+                    href={`tel:${selectedBooking.phone}`}
+                    className="text-accent-600 dark:text-accent-400 hover:underline"
+                  >
+                    {selectedBooking.phone}
+                  </a>
+                </div>
+              )}
             </div>
 
             <div className="space-y-3">
