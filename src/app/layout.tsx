@@ -10,6 +10,8 @@ import { HelpMessagesProvider } from '@/contexts/HelpMessagesContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { ThemeCustomizer } from '@/components/ui/ThemeCustomizer';
 import GlobalMenu from '@/components/layout/GlobalMenu';
+import { Analytics } from "@vercel/analytics/next"
+
 import "./globals.css";
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
@@ -65,6 +67,8 @@ export default function RootLayout({
           </HelpMessagesProvider>
           </AuthProvider>
         </ThemeProvider>
+        <Analytics />
+
       </body>
     </html>
   );
