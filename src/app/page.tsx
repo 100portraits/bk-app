@@ -7,7 +7,7 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import TextInput from '@/components/ui/TextInput';
 import VersionTracker from '@/components/ui/VersionTracker';
-import { IconUser, IconPlus, IconMail, IconCheck, IconClock } from '@tabler/icons-react';
+import { IconUser, IconPlus, IconMail, IconCheck, IconClock, IconExternalLink } from '@tabler/icons-react';
 import { supabase } from '@/lib/supabase/singleton-client';
 import { useAuth } from '@/contexts/AuthContext';
 import { format, parseISO, startOfWeek, endOfWeek, isToday, isTomorrow, isAfter, isSameDay, parse, addDays, isSameWeek } from 'date-fns';
@@ -215,9 +215,12 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">
             Bike Kitchen UvA
           </h1>
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-md">
+          <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-md mb-2">
             Your innovative, circular bike workshop at the Roeterseilandcampus.
           </p>
+          <a className="text-sm text-zinc-600 dark:text-zinc-400 underline hover:text-zinc-800 dark:hover:text-zinc-200" href="https://info.bikekitchen.nl" target="_blank" rel="noopener noreferrer">
+            Read more about us <IconExternalLink size={16} className="inline -mt-1" />
+          </a>
         </div>
 
         <PrimaryButton
@@ -229,7 +232,7 @@ export default function Home() {
         </PrimaryButton>
 
         {/* Opening Hours */}
-        <div className="mt-8 max-w-lg">
+        <div className="mt-4 max-w-lg">
           <div className="flex items-center gap-2 mb-3">
             <IconClock size={18} className="text-zinc-600 dark:text-zinc-400" />
             <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">

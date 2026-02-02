@@ -7,6 +7,14 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.7',
+    date: '2026-02-02',
+    changes: [
+      'Linked to new BK info webpage!',
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.9.6',
     date: '2025-12-10',
     changes: [
