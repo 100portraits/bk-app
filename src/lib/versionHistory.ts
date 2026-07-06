@@ -10,7 +10,7 @@ export const versionHistory: Version[] = [
     version: '0.9.9',
     date: '2026-07-06',
     changes: [
-      'Summer break message on the public home screen until 17 August',
+      'Summer break message on the public home screen until 19 August',
       'Summer break card on the logged-in home screen with WhatsApp and Instagram links',
     ],
     type: 'patch'
