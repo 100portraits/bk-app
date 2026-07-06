@@ -16,6 +16,7 @@ import TextInput from '@/components/ui/TextInput';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import { validatePhone } from '@/lib/utils/phone';
 import { useQuickLinks } from '@/hooks/useQuickLinks';
+import UpcomingOpeningHours from '@/components/ui/UpcomingOpeningHours';
 
 export default function HomePage() {
   const { profile, refreshProfile } = useAuth();
@@ -75,21 +76,7 @@ export default function HomePage() {
       showUserRoles={false}
     >
       <div className="space-y-6">
-        <DismissableCard
-          id="welcome-message"
-          title="Welcome to the new Bike Kitchen app!"
-          color="purple"
-        >
-          <div className="space-y-2">
-            <p>There may be bugs! Sorry, I'm a team of one :)</p>
-            
-            <p>
-              At the bottom of each page you'll find a 'Help' button, please write to me here I'll try and fix them ASAP. Thanks!
-            </p>
-            
-            <p className="font-medium">- sahir</p>
-          </div>
-        </DismissableCard>
+        <UpcomingOpeningHours variant="card" />
 
         {!profile?.member && (
           <DismissableCard

@@ -7,6 +7,15 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.8',
+    date: '2026-07-06',
+    changes: [
+      'Added upcoming opening hours to the logged-in home screen',
+      'Removed welcome message card from home screen',
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.9.7',
     date: '2026-02-02',
     changes: [

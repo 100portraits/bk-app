@@ -7,11 +7,10 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import TextInput from '@/components/ui/TextInput';
 import VersionTracker from '@/components/ui/VersionTracker';
-import { IconUser, IconPlus, IconMail, IconCheck, IconClock, IconExternalLink } from '@tabler/icons-react';
+import { IconUser, IconPlus, IconMail, IconCheck, IconExternalLink } from '@tabler/icons-react';
 import { supabase } from '@/lib/supabase/singleton-client';
 import { useAuth } from '@/contexts/AuthContext';
-import { format, parseISO, startOfWeek, endOfWeek, isToday, isTomorrow, isAfter, isSameDay, parse, addDays, isSameWeek } from 'date-fns';
-import { Shift } from '@/types/shifts';
+import UpcomingOpeningHours from '@/components/ui/UpcomingOpeningHours';
 
 export default function Home() {
   const [showLogin, setShowLogin] = useState(false);
@@ -28,8 +27,6 @@ export default function Home() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const [upcomingShifts, setUpcomingShifts] = useState<Shift[]>([]);
-  const [loadingShifts, setLoadingShifts] = useState(true);
   const router = useRouter();
   const { user } = useAuth();
 
@@ -38,54 +35,6 @@ export default function Home() {
       router.push('/home');
     }
   }, [user, router]);
-
-  // Fetch upcoming shifts in the next week that haven't passed yet
-  useEffect(() => {
-    const fetchUpcomingShifts = async () => {
-      setLoadingShifts(true);
-      try {
-        const now = new Date();
-        const today = format(now, 'yyyy-MM-dd');
-        const endOfNextWeek = format(endOfWeek(addDays(now, 7), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-
-        // Fetch shifts from today to end of next week
-        const { data: shifts, error } = await supabase
-          .from('shifts')
-          .select('*')
-          .eq('is_open', true)
-          .gte('date', today)
-          .lte('date', endOfNextWeek)
-          .order('date')
-          .order('start_time');
-
-        if (error) {
-          console.error('Error fetching shifts:', error);
-        } else {
-          // Filter out shifts that have already passed today
-          const upcomingShifts = (shifts || []).filter(shift => {
-            const shiftDate = parseISO(shift.date);
-            const shiftEndTime = parse(shift.end_time, 'HH:mm:ss', shiftDate);
-
-            // If the shift is today, check if it has ended
-            if (isSameDay(shiftDate, now)) {
-              return isAfter(shiftEndTime, now);
-            }
-
-            // If the shift is in the future, include it
-            return isAfter(shiftDate, now);
-          });
-
-          setUpcomingShifts(upcomingShifts);
-        }
-      } catch (err) {
-        console.error('Error fetching shifts:', err);
-      } finally {
-        setLoadingShifts(false);
-      }
-    };
-
-    fetchUpcomingShifts();
-  }, []);
 
   const handleBookAppointment = () => {
     // Show booking options dialog
@@ -231,100 +180,7 @@ export default function Home() {
           Book an appointment
         </PrimaryButton>
 
-        {/* Opening Hours */}
-        <div className="mt-4 max-w-lg">
-          <div className="flex items-center gap-2 mb-3">
-            <IconClock size={18} className="text-zinc-600 dark:text-zinc-400" />
-            <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
-              Upcoming Opening Hours
-            </h3>
-          </div>
-          
-          {loadingShifts ? (
-            <div className="space-y-2">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div className="w-20 h-4 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
-                  <div className="w-24 h-4 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
-                </div>
-              ))}
-            </div>
-          ) : upcomingShifts.length > 0 ? (
-            <div className="space-y-3">
-              {(() => {
-                const now = new Date();
-                const thisWeekShifts = upcomingShifts.filter(shift =>
-                  isSameWeek(parseISO(shift.date), now, { weekStartsOn: 1 })
-                );
-                const nextWeekShifts = upcomingShifts.filter(shift =>
-                  !isSameWeek(parseISO(shift.date), now, { weekStartsOn: 1 })
-                );
-
-                return (
-                  <>
-                    {thisWeekShifts.length > 0 && (
-                      <div>
-                        <h4 className="text-xs font-semibold text-zinc-500 dark:text-zinc-500 uppercase tracking-wide mb-2">
-                          This Week
-                        </h4>
-                        <div className="space-y-1.5">
-                          {thisWeekShifts.map((shift) => {
-                            const date = parseISO(shift.date);
-                            const dayLabel = isToday(date) ? 'Today' : isTomorrow(date) ? 'Tomorrow' : format(date, 'EEEE');
-                            const startTime = shift.start_time.substring(0, 5);
-                            const endTime = shift.end_time.substring(0, 5);
-
-                            return (
-                              <div key={shift.id} className="flex items-center gap-3 text-sm">
-                                <span className="text-zinc-600 dark:text-zinc-400 font-medium min-w-[80px]">
-                                  {dayLabel}
-                                </span>
-                                <span className="text-zinc-700 dark:text-zinc-300">
-                                  {startTime} - {endTime}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {nextWeekShifts.length > 0 && (
-                      <div>
-                        <h4 className="text-xs font-semibold text-zinc-500 dark:text-zinc-500 uppercase tracking-wide mb-2">
-                          Next Week
-                        </h4>
-                        <div className="space-y-1.5">
-                          {nextWeekShifts.map((shift) => {
-                            const date = parseISO(shift.date);
-                            const dayLabel = format(date, 'EEEE');
-                            const startTime = shift.start_time.substring(0, 5);
-                            const endTime = shift.end_time.substring(0, 5);
-
-                            return (
-                              <div key={shift.id} className="flex items-center gap-3 text-sm">
-                                <span className="text-zinc-600 dark:text-zinc-400 font-medium min-w-[80px]">
-                                  {dayLabel}
-                                </span>
-                                <span className="text-zinc-700 dark:text-zinc-300">
-                                  {startTime} - {endTime}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
-            </div>
-          ) : (
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              No upcoming shifts scheduled
-            </p>
-          )}
-        </div>
+        <UpcomingOpeningHours className="mt-4" />
       </div>
 
       <BottomSheetDialog
