@@ -17,6 +17,8 @@ import PrimaryButton from '@/components/ui/PrimaryButton';
 import { validatePhone } from '@/lib/utils/phone';
 import { useQuickLinks } from '@/hooks/useQuickLinks';
 import UpcomingOpeningHours from '@/components/ui/UpcomingOpeningHours';
+import SummerBreakCard from '@/components/ui/SummerBreakCard';
+import { isSummerClosureActive } from '@/lib/summerClosure';
 
 export default function HomePage() {
   const { profile, refreshProfile } = useAuth();
@@ -76,6 +78,8 @@ export default function HomePage() {
       showUserRoles={false}
     >
       <div className="space-y-6">
+        {isSummerClosureActive() && <SummerBreakCard variant="section" />}
+
         <UpcomingOpeningHours variant="card" />
 
         {!profile?.member && (
