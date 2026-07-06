@@ -7,10 +7,17 @@ import SecondaryButton from '@/components/ui/SecondaryButton';
 import BottomSheetDialog from '@/components/ui/BottomSheetDialog';
 import TextInput from '@/components/ui/TextInput';
 import VersionTracker from '@/components/ui/VersionTracker';
-import { IconUser, IconPlus, IconMail, IconCheck, IconExternalLink } from '@tabler/icons-react';
+import { IconUser, IconPlus, IconMail, IconCheck, IconExternalLink, IconSun, IconBrandInstagram, IconBrandWhatsapp } from '@tabler/icons-react';
 import { supabase } from '@/lib/supabase/singleton-client';
 import { useAuth } from '@/contexts/AuthContext';
 import UpcomingOpeningHours from '@/components/ui/UpcomingOpeningHours';
+
+const SUMMER_REOPEN_DATE = '17 August';
+const SUMMER_CLOSURE_END = new Date(2026, 7, 18); // Aug 18 — normal screen returns
+const INSTAGRAM_URL = 'https://www.instagram.com/bikekitchenuva/?hl=en';
+const WHATSAPP_URL = 'https://chat.whatsapp.com/CP244pZRyfcC2QhFW8BR9a';
+
+const isSummerClosureActive = () => new Date() < SUMMER_CLOSURE_END;
 
 export default function Home() {
   const [showLogin, setShowLogin] = useState(false);
@@ -172,15 +179,53 @@ export default function Home() {
           </a>
         </div>
 
-        <PrimaryButton
-          onClick={handleBookAppointment}
-          icon={<IconPlus size={20} />}
-          size="lg"
-        >
-          Book an appointment
-        </PrimaryButton>
+        {isSummerClosureActive() ? (
+          <div className="max-w-md w-full text-center">
+            <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-2xl px-5 py-6">
+              <div className="w-11 h-11 mx-auto mb-3 rounded-full bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
+                <IconSun size={22} className="text-amber-600 dark:text-amber-400" />
+              </div>
+              <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
+                Summer Break
+              </h2>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                We&apos;ll reopen on {SUMMER_REOPEN_DATE}, see you soon! Join our WhatsApp community and follow us on Instagram to stay up to date and join our summer events!
+              </p>
+              <div className="flex items-center justify-center gap-2 mt-3">
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 text-sm font-medium hover:bg-green-200 dark:hover:bg-green-900/60 transition-colors"
+                >
+                  <IconBrandWhatsapp size={14} />
+                  WhatsApp
+                </a>
+                <a
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400 text-sm font-medium hover:bg-purple-200 dark:hover:bg-purple-900/60 transition-colors"
+                >
+                  <IconBrandInstagram size={14} />
+                  Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <PrimaryButton
+              onClick={handleBookAppointment}
+              icon={<IconPlus size={20} />}
+              size="lg"
+            >
+              Book an appointment
+            </PrimaryButton>
 
-        <UpcomingOpeningHours className="mt-4" />
+            <UpcomingOpeningHours className="mt-4" />
+          </>
+        )}
       </div>
 
       <BottomSheetDialog
