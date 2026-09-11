@@ -27,7 +27,7 @@ export function useTeam() {
         const { data, error: fetchError } = await supabase
           .from('user_profiles')
           .select('*')
-          .in('role', ['host', 'admin'])
+          .in('role', ['host', 'mechanic', 'admin'])
           .order('created_at', { ascending: false });
 
         if (isCancelled) return;
@@ -158,7 +158,7 @@ export function useTeam() {
       const { data, error: fetchError } = await supabase
         .from('user_profiles')
         .select('*')
-        .in('role', ['host', 'admin'])
+        .in('role', ['host', 'mechanic', 'admin'])
         .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;

@@ -7,6 +7,14 @@ export interface Version {
 
 export const versionHistory: Version[] = [
   {
+    version: '0.9.10',
+    date: '2026-09-11',
+    changes: [
+      'Fixed mechanics missing from the admin team page',
+    ],
+    type: 'patch'
+  },
+  {
     version: '0.9.9',
     date: '2026-07-06',
     changes: [
